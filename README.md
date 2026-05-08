@@ -20,6 +20,33 @@ You can start editing the page by modifying `app/page.js`. The page auto-updates
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Project Structure
+
+```txt
+rasses-location/
+├── src/
+│   └── app/
+│       ├── layout.js          # Root layout component
+│       ├── page.js            # Home page
+│       ├── page.module.css    # Home page styles
+│       └── globals.css        # Global styles
+├── lib/
+│   └── firebase/
+│       └── config.js          # Firebase configuration
+├── public/                    # Static assets
+├── eslint.config.mjs          # ESLint configuration
+├── jsconfig.json              # JavaScript configuration
+├── next.config.mjs            # Next.js configuration
+├── package.json               # Project dependencies
+└── README.md                  # This file
+```
+
+### Directory Overview
+
+- **src/app/** - Main application code using Next.js App Router
+- **lib/** - Utility libraries and configurations (Firebase setup)
+- **public/** - Static files served directly
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
