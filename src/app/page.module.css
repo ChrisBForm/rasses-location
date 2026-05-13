@@ -24,35 +24,16 @@
 
 .tile {
   border-radius: 34px;
-  min-height: 260px;
   box-shadow: 0 24px 52px rgba(20, 26, 37, 0.14);
-  position: relative;
-}
-
-.purple {
-  background: #b8a2e3;
-}
-
-.purple1 {
-  grid-column: 1 / 7;
-}
-
-.purple2 {
-  grid-column: 7 / 13;
-}
-
-.purple3 {
-  grid-column: 1 / 6;
-}
-
-.purple4 {
-  grid-column: 6 / 13;
+  overflow: hidden;
+  min-height: 0; /* let aspect-ratio drive height */
 }
 
 .flower {
   position: absolute;
   z-index: 2;
   pointer-events: none;
+  opacity: 0.4;
 }
 
 .flower img {
@@ -72,7 +53,7 @@
   margin-top: auto;
 }
 
-.heroAction button {
+.heroAction a {
   display: inline-flex;
   align-items: center;
   justify-content: center;
