@@ -4,6 +4,7 @@
   align-items: center;
   padding: 1rem 1.5rem;
   background-color: #98A869;
+  z-index: 20;
 }
 
 .brand {

@@ -1,5 +1,5 @@
 "use client";
-import { useMemo, useEffect, useState } from "react";
+import { useMemo, useEffect, useState, useRef } from "react";
 import styles from "./page.module.css";
 import { storage } from "../../lib/firebase/config";
 import { ref, listAll, getDownloadURL } from "firebase/storage";
@@ -7,6 +7,8 @@ import { ref, listAll, getDownloadURL } from "firebase/storage";
 export default function Home() {
   const [tiles, setTiles] = useState([]);
   const [flowerUrls, setFlowerUrls] = useState([]);
+  const flowersRef = useRef(null);
+  const gridRef = useRef(null);
 
   useEffect(() => {
     const folderRef = ref(storage, "house");
@@ -35,6 +37,24 @@ export default function Home() {
       .then(setFlowerUrls);
   }, []);
 
+  // Parallax scroll effect
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      if (flowersRef.current) {
+        // Flowers move faster (more parallax)
+        flowersRef.current.style.transform = `translateY(${scrollY * 0.4}px)`;
+      }
+      if (gridRef.current) {
+        // Tiles move slower (subtle parallax)
+        gridRef.current.style.transform = `translateY(${scrollY * 0.15}px)`;
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   const flowers = useMemo(() => {
     if (flowerUrls.length === 0) return [];
     return flowerUrls.map(src => ({
@@ -49,7 +69,7 @@ export default function Home() {
   return (
     <div className={styles.page}>
       <main className={styles.main}>
-        <div className={styles.grid}>
+        <div ref={gridRef} className={styles.grid}>
           {tiles.map((tile, i) => (
             <div
               key={i}
@@ -67,21 +87,33 @@ export default function Home() {
             </div>
           ))}
         </div>
-        {flowers.map((flower, index) => (
-          <div
-            key={index}
-            className={styles.flower}
-            style={{
-              top: `${flower.top}%`,
-              left: `${flower.left}%`,
-              width: `${flower.size}px`,
-              height: `${flower.size}px`,
-              transform: `translate(-50%, -50%) rotate(${flower.rotate}deg)`,
-            }}
-          >
-            <img src={flower.src} alt="Marguerite" />
-          </div>
-        ))}
+        <div 
+          ref={flowersRef}
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            pointerEvents: "none",
+          }}
+        >
+          {flowers.map((flower, index) => (
+            <div
+              key={index}
+              className={styles.flower}
+              style={{
+                top: `${flower.top}%`,
+                left: `${flower.left}%`,
+                width: `${flower.size}px`,
+                height: `${flower.size}px`,
+                transform: `translate(-50%, -50%) rotate(${flower.rotate}deg)`,
+              }}
+            >
+              <img src={flower.src} alt="Marguerite" />
+            </div>
+          ))}
+        </div>
         <div className={styles.heroAction}>
           <a href="/manuals">MANUALS</a>
         </div>

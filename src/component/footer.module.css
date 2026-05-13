@@ -6,6 +6,7 @@
   background-color: #98A869;
   gap: 24px;
   flex-wrap: wrap;
+  z-index: 20;
 }
 
 .footerSquare {
