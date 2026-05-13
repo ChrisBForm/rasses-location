@@ -4,57 +4,47 @@ import styles from "./page.module.css";
 import { storage } from "../../lib/firebase/config";
 import { ref, listAll, getDownloadURL } from "firebase/storage";
 
-const flowerNames = Array.from({ length: 12 }, (_, i) =>
-  `/marguerite/marguerite${i + 1}.svg`
-);
-const flowerPositions = [
-  { top: 12, left: 18, size: 82, rotate: -8 },
-  { top: 18, left: 70, size: 96, rotate: 12 },
-  { top: 48, left: 30, size: 68, rotate: -12 },
-  { top: 60, left: 80, size: 76, rotate: 20 },
-  { top: 76, left: 16, size: 60, rotate: -14 },
-];
-
-function randomFlower() {
-  return flowerNames[Math.floor(Math.random() * flowerNames.length)];
-}
-
 export default function Home() {
   const [tiles, setTiles] = useState([]);
+  const [flowerUrls, setFlowerUrls] = useState([]);
 
   useEffect(() => {
     const folderRef = ref(storage, "house");
-
     listAll(folderRef).then(result => {
-      Promise.all(
-        result.items.map(item => getDownloadURL(item))
-      ).then(urls => {
-        Promise.all(
-          urls.map(src =>
-            new Promise(resolve => {
-              const img = new Image();
-              img.onload = () =>
-                resolve({ src, width: img.naturalWidth, height: img.naturalHeight });
-              img.onerror = () =>
-                resolve({ src, width: 400, height: 300 });
-              img.src = src;
-            })
-          )
-        ).then(setTiles);
-      });
+      Promise.all(result.items.map(item => getDownloadURL(item)))
+        .then(urls => {
+          Promise.all(
+            urls.map(src =>
+              new Promise(resolve => {
+                const img = new Image();
+                img.onload = () =>
+                  resolve({ src, width: img.naturalWidth, height: img.naturalHeight });
+                img.onerror = () =>
+                  resolve({ src, width: 400, height: 300 });
+                img.src = src;
+              })
+            )
+          ).then(setTiles);
+        });
     });
   }, []);
 
-  const flowers = useMemo(
-    () =>
-      flowerPositions.map(position => ({
-        ...position,
-        src: randomFlower(),
-        offsetX: Math.round((Math.random() - 0.5) * 14),
-        offsetY: Math.round((Math.random() - 0.5) * 14),
-      })),
-    []
-  );
+  useEffect(() => {
+    fetch("/api/flowers")
+      .then(r => r.json())
+      .then(setFlowerUrls);
+  }, []);
+
+  const flowers = useMemo(() => {
+    if (flowerUrls.length === 0) return [];
+    return flowerUrls.map(src => ({
+      src,
+      top: Math.random() * 90,
+      left: Math.random() * 90,
+      size: Math.round(60 + Math.random() * 60),
+      rotate: Math.round((Math.random() - 0.5) * 40),
+    }));
+  }, [flowerUrls]);
 
   return (
     <div className={styles.page}>
@@ -82,8 +72,8 @@ export default function Home() {
             key={index}
             className={styles.flower}
             style={{
-              top: `calc(${flower.top}% + ${flower.offsetY}px)`,
-              left: `calc(${flower.left}% + ${flower.offsetX}px)`,
+              top: `${flower.top}%`,
+              left: `${flower.left}%`,
               width: `${flower.size}px`,
               height: `${flower.size}px`,
               transform: `translate(-50%, -50%) rotate(${flower.rotate}deg)`,
