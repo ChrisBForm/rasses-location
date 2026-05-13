@@ -1,10 +1,10 @@
-# Website Rent les Rasses
+# Rasses Location Website
 
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+A modern Next.js-based website for Rasses Location using the App Router architecture.
 
 ## Getting Started
 
-First, run the development server:
+### Development Server
 
 ```bash
 npm run dev
@@ -12,54 +12,103 @@ npm run dev
 yarn dev
 # or
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser to see the result.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The page auto-updates as you edit files.
 
 ## Project Structure
 
 ```txt
 rasses-location/
 ├── src/
-│   └── app/
-│       ├── layout.js          # Root layout component
-│       ├── page.js            # Home page
-│       ├── page.module.css    # Home page styles
-│       └── globals.css        # Global styles
+│   ├── app/
+│   │   ├── layout.js              # Root layout (Header + Footer wrapper)
+│   │   ├── page.js                # Home page
+│   │   ├── page.module.css        # Home page styles
+│   │   └── globals.css            # Global styles
+│   └── component/
+│       ├── header.js              # Header component
+│       ├── header.module.css      # Header styles
+│       ├── footer.js              # Footer component
+│       └── footer.module.css      # Footer styles
 ├── lib/
 │   └── firebase/
-│       └── config.js          # Firebase configuration
-├── public/                    # Static assets
-├── eslint.config.mjs          # ESLint configuration
-├── jsconfig.json              # JavaScript configuration
-├── next.config.mjs            # Next.js configuration
-├── package.json               # Project dependencies
-└── README.md                  # This file
+│       └── config.js              # Firebase configuration
+├── public/
+│   ├── marguerite/                # Decorative flower SVG assets
+│   ├── house/                     # House placeholder images
+│   ├── globe.svg                  # Language selector icon
+│   ├── activities.svg             # Activities icon
+│   ├── file.svg                   # File icon
+│   └── [other SVGs]
+├── eslint.config.mjs              # ESLint configuration
+├── jsconfig.json                  # JavaScript configuration
+├── next.config.mjs                # Next.js configuration
+├── package.json                   # Dependencies and scripts
+└── README.md                      # This file
 ```
 
-### Directory Overview
+## Key Features
 
-- **src/app/** - Main application code using Next.js App Router
-- **lib/** - Utility libraries and configurations (Firebase setup)
-- **public/** - Static files served directly
+- **Header Component** - Displays site branding, language selector, and navigation
+- **Footer Component** - Shows company info, useful links, contact details, and admin login
+- **Home Page** - Dynamic gallery layout with house placeholder images
+- **Decorative Elements** - Randomized marguerite flower overlays
+- **Responsive Design** - Mobile-optimized layouts with CSS Grid
+- **Static Assets** - SVG icons and image placeholders in public folder
+
+## Component Details
+
+### Header (`src/component/header.js`)
+
+- Logo placeholder square (52px)
+- Site name/branding text
+- Language selector with globe icon
+- Activities navigation link
+
+### Footer (`src/component/footer.js`)
+
+- Logo placeholder square (76px)
+- Company info, useful links, and address sections
+- Admin login button
+
+### Home Page (`src/app/page.js`)
+
+- Dynamic gallery of house placeholder images
+- Randomized decorative flowers
+- Sticky "MANUALS" action button
+- Responsive grid layout
+
+## Styling
+
+The project uses **CSS Modules** for component-scoped styling:
+
+- `*.module.css` files are locally scoped to their components
+- Global styles in `globals.css`
+- Color scheme: Green header/footer (#98A869), light background (#EFF1EC)
+
+## Fonts
+
+Optimized with [next/font](https://nextjs.org/docs/app/building-your-application/optimizing/fonts):
+
+- Geist (sans-serif)
+- Geist Mono (monospace)
 
 ## Learn More
 
-To learn more about Next.js, take a look at the following resources:
+- [Next.js Documentation](https://nextjs.org/docs)
+- [Next.js Learn](https://nextjs.org/learn)
+- [Next.js GitHub](https://github.com/vercel/next.js)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Deployment
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Deploy on [Vercel](https://vercel.com) (recommended for Next.js):
 
-## Deploy on Vercel
+```bash
+npm install -g vercel
+vercel
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Or see the [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for other options.
