@@ -8,8 +8,12 @@ export default function Header() {
         <div className={styles.logo}>Rasses Location</div>
       </div>
       <nav className={styles.nav}>
-        <div className={styles.language}>Language</div>
-        <a href="/activities">Activities</a>
+        <div className={styles.language}>
+          <img src="/globe.svg" alt="Language" />
+        </div>
+        <a href="/activities">
+          <img src="/activities.svg" alt="Activities" />
+        </a>
       </nav>
     </header>
   );
