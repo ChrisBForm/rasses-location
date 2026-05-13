@@ -1,15 +1,19 @@
-import styles from "./Footer.module.css"
+import styles from "./footer.module.css"
 
 export default function Footer() {
   return (
-    <footer className={styles.Footer}>
-      <div className="logo">Rasses Location</div>
-      <nav>
-        <div className="footer-info">Company Infos</div>
-        <div className="footer-info">Useful links</div>
-        <div className="footer-info">Adress<br/>Phone<br/>E-mail<br/>Links</div>
-        <a className="admin-login" href="/admin">Admin</a>
-      </nav>
+    <footer className={styles.footer}>
+      <div className={styles.footerSquare} />
+      <div className={styles.footerInfo}>
+        <div className={styles.footerText}>Company Infos</div>
+        <div className={styles.footerText}>Useful links</div>
+        <div className={styles.footerText}>
+          Address<br />Phone<br />E-mail<br />Links
+        </div>
+      </div>
+      <a className={styles.adminLogin} href="/admin">
+        Admin
+      </a>
     </footer>
   );
 }

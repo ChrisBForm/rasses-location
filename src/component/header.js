@@ -1,12 +1,15 @@
-import styles from "./Header.module.css";
+import styles from "./header.module.css";
 
 export default function Header() {
   return (
     <header className={styles.header}>
-      <div className="logo">Rasses Location</div>
-      <nav>
-        <div className="language">Language</div>
-        <a href="/activities">Activities Logo</a>
+      <div className={styles.brand}>
+        <div className={styles.headerSquare} />
+        <div className={styles.logo}>Rasses Location</div>
+      </div>
+      <nav className={styles.nav}>
+        <div className={styles.language}>Language</div>
+        <a href="/activities">Activities</a>
       </nav>
     </header>
   );
