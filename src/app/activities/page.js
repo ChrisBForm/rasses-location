@@ -1,9 +1,17 @@
 "use client";
 import styles from "./page.module.css";
 import { APIProvider, Map, Marker } from "@vis.gl/react-google-maps";
+import useRequireAuth from "@/hooks/useRequireAuth";
 
 export default function ActivitiesPage() {
+  const { user, loading } = useRequireAuth();
   const position = { lat: 46.82942442282928, lng: 6.540003507637307 };
+
+  if (loading) {
+    return <div className={styles.loading}>Loading...</div>;
+  } else if (!user) {
+    return <div className={styles.error}>You must be signed in to view this page.</div>;
+  }
 
   return (
     <div className={styles.page}>
