@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { useMemo, useEffect, useState, useRef } from "react";
 import styles from "./page.module.css";
 import { storage } from "../../lib/firebase/config";
@@ -132,7 +133,7 @@ export default function Home() {
           ))}
         </div>
         <div className={styles.heroAction}>
-          <a href="/auth">CONNEXION</a>
+          <Link href="/auth">CONNEXION</Link>
         </div>
       </main>
     </div>
