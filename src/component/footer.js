@@ -3,7 +3,9 @@ import styles from "./footer.module.css"
 export default function Footer() {
   return (
     <footer className={styles.footer}>
-      <div className={styles.footerSquare} />
+      <div className={styles.footerSquare}>
+        <img src="/Logo.svg" alt="Rasses Location Logo" />
+      </div>
       <div className={styles.footerInfo}>
         <div className={styles.footerText}>Company Infos</div>
         <div className={styles.footerText}>Useful links</div>

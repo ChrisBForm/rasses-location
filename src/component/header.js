@@ -4,7 +4,9 @@ export default function Header() {
   return (
     <header className={styles.header}>
       <div className={styles.brand}>
-        <div className={styles.headerSquare} />
+        <div className={styles.headerSquare}>
+          <img src="/Logo.svg" alt="Rasses Location Logo" />
+        </div>
         <div className={styles.logo}>Rasses Location</div>
       </div>
       <nav className={styles.nav}>
