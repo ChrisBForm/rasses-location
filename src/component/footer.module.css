@@ -1,12 +1,13 @@
 .footer {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   padding: 1.5rem 1.5rem 2rem;
   background-color: #98A869;
   gap: 24px;
   flex-wrap: wrap;
   z-index: 20;
+  text-align: center;
 }
 
 .footerSquare {
@@ -23,12 +24,15 @@
   gap: 24px;
   flex: 1;
   min-width: 240px;
+  justify-content: center;
+  align-items: flex-start;
 }
 
 .footerText {
   color: #ffffff;
   font-size: 0.92rem;
   line-height: 1.6;
+  text-align: left;
 }
 
 .adminLogin {
@@ -47,11 +51,12 @@
 @media (max-width: 740px) {
   .footer {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
   }
 
   .footerInfo {
     flex-direction: column;
     gap: 14px;
+    align-items: center;
   }
 }
