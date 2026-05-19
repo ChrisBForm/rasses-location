@@ -57,13 +57,30 @@ export default function Home() {
 
   const flowers = useMemo(() => {
     if (flowerUrls.length === 0) return [];
-    return flowerUrls.map(src => ({
-      src,
-      top: Math.random() * 90,
-      left: Math.random() * 90,
-      size: Math.round(60 + Math.random() * 60),
-      rotate: Math.round((Math.random() - 0.5) * 40),
-    }));
+    
+    const cols = Math.ceil(Math.sqrt(flowerUrls.length));
+    const rows = Math.ceil(flowerUrls.length / cols);
+    
+    return flowerUrls
+      .map((src, i) => {
+        // Randomly skip ~40% of flowers
+        if (Math.random() < 0.4) return null;
+      
+        const col = i % cols;
+        const row = Math.floor(i / cols);
+      
+        const top = (row / rows) * 90 + Math.random() * (90 / rows * 0.6);
+        const left = (col / cols) * 90 + Math.random() * (90 / cols * 0.6);
+      
+        return {
+          src,
+          top,
+          left,
+          size: Math.round(60 + Math.random() * 60),
+          rotate: Math.round((Math.random() - 0.5) * 40),
+        };
+      })
+      .filter(Boolean);
   }, [flowerUrls]);
 
   return (
@@ -115,7 +132,7 @@ export default function Home() {
           ))}
         </div>
         <div className={styles.heroAction}>
-          <a href="/manuals">MANUALS</a>
+          <a href="/auth">CONNEXION</a>
         </div>
       </main>
     </div>
