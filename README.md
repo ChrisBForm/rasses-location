@@ -27,22 +27,22 @@ rasses-location/
 │   │   ├── layout.js              # Root layout (Header + Footer wrapper)
 │   │   ├── page.js                # Home page
 │   │   ├── page.module.css        # Home page styles
-│   │   └── globals.css            # Global styles
-│   └── component/
-│       ├── header.js              # Header component
-│       ├── header.module.css      # Header styles
-│       ├── footer.js              # Footer component
-│       └── footer.module.css      # Footer styles
-├── lib/
-│   └── firebase/
-│       └── config.js              # Firebase configuration
+│   │   ├── globals.css            # Global styles
+│   │   └── auth/
+│   │       ├── page.js            # Auth page
+│   │       └── page.module.css    # Auth page styles
+│   ├── component/
+│   │   ├── header.js              # Header component
+│   │   ├── header.module.css      # Header styles
+│   │   ├── footer.js              # Footer component
+│   │   └── footer.module.css      # Footer styles
+│   └── lib/
+│       └── firebase/
+│           └── config.js          # Firebase configuration
 ├── public/
 │   ├── marguerite/                # Decorative flower SVG assets
 │   ├── house/                     # House placeholder images
-│   ├── globe.svg                  # Language selector icon
-│   ├── activities.svg             # Activities icon
-│   ├── file.svg                   # File icon
-│   └── [other SVGs]
+│   └── [other static assets]
 ├── eslint.config.mjs              # ESLint configuration
 ├── jsconfig.json                  # JavaScript configuration
 ├── next.config.mjs                # Next.js configuration
@@ -55,6 +55,7 @@ rasses-location/
 - **Header Component** - Displays site branding, language selector, and navigation
 - **Footer Component** - Shows company info, useful links, contact details, and admin login
 - **Home Page** - Dynamic gallery layout with house placeholder images
+- **Firebase Auth Page** - Email/password sign-in at `/auth`
 - **Decorative Elements** - Randomized marguerite flower overlays
 - **Responsive Design** - Mobile-optimized layouts with CSS Grid
 - **Static Assets** - SVG icons and image placeholders in public folder
@@ -72,14 +73,34 @@ rasses-location/
 
 - Logo placeholder square (76px)
 - Company info, useful links, and address sections
-- Admin login button
+- Admin login button and `/auth` navigation
 
 ### Home Page (`src/app/page.js`)
 
 - Dynamic gallery of house placeholder images
 - Randomized decorative flowers
-- Sticky "MANUALS" action button
+- Sticky action button for navigation
 - Responsive grid layout
+
+### Auth Page (`src/app/auth/page.js`)
+
+- Firebase email/password login form
+- Sign-in state display and sign-out support
+- Styled in the same visual style as the main page
+
+## Firebase
+
+The auth page uses Firebase Authentication, and the Firebase configuration lives in `src/lib/firebase/config.js`.
+
+Required environment variables:
+
+- `NEXT_PUBLIC_FIREBASE_API_KEY`
+- `NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN`
+- `NEXT_PUBLIC_FIREBASE_PROJECT_ID`
+- `NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET`
+- `NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID`
+- `NEXT_PUBLIC_FIREBASE_APP_ID`
+- `NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID`
 
 ## Styling
 
