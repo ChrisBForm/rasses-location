@@ -1,64 +1,139 @@
-import Image from "next/image";
+"use client";
+import Link from "next/link";
+import { useMemo, useEffect, useState, useRef } from "react";
 import styles from "./page.module.css";
+import { storage } from "@/lib/firebase/config";
+import { ref, listAll, getDownloadURL } from "firebase/storage";
 
 export default function Home() {
+  const [tiles, setTiles] = useState([]);
+  const [flowerUrls, setFlowerUrls] = useState([]);
+  const flowersRef = useRef(null);
+  const gridRef = useRef(null);
+
+  useEffect(() => {
+    const folderRef = ref(storage, "house");
+    listAll(folderRef).then(result => {
+      Promise.all(result.items.map(item => getDownloadURL(item)))
+        .then(urls => {
+          Promise.all(
+            urls.map(src =>
+              new Promise(resolve => {
+                const img = new Image();
+                img.onload = () =>
+                  resolve({ src, width: img.naturalWidth, height: img.naturalHeight });
+                img.onerror = () =>
+                  resolve({ src, width: 400, height: 300 });
+                img.src = src;
+              })
+            )
+          ).then(setTiles);
+        });
+    });
+  }, []);
+
+  useEffect(() => {
+    fetch("/api/flowers")
+      .then(r => r.json())
+      .then(setFlowerUrls);
+  }, []);
+
+  // Parallax scroll effect
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      if (flowersRef.current) {
+        // Flowers move faster (more parallax)
+        flowersRef.current.style.transform = `translateY(${scrollY * 0.4}px)`;
+      }
+      if (gridRef.current) {
+        // Tiles move slower (subtle parallax)
+        gridRef.current.style.transform = `translateY(${scrollY * 0.15}px)`;
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const flowers = useMemo(() => {
+    if (flowerUrls.length === 0) return [];
+    
+    const cols = Math.ceil(Math.sqrt(flowerUrls.length));
+    const rows = Math.ceil(flowerUrls.length / cols);
+    
+    return flowerUrls
+      .map((src, i) => {
+        // Randomly skip ~40% of flowers
+        if (Math.random() < 0.4) return null;
+      
+        const col = i % cols;
+        const row = Math.floor(i / cols);
+      
+        const top = (row / rows) * 90 + Math.random() * (90 / rows * 0.6);
+        const left = (col / cols) * 90 + Math.random() * (90 / cols * 0.6);
+      
+        return {
+          src,
+          top,
+          left,
+          size: Math.round(60 + Math.random() * 60),
+          rotate: Math.round((Math.random() - 0.5) * 40),
+        };
+      })
+      .filter(Boolean);
+  }, [flowerUrls]);
+
   return (
     <div className={styles.page}>
       <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>To get started, edit the page.js file.</h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
+        <div ref={gridRef} className={styles.grid}>
+          {tiles.map((tile, i) => (
+            <div
+              key={i}
+              className={styles.tile}
+              style={{
+                aspectRatio: `${tile.width} / ${tile.height}`,
+                gridColumn: `span ${Math.round((tile.width / tile.height) * 4)}`,
+              }}
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+              <img
+                src={tile.src}
+                alt=""
+                style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "34px" }}
+              />
+            </div>
+          ))}
         </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+        <div 
+          ref={flowersRef}
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            pointerEvents: "none",
+          }}
+        >
+          {flowers.map((flower, index) => (
+            <div
+              key={index}
+              className={styles.flower}
+              style={{
+                top: `${flower.top}%`,
+                left: `${flower.left}%`,
+                width: `${flower.size}px`,
+                height: `${flower.size}px`,
+                transform: `translate(-50%, -50%) rotate(${flower.rotate}deg)`,
+              }}
+            >
+              <img src={flower.src} alt="Marguerite" />
+            </div>
+          ))}
+        </div>
+        <div className={styles.heroAction}>
+          <Link href="/auth">CONNEXION</Link>
         </div>
       </main>
     </div>
