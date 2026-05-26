@@ -12,6 +12,9 @@ export default function Header() {
         </div>
       </div>
       <nav className={styles.nav}>
+        <a href="/manuals">
+          <img src="/manual.svg" alt="Manuals" />
+        </a>
         <div className={styles.language}>
           <img src="/globe.svg" alt="Language" />
         </div>
