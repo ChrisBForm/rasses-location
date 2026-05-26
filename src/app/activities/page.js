@@ -37,21 +37,15 @@ function SearchBox({ onPlaceSelect }) {
 
 function MapContent({ position, searchMarker, setSearchMarker, selected, setSelected, handleMapClick }) {
   return (
-    <>
-      <SearchBox onPlaceSelect={(place) => {
-        setSearchMarker({
-          lat: place.geometry.location.lat(),
-          lng: place.geometry.location.lng(),
-          label: place.name,
-        });
-      }} />
-      <Map
-        defaultCenter={position}
-        defaultZoom={15}
-        style={{ width: "100%", height: "100%" }}
-        onClick={handleMapClick}
-        mapId="rasses-map"
-      >
+    <div className={styles.mapContentWrapper}>
+      <div className={styles.mapFrame}>
+        <Map
+          defaultCenter={position}
+          defaultZoom={15}
+          style={{ width: "100%", height: "100%" }}
+          onClick={handleMapClick}
+          mapId="rasses-map"
+        >
         {POINTS_OF_INTEREST.map((point, index) => (
           <AdvancedMarker
             key={index}
@@ -85,7 +79,17 @@ function MapContent({ position, searchMarker, setSearchMarker, selected, setSele
           </InfoWindow>
         )}
       </Map>
-    </>
+      </div>
+      <aside className={styles.mapSidebar}>
+        <SearchBox onPlaceSelect={(place) => {
+          setSearchMarker({
+            lat: place.geometry.location.lat(),
+            lng: place.geometry.location.lng(),
+            label: place.name,
+          });
+        }} />
+      </aside>
+    </div>
   );
 }
 
@@ -132,6 +136,12 @@ export default function ActivitiesPage() {
                 handleMapClick={handleMapClick}
               />
             </APIProvider>
+          </div>
+          <div className={styles.contentPanel}>
+            <h2>Explore nearby activities</h2>
+            <p>
+              This panel is reserved for additional details, directions, or property information that complements the map and search experience.
+            </p>
           </div>
         </div>
       </main>
