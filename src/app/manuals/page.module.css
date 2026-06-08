@@ -1,0 +1,132 @@
+.page {
+  width: 100%;
+  min-height: calc(100vh - 112px);
+  display: flex;
+  justify-content: center;
+  background-color: #EFF1EC;
+  padding: 44px 24px 60px;
+  font-family: var(--font-geist-sans);
+}
+
+.main {
+  width: min(1120px, 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.hero {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.overline {
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #6a6a6a;
+}
+
+.hero h1 {
+  margin: 0;
+  font-size: clamp(2rem, 2.5vw, 3rem);
+}
+
+.heroText {
+  margin: 0;
+  max-width: 780px;
+  color: #4d4d4d;
+  line-height: 1.7;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.manualCard {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 26px;
+  background: #f8f8f3;
+  border-radius: 32px;
+  box-shadow: 0 18px 38px rgba(20, 26, 37, 0.08);
+  text-decoration: none;
+  color: black;
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.manualCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 24px 48px rgba(20, 26, 37, 0.14);
+}
+
+.cardMeta {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+}
+
+.manualType {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: #e4f9a9;
+  color: #1c1c1c;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.openLabel {
+  font-size: 0.85rem;
+  color: #4d4d4d;
+  font-weight: 600;
+}
+
+.manualCard h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  line-height: 1.3;
+}
+
+.manualDescription {
+  margin: 0;
+  color: #555;
+  line-height: 1.7;
+}
+
+.loading,
+.error,
+.empty {
+  font-size: 1rem;
+  color: #3d3d3d;
+  padding: 20px 0;
+}
+
+.error {
+  color: #9b1c1c;
+}
+
+@media (max-width: 980px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .page {
+    padding: 24px 16px 36px;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
