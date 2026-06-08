@@ -17,6 +17,7 @@ export default function ManualsPage() {
   const [manuals, setManuals] = useState([]);
   const [loadingManuals, setLoadingManuals] = useState(true);
   const [error, setError] = useState("");
+  const [query, setQuery] = useState("");
 
   useEffect(() => {
     if (!user) return;
@@ -56,6 +57,7 @@ export default function ManualsPage() {
           </p>
         </section>
 
+        <div className={styles.card}>
           {error ? (
               <div className={styles.error}>{error}</div>
             ) : loadingManuals ? (
@@ -63,8 +65,22 @@ export default function ManualsPage() {
             ) : manuals.length === 0 ? (
               <div className={styles.empty}>No manuals available at the moment.</div>
             ) : (
+            <>
+            <div className={styles.cardControls}>
+              <input
+                className={styles.searchBox}
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Search manuals..."
+                aria-label="Search manuals"
+              />
+            </div>
             <div className={styles.grid}>
-                {manuals.map((manual) => (
+                {manuals
+                  .filter((manual) =>
+                    formatManualName(manual.name).toLowerCase().includes(query.toLowerCase())
+                  )
+                  .map((manual) => (
                   <a
                     key={manual.url}
                     href={manual.url}
@@ -83,7 +99,9 @@ export default function ManualsPage() {
                   </a>
                 ))}
             </div>
+            </>
           )}
+        </div>
       </main>
     </div>
   );

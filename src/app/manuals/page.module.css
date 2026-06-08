@@ -130,3 +130,24 @@
     grid-template-columns: 1fr;
   }
 }
+
+  .cardControls {
+    display: flex;
+    justify-content: left;
+    margin-bottom: 18px;
+  }
+
+  .searchBox {
+    width: 320px;
+    max-width: 100%;
+    padding: 10px 14px;
+    border-radius: 12px;
+    border: 1px solid rgba(0,0,0,0.08);
+    font-size: 0.95rem;
+  }
+
+  @media (max-width: 640px) {
+    .searchBox {
+      width: 100%;
+    }
+  }
