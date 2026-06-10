@@ -1,4 +1,5 @@
 import styles from "./footer.module.css"
+import Link from "next/link";
 
 export default function Footer() {
   return (
@@ -13,9 +14,9 @@ export default function Footer() {
           Address<br />Phone<br />E-mail<br />Links
         </div>
       </div>
-      <a className={styles.adminLogin} href="/admin">
+      <Link className={styles.adminLogin} href="/admin">
         Admin
-      </a>
+      </Link>
     </footer>
   );
 }

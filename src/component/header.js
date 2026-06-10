@@ -1,4 +1,5 @@
 import styles from "./header.module.css";
+import Link from "next/link";
 
 export default function Header() {
   return (
@@ -8,19 +9,19 @@ export default function Header() {
           <img src="/Logo.svg" alt="Rasses Location Logo" />
         </div>
         <div className={styles.logo}>
-          <a href="/">Rasses Location</a>
+          <Link href="/">Rasses Location</Link>
         </div>
       </div>
       <nav className={styles.nav}>
-        <a href="/manuals">
+        <Link href="/manuals">
           <img src="/manual.svg" alt="Manuals" />
-        </a>
+        </Link>
         <div className={styles.language}>
           <img src="/globe.svg" alt="Language" />
         </div>
-        <a href="/activities">
+        <Link href="/activities">
           <img src="/activities.svg" alt="Activities" />
-        </a>
+        </Link>
       </nav>
     </header>
   );
