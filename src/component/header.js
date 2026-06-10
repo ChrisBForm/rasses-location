@@ -1,9 +1,14 @@
+"use client";
+import { usePathname } from "next/navigation";
 import styles from "./header.module.css";
 import Link from "next/link";
 
 export default function Header() {
+  const pathname = usePathname();
+  const isAdmin = pathname?.startsWith("/admin");
+
   return (
-    <header className={styles.header}>
+    <header className={`${styles.header} ${isAdmin ? styles.admin : ""}`}>
       <div className={styles.brand}>
         <div className={styles.headerSquare}>
           <img src="/Logo.svg" alt="Rasses Location Logo" />

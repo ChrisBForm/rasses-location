@@ -1,9 +1,14 @@
+"use client";
+import { usePathname } from "next/navigation";
 import styles from "./footer.module.css"
 import Link from "next/link";
 
 export default function Footer() {
+  const pathname = usePathname();
+  const isAdmin = pathname?.startsWith("/admin");
+
   return (
-    <footer className={styles.footer}>
+    <footer className={`${styles.footer} ${isAdmin ? styles.admin : ""}`}>
       <div className={styles.footerSquare}>
         <img src="/Logo.svg" alt="Rasses Location Logo" />
       </div>

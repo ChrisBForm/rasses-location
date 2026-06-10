@@ -55,3 +55,8 @@
   object-fit: contain;
   filter: brightness(0) invert(1);
 }
+
+/* Admin variant when on /admin routes */
+.admin {
+  background-color: #69A899;
+}
