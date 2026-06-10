@@ -28,6 +28,9 @@ rasses-location/
 │   │   ├── page.js                # Home page
 │   │   ├── page.module.css        # Home page styles
 │   │   ├── globals.css            # Global styles
+│   │   ├── activities/
+│   │   │   ├── page.js            # Activities page with map search sidebar
+│   │   │   └── page.module.css    # Activities page styles
 │   │   └── auth/
 │   │       ├── page.js            # Auth page
 │   │       └── page.module.css    # Auth page styles
@@ -55,6 +58,7 @@ rasses-location/
 - **Header Component** - Displays site branding, language selector, and navigation
 - **Footer Component** - Shows company info, useful links, contact details, and admin login
 - **Home Page** - Dynamic gallery layout with house placeholder images
+- **Activities Page** - Interactive location map with a right-side search sidebar and content panel below
 - **Firebase Auth Page** - Email/password sign-in at `/auth`
 - **Decorative Elements** - Randomized marguerite flower overlays
 - **Responsive Design** - Mobile-optimized layouts with CSS Grid
@@ -101,6 +105,14 @@ Required environment variables:
 - `NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID`
 - `NEXT_PUBLIC_FIREBASE_APP_ID`
 - `NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID`
+
+## Google Maps
+
+The activities page uses the Google Maps JavaScript API with Places Autocomplete.
+
+Required environment variable:
+
+- `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY`
 
 ## Styling
 

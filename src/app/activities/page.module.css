@@ -1,0 +1,122 @@
+.page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 24px 64px;
+  background-color: #EFF1EC;
+  color: #1c1c1c;
+  font-family: var(--font-geist-sans, system-ui, sans-serif);
+}
+
+.main {
+  width: min(1120px, 100%);
+  display: grid;
+  gap: 32px;
+}
+
+.hero {
+  display: grid;
+  gap: 16px;
+  text-align: center;
+}
+
+.overline {
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  color: #6a6a6a;
+  text-transform: uppercase;
+}
+
+.hero h1 {
+  margin: 0;
+  font-size: clamp(2rem, 2.5vw, 3rem);
+}
+
+.heroText {
+  margin: 0;
+  max-width: 780px;
+  justify-self: center;
+  color: #4d4d4d;
+  line-height: 1.7;
+}
+
+.card {
+  width: 100%;
+  background: #E4F9A9;
+  border-radius: 45px;
+  box-shadow: 0 28px 60px rgba(20, 26, 37, 0.12);
+  padding: 28px;
+  overflow: hidden;
+}
+
+.mapContainer {
+  width: 100%;
+  max-width: 1200px;
+  border-radius: 32px;
+  overflow: hidden;
+}
+
+.mapContentWrapper {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 24px;
+  min-height: 560px;
+  width: 100%;
+}
+
+.mapFrame {
+  width: 100%;
+  min-height: 100%;
+  border-radius: 32px;
+  overflow: hidden;
+}
+
+.mapSidebar {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 16px;
+  padding: 24px;
+  background: #ECE6F0;
+  border-radius: 32px;
+}
+
+.contentPanel {
+  width: 100%;
+  margin-top: 24px;
+  padding: 28px;
+  border-radius: 32px;
+  background: #ECE6F0;
+}
+
+.contentPanel h2 {
+  margin: 0 0 12px;
+  font-size: clamp(1.5rem, 2vw, 2rem);
+}
+
+.contentPanel p {
+  margin: 0;
+  color: #3d3d3d;
+  line-height: 1.8;
+}
+
+.searchBox {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+@media (max-width: 900px) {
+  .mapContentWrapper {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
+  .mapSidebar {
+    width: 100%;
+    padding: 18px;
+  }
+}

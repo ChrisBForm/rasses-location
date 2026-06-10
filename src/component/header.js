@@ -7,9 +7,14 @@ export default function Header() {
         <div className={styles.headerSquare}>
           <img src="/Logo.svg" alt="Rasses Location Logo" />
         </div>
-        <div className={styles.logo}>Rasses Location</div>
+        <div className={styles.logo}>
+          <a href="/">Rasses Location</a>
+        </div>
       </div>
       <nav className={styles.nav}>
+        <a href="/manuals">
+          <img src="/manual.svg" alt="Manuals" />
+        </a>
         <div className={styles.language}>
           <img src="/globe.svg" alt="Language" />
         </div>
