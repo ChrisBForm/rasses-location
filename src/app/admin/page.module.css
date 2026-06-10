@@ -1,0 +1,115 @@
+.page {
+    min-height: 100vh;
+    background-color: #f0efeb;
+}
+
+.main {
+    padding: 48px 48px 64px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* ── Loading / Error states ── */
+.loading,
+.error {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    font-size: 1rem;
+    color: #5f5e5a;
+}
+
+/* ── Stat cards row ── */
+.statsRow {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+}
+
+.statCard {
+    border-radius: 6px;
+    padding: 32px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-height: 120px;
+}
+
+.statCardPurple {
+    background-color: #9b8dc4;
+}
+
+.statCardPink {
+    background-color: #c49090;
+}
+
+.statCardDarkPurple {
+    background-color: #5e4a8a;
+}
+
+.statLabel {
+    font-size: 0.78rem;
+    color: rgba(255, 255, 255, 0.75);
+    text-transform: lowercase;
+    letter-spacing: 0.01em;
+}
+
+.statValue {
+    font-size: 1.75rem;
+    font-weight: 500;
+    color: #fff;
+}
+
+/* ── Bottom panels row ── */
+.bottomRow {
+    display: grid;
+    grid-template-columns: 3fr 1.5fr;
+    gap: 40px;
+    align-items: stretch;
+}
+
+.panel {
+    border-radius: 4px;
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    min-height: 380px;
+}
+
+.panelMuted {
+    background-color: #c5c5bc;
+}
+
+.panelTeal {
+    background-color: #4e7d72;
+}
+
+.panelLabel {
+    font-size: 0.78rem;
+    color: rgba(255, 255, 255, 0.8);
+    text-transform: lowercase;
+    letter-spacing: 0.01em;
+}
+
+.panelMuted .panelLabel {
+    color: rgba(0, 0, 0, 0.55);
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+    .statsRow {
+        grid-template-columns: 1fr;
+    }
+
+    .bottomRow {
+        grid-template-columns: 1fr;
+    }
+
+    .main {
+        padding: 32px 24px;
+    }
+}
