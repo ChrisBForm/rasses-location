@@ -1,5 +1,5 @@
 import { defineConfig, globalIgnores } from "eslint/config";
-import nextVitals from "eslint-config-next/core-web-vitals";
+import nextVitals from "eslint-config-next/core-web-vitals.js";
 import nextPlugin from "@next/eslint-plugin-next";
 
 const eslintConfig = defineConfig([
