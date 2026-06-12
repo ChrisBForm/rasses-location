@@ -5,5 +5,24 @@
     "Footer": {
         "company": "Company Infos",
         "link": "Useful links"
+    },
+    "Manuals": {
+        "title": "Manuals",
+        "subtitle": "Access PDFs",
+        "desc": "Click a card to open the associated PDF in a new tab.",
+        "loading": "Loading",
+        "loading-manuals": "Loading manuals",
+        "no-manuals": "No manuals available at the moment.",
+        "manual-desc": "View the manual or download it if needed.",
+        "manual-open": "Open"
+    },
+    "Activities": {
+        "loading": "Loading",
+        "error": "You must be signed in to view this page.",
+        "title": "Map",
+        "subtitle": "Discover the apartment and more",
+        "desc": "View the location of the property and nearby activities with a map",
+        "activities-title": "Recommended activities",
+        "activities-info": "This panel is reserved for additional details, directions, or property information that complements the map and search experience."
     }
 }

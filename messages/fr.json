@@ -5,5 +5,24 @@
     "Footer": {
         "company": "Informations sur l'entreprise",
         "link": "Liens utiles"
+    },
+    "Manuals": {
+        "title": "Modes d'emploi",
+        "subtitle": "Accédez aux PDFs",
+        "desc": "Cliquez sur une carte pour ouvrir le PDF associé dans un nouvel onglet.",
+        "loading": "Chargement",
+        "loading-manuals": "Chargement des modes d'emploi",
+        "no-manuals": "Aucun mode d'emploi disponible pour le moment.",
+        "manual-desc": "Consultez le mode d'emploi ou téléchargez-le si nécessaire.",
+        "manual-open": "Ouvrir"
+    },
+    "Activities": {
+        "loading": "Chargement",
+        "error": "Vous devez êtres connecté pour accéder à cette page.",
+        "title": "Carte",
+        "subtitle": "Découvrez l'appartement et ses alentours",
+        "desc": "Visualisez l'emplacement de la propriété ainsi que les activités avoisinnantes",
+        "activities-title": "Activitées recommandées",
+        "activities-info": "Cet espace est réservé pour des informations additionels."
     }
 }

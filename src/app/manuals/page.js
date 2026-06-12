@@ -4,12 +4,12 @@ import styles from "./page.module.css";
 import useRequireAuth from "@/hooks/useRequireAuth";
 import { storage } from "@/lib/firebase/config";
 import { ref, listAll, getDownloadURL } from "firebase/storage";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 function formatManualName(filename) {
   // remove extension and trailing language code like _EN or -FR
   const withoutExt = filename.replace(/\.pdf$/i, "");
-  const stripped = withoutExt.replace(/[_\-.](en|fr|nl)$/i, "");
+  const stripped = withoutExt.replace(/[_\-.](en|fr)$/i, "");
   return stripped.replace(/[-_]/g, " ").replace(/\b\w/g, (char) => char.toUpperCase());
 }
 
@@ -26,6 +26,7 @@ export default function ManualsPage() {
   const [loadingManuals, setLoadingManuals] = useState(true);
   const [error, setError] = useState("");
   const [query, setQuery] = useState("");
+  const t = useTranslations("Manuals");
 
   useEffect(() => {
     if (!user) return;
@@ -50,27 +51,18 @@ export default function ManualsPage() {
       .finally(() => setLoadingManuals(false));
   }, [user]);
 
-  // update language if changed elsewhere (e.g., header control)
-  useEffect(() => {
-    function onStorage(e) {
-      if (e.key === "site_lang") setLang(e.newValue || "EN");
-    }
-    window.addEventListener("storage", onStorage);
-    return () => window.removeEventListener("storage", onStorage);
-  }, []);
-
   if (loading) {
-    return <div className={styles.loading}>Loading...</div>;
+    return <div className={styles.loading}>{t('loading')}...</div>;
   }
 
   return (
     <div className={styles.page}>
       <main className={styles.main}>
         <section className={styles.hero}>
-          <p className={styles.overline}>Manuals</p>
-          <h1>Access PDFs from Firebase</h1>
+          <p className={styles.overline}>{t('title')}</p>
+          <h1>{t('subtitle')}</h1>
           <p className={styles.heroText}>
-            Click a card to open the associated PDF in a new tab.
+            {t('desc')}
           </p>
         </section>
 
@@ -78,9 +70,9 @@ export default function ManualsPage() {
           {error ? (
               <div className={styles.error}>{error}</div>
             ) : loadingManuals ? (
-              <div className={styles.loading}>Loading manuals…</div>
+              <div className={styles.loading}>{t('loading-manuals')}…</div>
             ) : manuals.length === 0 ? (
-              <div className={styles.empty}>No manuals available at the moment.</div>
+              <div className={styles.empty}>{t('no-manuals')}</div>
             ) : (
             <>
             <div className={styles.cardControls}>
@@ -88,8 +80,8 @@ export default function ManualsPage() {
                 className={styles.searchBox}
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Search manuals..."
-                aria-label="Search manuals"
+                placeholder="Search..."
+                aria-label="Search"
               />
             </div>
             <div className={styles.grid}>
@@ -108,11 +100,11 @@ export default function ManualsPage() {
                   >
                     <div className={styles.cardMeta}>
                       <span className={styles.manualType}>PDF</span>
-                      <span className={styles.openLabel}>Open</span>
+                      <span className={styles.openLabel}>{t('manual-open')}</span>
                     </div>
                     <h2>{formatManualName(manual.name)}</h2>
                     <p className={styles.manualDescription}>
-                      View the manual or download it if needed.
+                      {t('manual-desc')}
                     </p>
                   </a>
                 ))}
