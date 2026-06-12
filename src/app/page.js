@@ -4,12 +4,14 @@ import { useMemo, useEffect, useState, useRef } from "react";
 import styles from "./page.module.css";
 import { storage } from "@/lib/firebase/config";
 import { ref, listAll, getDownloadURL } from "firebase/storage";
+import { useTranslations } from "next-intl";
 
 export default function Home() {
   const [tiles, setTiles] = useState([]);
   const [flowerUrls, setFlowerUrls] = useState([]);
   const flowersRef = useRef(null);
   const gridRef = useRef(null);
+  const t = useTranslations('Home');
 
   useEffect(() => {
     const folderRef = ref(storage, "house");
@@ -133,7 +135,7 @@ export default function Home() {
           ))}
         </div>
         <div className={styles.heroAction}>
-          <Link href="/auth">CONNEXION</Link>
+          <Link href="/auth">{t('button')}</Link>
         </div>
       </main>
     </div>
