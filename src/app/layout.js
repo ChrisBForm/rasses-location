@@ -2,6 +2,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import Header from "@/component/header";
 import Footer from "@/component/footer";
 import { NextIntlClientProvider } from "next-intl";
+import { cookies } from "next/headers";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -20,13 +21,18 @@ export const metadata = {
 };
 
 export default async function RootLayout({ children }) {
+  const cookieStore = await cookies();
+  const locale = cookieStore.get("site_lang")?.value || "en";
+  const messages = (await import(`../../messages/${locale}.json`)).default;
 
   return (
     <html className={`${geistSans.variable} ${geistMono.variable}`}>
       <body>
-        <Header />
-        <NextIntlClientProvider>{children}</NextIntlClientProvider>
-        <Footer />
+        <NextIntlClientProvider locale={locale} messages={messages}>
+          <Header />
+          {children}
+          <Footer />
+        </NextIntlClientProvider>
       </body>
     </html>
   );

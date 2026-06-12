@@ -4,6 +4,7 @@ import styles from "./page.module.css";
 import useRequireAuth from "@/hooks/useRequireAuth";
 import { storage } from "@/lib/firebase/config";
 import { ref, listAll, getDownloadURL } from "firebase/storage";
+import { useLocale } from "next-intl";
 
 function formatManualName(filename) {
   // remove extension and trailing language code like _EN or -FR
@@ -20,17 +21,8 @@ function matchesLanguage(filename, lang) {
 
 export default function ManualsPage() {
   const { user, loading } = useRequireAuth();
+  const locale = useLocale();
   const [manuals, setManuals] = useState([]);
-  const [lang, setLang] = useState("EN");
-
-  // read persisted language on mount to avoid hydration mismatch
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    try {
-      const stored = localStorage.getItem("site_lang");
-      if (stored) setLang(stored);
-    } catch {}
-  }, []);
   const [loadingManuals, setLoadingManuals] = useState(true);
   const [error, setError] = useState("");
   const [query, setQuery] = useState("");
@@ -102,7 +94,7 @@ export default function ManualsPage() {
             </div>
             <div className={styles.grid}>
                 {manuals
-                  .filter((manual) => matchesLanguage(manual.name, lang))
+                  .filter((manual) => matchesLanguage(manual.name, locale?.toUpperCase() || "EN"))
                   .filter((manual) =>
                     formatManualName(manual.name).toLowerCase().includes(query.toLowerCase())
                   )

@@ -1,5 +1,9 @@
 {
     "Home": {
         "button": "CONNEXION"
+    },
+    "Footer": {
+        "company": "Company Infos",
+        "link": "Useful links"
     }
 }

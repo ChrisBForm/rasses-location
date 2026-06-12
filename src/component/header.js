@@ -3,28 +3,14 @@ import { usePathname } from "next/navigation";
 import styles from "./header.module.css";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import { useLocale } from "next-intl";
 
 export default function Header() {
   const pathname = usePathname();
   const isAdmin = pathname?.startsWith("/admin");
+  const locale = useLocale();
 
   const [menuOpen, setMenuOpen] = useState(false);
-  const [lang, setLang] = useState("EN");
-
-  // read persisted language on mount to avoid hydration mismatch
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    try {
-      const stored = localStorage.getItem("site_lang");
-      if (stored) setLang(stored);
-    } catch {}
-
-    function onStorage(e) {
-      if (e.key === "site_lang") setLang(e.newValue || "EN");
-    }
-    window.addEventListener("storage", onStorage);
-    return () => window.removeEventListener("storage", onStorage);
-  }, []);
 
   const containerRef = useRef(null);
 
@@ -38,16 +24,17 @@ export default function Header() {
     return () => document.removeEventListener("mousedown", handleOutside);
   }, []);
 
+  function setLocaleCookie(l) {
+    if (typeof document === "undefined") return;
+    document.cookie = `site_lang=${l}; path=/; max-age=${60 * 60 * 24 * 365}`;
+  }
+
   function selectLang(l) {
-    setLang(l);
-    try {
-      localStorage.setItem("site_lang", l);
-    } catch {}
+    setLocaleCookie(l);
     setMenuOpen(false);
-    // Reload the page so the app can re-render with the new language
-    try {
-      if (typeof window !== "undefined") window.location.reload();
-    } catch {}
+    if (typeof window !== "undefined") {
+      window.location.reload();
+    }
   }
 
   return (
@@ -74,14 +61,13 @@ export default function Header() {
             onClick={() => setMenuOpen((v) => !v)}
           >
             <img src="/globe.svg" alt="Language" />
-            <span className={styles.langLabel}>{lang}</span>
+            <span className={styles.langLabel}>{locale?.toUpperCase() ?? "EN"}</span>
           </button>
 
           {menuOpen && (
             <div className={styles.langMenu} role="menu">
-              <button className={styles.langItem} role="menuitem" onClick={() => selectLang("EN")}>English</button>
-              <button className={styles.langItem} role="menuitem" onClick={() => selectLang("FR")}>Français</button>
-              <button className={styles.langItem} role="menuitem" onClick={() => selectLang("DE")}>Deutsch</button>
+              <button className={styles.langItem} role="menuitem" onClick={() => selectLang("en")}>English</button>
+              <button className={styles.langItem} role="menuitem" onClick={() => selectLang("fr")}>Français</button>
             </div>
           )}
         </div>
