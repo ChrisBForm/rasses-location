@@ -81,6 +81,7 @@ export default function Header() {
             <div className={styles.langMenu} role="menu">
               <button className={styles.langItem} role="menuitem" onClick={() => selectLang("EN")}>English</button>
               <button className={styles.langItem} role="menuitem" onClick={() => selectLang("FR")}>Français</button>
+              <button className={styles.langItem} role="menuitem" onClick={() => selectLang("DE")}>Deutsch</button>
             </div>
           )}
         </div>

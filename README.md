@@ -24,28 +24,18 @@ The page auto-updates as you edit files.
 rasses-location/
 ├── src/
 │   ├── app/
-│   │   ├── layout.js              # Root layout (Header + Footer wrapper)
-│   │   ├── page.js                # Home page
-│   │   ├── page.module.css        # Home page styles
+│   │   ├── layout.js              # Root layout with shared Header/Footer
+│   │   ├── page.js                # Home page blueprint
 │   │   ├── globals.css            # Global styles
-│   │   ├── activities/
-│   │   │   ├── page.js            # Activities page with map search sidebar
-│   │   │   └── page.module.css    # Activities page styles
-│   │   └── auth/
-│   │       ├── page.js            # Auth page
-│   │       └── page.module.css    # Auth page styles
+│   │   └── [feature folders]      # Additional routes like /activities, /auth, /manuals
 │   ├── component/
-│   │   ├── header.js              # Header component
-│   │   ├── header.module.css      # Header styles
-│   │   ├── footer.js              # Footer component
-│   │   └── footer.module.css      # Footer styles
+│   │   ├── header.js              # Header with language selector and navigation
+│   │   ├── footer.js              # Site footer
+│   │   └── [component styles]
 │   └── lib/
 │       └── firebase/
 │           └── config.js          # Firebase configuration
-├── public/
-│   ├── marguerite/                # Decorative flower SVG assets
-│   ├── house/                     # House placeholder images
-│   └── [other static assets]
+├── public/                        # Static assets, icons, PDFs, images
 ├── eslint.config.mjs              # ESLint configuration
 ├── jsconfig.json                  # JavaScript configuration
 ├── next.config.mjs                # Next.js configuration
@@ -145,3 +135,24 @@ vercel
 ```
 
 Or see the [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for other options.
+
+## Localization / Language Selector
+
+- The header includes a globe icon language selector. Click it to choose a language (e.g., English or Français).
+- The selected language is stored in `localStorage` under the key `site_lang` and the page will automatically reload after selection so localized content and filters update.
+- To add localized assets (manuals, PDFs), include the language code at the end of the filename before the extension. Examples:
+  - `user-guide_EN.pdf`
+  - `safety-manual_FR.pdf`
+- The Manuals page (`/manuals`) filters the list of PDFs to only show files whose filename ends with the selected language code (matching `_EN.pdf`, `-FR.pdf`, etc.). The displayed title strips the language code and file extension (so `user-guide_EN.pdf` becomes `User Guide`).
+
+## Testing the Language Flow
+
+1. Start the dev server:
+
+```bash
+npm run dev
+```
+
+2. Open the site in your browser and click the globe in the header to change language.
+3. The site will reload and the Manuals page will show only PDFs for the chosen language. If you add new localized PDFs, upload them to the `manuals` folder in Firebase Storage.
+
