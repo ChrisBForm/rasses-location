@@ -6,15 +6,31 @@ import { storage } from "@/lib/firebase/config";
 import { ref, listAll, getDownloadURL } from "firebase/storage";
 
 function formatManualName(filename) {
-  return filename
-    .replace(/\.pdf$/i, "")
-    .replace(/[-_]/g, " ")
-    .replace(/\b\w/g, (char) => char.toUpperCase());
+  // remove extension and trailing language code like _EN or -FR
+  const withoutExt = filename.replace(/\.pdf$/i, "");
+  const stripped = withoutExt.replace(/[_\-.](en|fr|nl)$/i, "");
+  return stripped.replace(/[-_]/g, " ").replace(/\b\w/g, (char) => char.toUpperCase());
+}
+
+function matchesLanguage(filename, lang) {
+  if (!lang) return false;
+  const re = new RegExp(`[_\\-.]${lang}\\.pdf$`, "i");
+  return re.test(filename);
 }
 
 export default function ManualsPage() {
   const { user, loading } = useRequireAuth();
   const [manuals, setManuals] = useState([]);
+  const [lang, setLang] = useState("EN");
+
+  // read persisted language on mount to avoid hydration mismatch
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    try {
+      const stored = localStorage.getItem("site_lang");
+      if (stored) setLang(stored);
+    } catch {}
+  }, []);
   const [loadingManuals, setLoadingManuals] = useState(true);
   const [error, setError] = useState("");
   const [query, setQuery] = useState("");
@@ -41,6 +57,15 @@ export default function ManualsPage() {
       })
       .finally(() => setLoadingManuals(false));
   }, [user]);
+
+  // update language if changed elsewhere (e.g., header control)
+  useEffect(() => {
+    function onStorage(e) {
+      if (e.key === "site_lang") setLang(e.newValue || "EN");
+    }
+    window.addEventListener("storage", onStorage);
+    return () => window.removeEventListener("storage", onStorage);
+  }, []);
 
   if (loading) {
     return <div className={styles.loading}>Loading...</div>;
@@ -77,6 +102,7 @@ export default function ManualsPage() {
             </div>
             <div className={styles.grid}>
                 {manuals
+                  .filter((manual) => matchesLanguage(manual.name, lang))
                   .filter((manual) =>
                     formatManualName(manual.name).toLowerCase().includes(query.toLowerCase())
                   )

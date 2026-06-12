@@ -9,13 +9,22 @@ export default function Header() {
   const isAdmin = pathname?.startsWith("/admin");
 
   const [menuOpen, setMenuOpen] = useState(false);
-  const [lang, setLang] = useState(() => {
+  const [lang, setLang] = useState("EN");
+
+  // read persisted language on mount to avoid hydration mismatch
+  useEffect(() => {
+    if (typeof window === "undefined") return;
     try {
-      return typeof window !== "undefined" ? localStorage.getItem("site_lang") || "EN" : "EN";
-    } catch {
-      return "EN";
+      const stored = localStorage.getItem("site_lang");
+      if (stored) setLang(stored);
+    } catch {}
+
+    function onStorage(e) {
+      if (e.key === "site_lang") setLang(e.newValue || "EN");
     }
-  });
+    window.addEventListener("storage", onStorage);
+    return () => window.removeEventListener("storage", onStorage);
+  }, []);
 
   const containerRef = useRef(null);
 
@@ -35,7 +44,10 @@ export default function Header() {
       localStorage.setItem("site_lang", l);
     } catch {}
     setMenuOpen(false);
-    // Optionally: trigger i18n change or reload here
+    // Reload the page so the app can re-render with the new language
+    try {
+      if (typeof window !== "undefined") window.location.reload();
+    } catch {}
   }
 
   return (
