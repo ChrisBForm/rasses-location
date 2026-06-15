@@ -45,6 +45,14 @@
         "recent": "Ajoutés récemment : ",
         "dashboard": "Tableau de bord",
         "pages": "Pages",
-        "db": "Base de données"
+        "db": "Base de données",
+        "fetch-fail": "Impossible de charger les pages",
+        "load-fail": "Impossible de lire les pages",
+        "nb-pages": "pages sur le site",
+        "page-title": "Titre de la page",
+        "desc": "Description",
+        "last-mod": "Dernière modification",
+        "actions": "Actions",
+        "loading-pages": "Chargement des pages"
     }
 }

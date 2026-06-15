@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import styles from "./page.module.css";
 import useRequireAuth from "@/hooks/useRequireAuth";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 function formatDate(dateStr) {
     return new Date(dateStr).toLocaleDateString("en-GB", {
@@ -17,6 +18,7 @@ export default function AdminPagesPage() {
     const [pages, setPages] = useState([]);
     const [pagesLoading, setPagesLoading] = useState(true);
     const [error, setError] = useState("");
+    const t = useTranslations("Admin");
 
     useEffect(() => {
         const fetchPages = async () => {
@@ -37,9 +39,9 @@ export default function AdminPagesPage() {
     }, []);
 
     if (loading) {
-        return <div className={styles.loading}>Loading...</div>;
+        return <div className={styles.loading}>{t('loading')}...</div>;
     } else if (!user) {
-        return <div className={styles.error}>You must be signed in to view this page.</div>;
+        return <div className={styles.error}>{t('signed-in')}</div>;
     }
 
     return (
@@ -48,25 +50,25 @@ export default function AdminPagesPage() {
 
                 <div className={styles.header}>
                     <div>
-                        <h1 className={styles.title}>Pages</h1>
-                        <p className={styles.subtitle}>{pagesLoading ? "—" : pages.length} pages on the site</p>
+                        <h1 className={styles.title}>{t('pages')}</h1>
+                        <p className={styles.subtitle}>{pagesLoading ? "—" : pages.length} {t('nb-pages')}</p>
                     </div>
                 </div>
 
                 {error ? (
                     <div className={styles.error}>{error}</div>
                 ) : pagesLoading ? (
-                    <div className={styles.loading}>Loading pages…</div>
+                    <div className={styles.loading}>{t('loading-pages')}...</div>
                 ) : (
                     <div className={styles.tableWrapper}>
                         <table className={styles.table}>
                             <thead>
                                 <tr>
-                                    <th className={styles.th}>Page title</th>
+                                    <th className={styles.th}>{t('page-title')}</th>
                                     <th className={styles.th}>URL</th>
-                                    <th className={styles.th}>Description</th>
-                                    <th className={styles.th}>Last modified</th>
-                                    <th className={`${styles.th} ${styles.thRight}`}>Actions</th>
+                                    <th className={styles.th}>{t('desc')}</th>
+                                    <th className={styles.th}>{t('last-mod')}</th>
+                                    <th className={`${styles.th} ${styles.thRight}`}>{t('actions')}</th>
                                 </tr>
                             </thead>
                             <tbody>
