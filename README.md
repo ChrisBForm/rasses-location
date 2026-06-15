@@ -10,6 +10,14 @@ A Next.js App Router website for Rasses Location with Firebase authentication, l
 npm install
 ```
 
+### Environment
+
+Copy the `.env.example` file, rename the copy to `.env.local`, and fill in your own Firebase and Google Maps values before starting the app.
+
+```bash
+cp .env.example .env.local
+```
+
 ### Development Server
 
 ```bash
