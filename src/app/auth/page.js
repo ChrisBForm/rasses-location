@@ -8,6 +8,7 @@ import {
   signOut,
   onAuthStateChanged,
 } from "firebase/auth";
+import { useLocale, useTranslations } from "next-intl";
 
 export default function AuthPage() {
   const [email, setEmail] = useState("");
@@ -15,6 +16,8 @@ export default function AuthPage() {
   const [user, setUser] = useState(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const t = useTranslations("Auth");
+  const locale = useLocale();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -51,23 +54,23 @@ export default function AuthPage() {
       <div className={styles.card}>
         <div className={styles.hero}>
           <div className={styles.heroTitle}>
-            <span>Authentication</span>
-            <h1>Sign In</h1>
+            <span>{t('title')}</span>
+            <h1>{t('sign-in')}</h1>
           </div>
           <p className={styles.heroText}>
-            Sign in with your email address to access the full website.
+            {t('sign-desc')}
           </p>
         </div>
         {user ? (
           <div className={styles.welcome}>
             <p className={styles.welcomeText}>
-              Signed in as <strong>{user.email}</strong>.
+              {t('signed')}<strong>{user.email}</strong>.
             </p>
             <button className={styles.button} type="button" onClick={handleSignOut}>
-              Sign Out
+              {t('sign-out')}
             </button>
             <Link className={styles.link} href="/">
-              Back to Home
+              {t('home')}
             </Link>
           </div>
         ) : (
@@ -87,7 +90,7 @@ export default function AuthPage() {
             </div>
             <div className={styles.formGroup}>
               <label className={styles.label} htmlFor="password">
-                Password
+                {t('password')}
               </label>
               <input
                 id="password"
@@ -103,7 +106,7 @@ export default function AuthPage() {
               {loading ? "Signing in..." : "Sign In"}
             </button>
             <Link className={styles.link} href="/">
-              Back to Home
+              {t('home')}
             </Link>
           </form>
         )}

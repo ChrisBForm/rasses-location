@@ -24,5 +24,14 @@
         "desc": "Visualisez l'emplacement de la propriété ainsi que les activités avoisinnantes",
         "activities-title": "Activitées recommandées",
         "activities-info": "Cet espace est réservé pour des informations additionels."
+    },
+    "Auth": {
+        "title": "Authentification",
+        "sign-in": "Connection",
+        "sign-desc": "Connectez-vous avec votre adresse mail pour accéder au site complet.",
+        "signed": "Connecté en tant que ",
+        "sign-out": "Déconnexion",
+        "home": "Retour à l'accueil",
+        "password": "Mot de passe"
     }
 }

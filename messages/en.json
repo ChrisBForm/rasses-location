@@ -24,5 +24,14 @@
         "desc": "View the location of the property and nearby activities with a map",
         "activities-title": "Recommended activities",
         "activities-info": "This panel is reserved for additional details, directions, or property information that complements the map and search experience."
+    },
+    "Auth": {
+        "title": "Authentication",
+        "sign-in": "Sign In",
+        "sign-desc": "Sign in with your email address to access the full website.",
+        "signed": "Signed in as ",
+        "sign-out": "Sign Out",
+        "home": "Back to Home",
+        "password": "Password"
     }
 }
