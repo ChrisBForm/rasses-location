@@ -4,6 +4,7 @@ import styles from "./page.module.css";
 import useRequireAuth from "@/hooks/useRequireAuth";
 import { storage } from "@/lib/firebase/config";
 import { ref, listAll } from "firebase/storage";
+import { useTranslations } from "next-intl";
 
 export default function AdminPage() {
     const { user, loading } = useRequireAuth();
@@ -12,6 +13,7 @@ export default function AdminPage() {
     const [houseImageCount, setHouseImageCount] = useState(0);
     const [statsLoading, setStatsLoading] = useState(true);
     const [manuals, setManuals] = useState([]);
+    const t = useTranslations("Admin");
 
     useEffect(() => {
         if (!user) return;
@@ -29,10 +31,6 @@ export default function AdminPage() {
                 const houseList = await listAll(houseRef);
                 setHouseImageCount(houseList.items.length);
 
-                // Fetch flowers count
-                const response = await fetch("/api/flowers");
-                const flowers = await response.json();
-                setFlowerCount(flowers.length);
             } catch (error) {
                 console.error("Error fetching stats:", error);
             } finally {
@@ -44,9 +42,9 @@ export default function AdminPage() {
     }, [user]);
 
     if(loading) {
-        return <div className={styles.loading}>Loading...</div>;
+        return <div className={styles.loading}>{t('loading')}...</div>;
     } else if (!user) {
-        return <div className={styles.error}>You must be signed in to view this page.</div>;
+        return <div className={styles.error}>{t('signed-in')}</div>;
     }
     
     return (
@@ -54,24 +52,22 @@ export default function AdminPage() {
             <main className={styles.main}>
                 <div className={styles.statsRow}>
                     <div className={`${styles.statCard} ${styles.statCardPurple}`}>
-                        <span className={styles.statLabel}>Manuals in library</span>
+                        <span className={styles.statLabel}>{t('manuals-stat')}</span>
                         <span className={styles.statValue}>{statsLoading ? "—" : manualCount}</span>
                     </div>
                     <div className={`${styles.statCard} ${styles.statCardPink}`}>
-                        <span className={styles.statLabel}>House images</span>
+                        <span className={styles.statLabel}>{t('house-stat')}</span>
                         <span className={styles.statValue}>{statsLoading ? "—" : houseImageCount}</span>
                     </div>
                     <div className={`${styles.statCard} ${styles.statCardDarkPurple}`}>
-                        <span className={styles.statLabel}>Marguerite flowers</span>
-                        <span className={styles.statValue}>{statsLoading ? "—" : flowerCount}</span>
                     </div>
                 </div>
                 <div className={styles.bottomRow}>
                     <div className={`${styles.panel} ${styles.panelMuted}`}>
-                        <span className={styles.panelLabel}>Total content items: {statsLoading ? "—" : (manualCount + houseImageCount + flowerCount)}</span>
+                        <span className={styles.panelLabel}>{t('total-stat')}{statsLoading ? "—" : (manualCount + houseImageCount + flowerCount)}</span>
                     </div>
                     <div className={`${styles.panel} ${styles.panelTeal}`}>
-                        <span className={styles.panelLabel}>Recently added: {manuals.length > 0 ? manuals[0].replace(/\.pdf$/i, "") : "—"}</span>
+                        <span className={styles.panelLabel}>{t('recent')}{manuals.length > 0 ? manuals[0].replace(/\.pdf$/i, "") : "—"}</span>
                     </div>
                 </div>
             </main>

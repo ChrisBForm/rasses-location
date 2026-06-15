@@ -35,5 +35,16 @@
         "email": "Email",
         "password": "Password",
         "signing-in": "Signing in..."
+    },
+    "Admin": {
+        "loading": "Loading",
+        "signed-in": "You must be signed in to view this page.",
+        "manuals-stat": "Manuals in library",
+        "house-stat": "House images",
+        "total-stat": "Total content items : ",
+        "recent": "Recently added : ",
+        "dashboard": "Dashboard",
+        "pages": "Pages",
+        "db": "Database"
     }
 }

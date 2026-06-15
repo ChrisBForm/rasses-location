@@ -35,5 +35,16 @@
         "email": "Email",
         "password": "Mot de passe",
         "signing-in": "Connexion en cours..."
+    },
+    "Admin": {
+        "loading": "Chargement",
+        "signed-in": "Vous devez être connecté pour accéder à cette page.",
+        "manuals-stat": "Modes d'emploi dans la bibliothèque",
+        "house-stat": "Images de la maison",
+        "total-stat": "Nombre total d'éléments de contenu : ",
+        "recent": "Ajoutés récemment : ",
+        "dashboard": "Tableau de bord",
+        "pages": "Pages",
+        "db": "Base de données"
     }
 }
