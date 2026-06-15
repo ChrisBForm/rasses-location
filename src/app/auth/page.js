@@ -8,7 +8,7 @@ import {
   signOut,
   onAuthStateChanged,
 } from "firebase/auth";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 
 export default function AuthPage() {
   const [email, setEmail] = useState("");
@@ -17,7 +17,6 @@ export default function AuthPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const t = useTranslations("Auth");
-  const locale = useLocale();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -77,7 +76,7 @@ export default function AuthPage() {
           <form className={styles.form} onSubmit={handleSubmit}>
             <div className={styles.formGroup}>
               <label className={styles.label} htmlFor="email">
-                Email
+                {t('email')}
               </label>
               <input
                 id="email"
@@ -103,7 +102,7 @@ export default function AuthPage() {
             </div>
             {error && <div className={styles.error}>{error}</div>}
             <button className={styles.button} type="submit" disabled={loading}>
-              {loading ? "Signing in..." : "Sign In"}
+              {loading ? t('signing-in') : t('sign-in')}
             </button>
             <Link className={styles.link} href="/">
               {t('home')}

@@ -32,6 +32,8 @@
         "signed": "Connecté en tant que ",
         "sign-out": "Déconnexion",
         "home": "Retour à l'accueil",
-        "password": "Mot de passe"
+        "email": "Email",
+        "password": "Mot de passe",
+        "signing-in": "Connexion en cours..."
     }
 }

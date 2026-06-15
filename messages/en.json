@@ -32,6 +32,8 @@
         "signed": "Signed in as ",
         "sign-out": "Sign Out",
         "home": "Back to Home",
-        "password": "Password"
+        "email": "Email",
+        "password": "Password",
+        "signing-in": "Signing in..."
     }
 }

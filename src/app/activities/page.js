@@ -4,7 +4,7 @@ import { APIProvider, Map, AdvancedMarker, InfoWindow, useMap } from "@vis.gl/re
 import useRequireAuth from "@/hooks/useRequireAuth";
 import { useState, useCallback, useEffect, useRef } from "react";
 import { useMapsLibrary } from "@vis.gl/react-google-maps";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 
 function SearchBox({ onPlaceSelect }) {
   const inputRef = useRef(null);
