@@ -43,16 +43,6 @@
         "house-stat": "House images",
         "total-stat": "Total content items : ",
         "recent": "Recently added : ",
-        "dashboard": "Dashboard",
-        "pages": "Pages",
-        "db": "Database",
-        "fetch-fail": "Failed to fetch pages",
-        "load-fail": "Unable to load pages",
-        "nb-pages": "pages on the site",
-        "page-title": "Page title",
-        "desc": "Description",
-        "last-mod": "Last modified",
-        "actions": "Actions",
-        "loading-pages": "Loading pages"
+        "dashboard": "Dashboard"
     }
 }
