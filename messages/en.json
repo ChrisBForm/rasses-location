@@ -43,6 +43,18 @@
         "house-stat": "House images",
         "total-stat": "Total content items : ",
         "recent": "Recently added : ",
-        "dashboard": "Dashboard"
+        "dashboard": "Dashboard",
+        "images-up": "Upload images",
+        "manuals-up": "Upload manuals",
+        "users": "Manage users",
+        "uploading": "Uploading...",
+        "upload-images": "Drag and drop images here or click to select",
+        "image-hint": "Supported: PNG, JPG, WEBP up to 10MB",
+        "total-uploaded": "Total uploaded",
+        "recent-images": "Recent uploads",
+        "no-images": "No images uploaded yet",
+        "delete-image": "Delete",
+        "deleting": "Deleting...",
+        "confirm-delete": "Delete this image?"
     }
 }

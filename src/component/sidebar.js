@@ -13,6 +13,9 @@ export default function Sidebar() {
     <aside className={`${styles.sidebar} ${isAdmin ? styles.admin : ""}`}>
       <nav className={styles.nav}>
         <Link href="/admin">{t('dashboard')}</Link>
+        <Link href="/admin/images">{t('images-up')}</Link>
+        <Link href="/admin/manuals">{t('manuals-up')}</Link>
+        <Link href="/admin/users">{t('users')}</Link>
       </nav>
     </aside>
   );
