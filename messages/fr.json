@@ -50,11 +50,20 @@
         "uploading": "Téléchargement en cours...",
         "upload-images": "Glissez-déposez les images ici ou cliquez pour sélectionner",
         "image-hint": "Formats supportés : PNG, JPG, WEBP jusqu'à 10 Mo",
+        "upload-manuals": "Glissez-déposez les PDF ou cliquez pour sélectionner",
+        "manual-hint": "Formats supportés : PDF jusqu'à 10 Mo",
+        "pending-manuals": "Modes d'emploi en attente",
+        "upload-selected": "Télécharger le mode d'emploi",
+        "remove": "Supprimer",
+        "recent-manuals": "Modes d'emploi récents",
+        "no-manuals": "Aucun mode d'emploi téléchargé pour le moment",
+        "delete-manual": "Supprimer",
         "total-uploaded": "Total téléchargé",
         "recent-images": "Téléchargements récents",
         "no-images": "Aucune image téléchargée pour le moment",
         "delete-image": "Supprimer",
         "deleting": "Suppression...",
-        "confirm-delete": "Supprimer cette image ?"
+        "confirm-delete": "Supprimer cette image ?",
+        "confirm-delete-manual": "Supprimer ce mode d'emploi ?"
     }
 }

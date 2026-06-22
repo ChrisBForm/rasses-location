@@ -50,11 +50,20 @@
         "uploading": "Uploading...",
         "upload-images": "Drag and drop images here or click to select",
         "image-hint": "Supported: PNG, JPG, WEBP up to 10MB",
+        "upload-manuals": "Drag and drop PDF manuals or click to select",
+        "manual-hint": "Supported: PDF files up to 10MB",
+        "pending-manuals": "Pending manuals",
+        "upload-selected": "Upload manual",
+        "remove": "Remove",
+        "recent-manuals": "Recent manuals",
+        "no-manuals": "No manuals uploaded yet",
+        "delete-manual": "Delete",
         "total-uploaded": "Total uploaded",
         "recent-images": "Recent uploads",
         "no-images": "No images uploaded yet",
         "delete-image": "Delete",
         "deleting": "Deleting...",
-        "confirm-delete": "Delete this image?"
+        "confirm-delete": "Delete this image?",
+        "confirm-delete-manual": "Delete this manual?"
     }
 }
