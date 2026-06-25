@@ -41,6 +41,7 @@ export default function HouseImagesPage() {
     useEffect(() => {
         if (!user) return;
         fetchImages();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [user]);
 
     // Handle file upload
