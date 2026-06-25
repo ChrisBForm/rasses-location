@@ -1,11 +1,8 @@
-import fs from "fs";
-import path from "path";
 import { initializeApp, cert, getApps, getApp } from "firebase-admin/app";
 import { getAuth } from "firebase-admin/auth";
 import { NextResponse } from "next/server";
 
-const serviceAccountPath = path.join(process.cwd(), "src/lib/firebase/serviceAccountKey.json");
-const serviceAccount = JSON.parse(fs.readFileSync(serviceAccountPath, "utf8"));
+const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY);
 
 const adminApp = getApps().length
   ? getApp("admin")
