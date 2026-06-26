@@ -1,0 +1,365 @@
+.page {
+  min-height: 100vh;
+  background-color: #f0efeb;
+}
+
+.main {
+  padding: 48px 48px 64px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ── Loading / Error states ── */
+.loading,
+.error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  font-size: 1rem;
+  color: #5f5e5a;
+}
+
+.errorMessage {
+  background-color: #f5c6c1;
+  color: #8b3c36;
+  padding: 16px 20px;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  margin-bottom: 16px;
+}
+
+.successMessage {
+  background-color: #c1e8d6;
+  color: #2a6e58;
+  padding: 16px 20px;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  margin-bottom: 16px;
+}
+
+/* ── Top row with title and save button ── */
+.topRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.pageIntro {
+  max-width: 720px;
+  flex: 1;
+}
+
+.subtitle {
+  display: inline-block;
+  text-transform: uppercase;
+  letter-spacing: 0.24em;
+  font-size: 0.75rem;
+  color: #5e4a8a;
+  margin-bottom: 12px;
+}
+
+.title {
+  margin: 0 0 12px;
+  font-size: 2.5rem;
+  line-height: 1.05;
+  color: #2f2f2f;
+}
+
+.description {
+  margin: 0;
+  color: #5f5e5a;
+  max-width: 720px;
+}
+
+.primaryButton {
+  border: none;
+  border-radius: 10px;
+  background-color: #5e4a8a;
+  color: #fff;
+  padding: 16px 24px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  box-shadow: 0 10px 35px rgba(94, 74, 138, 0.15);
+  transition: transform 0.2s ease, background-color 0.2s ease;
+  white-space: nowrap;
+  align-self: flex-start;
+}
+
+.primaryButton:hover:not(:disabled) {
+  background-color: #4a3973;
+  transform: translateY(-1px);
+}
+
+.primaryButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ── Content container ── */
+.contentContainer {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 40px;
+  min-height: 600px;
+}
+
+/* ── Language selector ── */
+.languageSelector {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: sticky;
+  top: 20px;
+  height: fit-content;
+}
+
+.selectorLabel {
+  font-size: 0.85rem;
+  color: #5f5e5a;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.select {
+  padding: 12px 16px;
+  border: 2px solid #d0cec8;
+  border-radius: 6px;
+  background-color: #fff;
+  color: #2f2f2f;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+
+.select:hover {
+  border-color: #5e4a8a;
+}
+
+.select:focus {
+  outline: none;
+  border-color: #5e4a8a;
+  box-shadow: 0 0 0 3px rgba(94, 74, 138, 0.1);
+}
+
+.localeButtons {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.localeButton {
+  padding: 10px 16px;
+  border: 2px solid #d0cec8;
+  border-radius: 6px;
+  background-color: #fff;
+  color: #2f2f2f;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+}
+
+.localeButton:hover {
+  border-color: #5e4a8a;
+  background-color: #f5f4f1;
+}
+
+.localeButtonActive {
+  background-color: #5e4a8a;
+  color: #fff;
+  border-color: #5e4a8a;
+}
+
+/* ── Fields container ── */
+.fieldsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 24px;
+  border: 1px solid #e5e3df;
+}
+
+/* ── Field row ── */
+.fieldRow {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 16px;
+  align-items: flex-start;
+  padding: 16px;
+  background-color: #fafaf8;
+  border-radius: 6px;
+  border: 1px solid #e5e3df;
+  transition: background-color 0.2s ease;
+}
+
+.fieldRow:hover {
+  background-color: #f5f4f1;
+}
+
+.fieldInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.fieldKey {
+  font-size: 0.75rem;
+  color: #5e4a8a;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.fieldValue {
+  margin: 0;
+  color: #2f2f2f;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  word-break: break-word;
+}
+
+.fieldInput {
+  padding: 10px 12px;
+  border: 2px solid #5e4a8a;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  color: #F4EEEF;
+  font-family: inherit;
+  resize: vertical;
+  min-height: 60px;
+  max-height: 150px;
+  line-height: 1.5;
+}
+
+.fieldInput:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(94, 74, 138, 0.15);
+}
+
+/* ── Edit button ── */
+.editButton {
+  padding: 8px 16px;
+  border: 2px solid #d0cec8;
+  border-radius: 6px;
+  background-color: #fff;
+  color: #5e4a8a;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.editButton:hover {
+  border-color: #5e4a8a;
+  background-color: #f5f4f1;
+}
+
+.editButtonActive {
+  background-color: #5e4a8a;
+  color: #fff;
+  border-color: #5e4a8a;
+}
+
+.editButtonActive:hover {
+  background-color: #4a3973;
+}
+
+/* ── JSON Editor ── */
+.editorContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.jsonError {
+  background-color: #f5c6c1;
+  color: #8b3c36;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-size: 0.875rem;
+}
+
+.jsonEditor {
+  width: 100%;
+  min-height: 600px;
+  padding: 20px;
+  border: 1px solid #e5e3df;
+  border-radius: 8px;
+  background-color: #1e1e1e;
+  color: #d4d4d4;
+  font-family: "Geist Mono", "Fira Code", "Courier New", monospace;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  resize: vertical;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease;
+}
+
+.jsonEditor:focus {
+  outline: none;
+  border-color: #5e4a8a;
+  box-shadow: 0 0 0 3px rgba(94, 74, 138, 0.1);
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .main {
+    padding: 32px 24px 48px;
+    gap: 24px;
+  }
+
+  .title {
+    font-size: 2rem;
+  }
+
+  .topRow {
+    flex-direction: column;
+  }
+
+  .primaryButton {
+    width: 100%;
+    align-self: stretch;
+  }
+
+  .contentContainer {
+    grid-template-columns: 1fr;
+  }
+
+  .languageSelector {
+    position: static;
+  }
+
+  .localeButtons {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .fieldsContainer {
+    padding: 16px;
+  }
+
+  .fieldRow {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .editButton {
+    align-self: flex-start;
+  }
+
+  .jsonEditor {
+    min-height: 400px;
+  }
+}
