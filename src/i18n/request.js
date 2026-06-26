@@ -21,12 +21,28 @@ async function getLocaleFromCookiesAsync() {
   return supportedLocales.includes(locale) ? locale : undefined;
 }
 
+async function fetchMessages(locale) {
+  const BUCKET_BASE_URL = process.env.FIREBASE_MESSAGES_URL;
+
+  const url = `${BUCKET_BASE_URL}${locale}.json?alt=media`;
+
+  const res = await fetch(url, {
+    next: { revalidate: 3600 }, // cache for 1 hour, or use { cache: "no-store" } to always fetch fresh
+  });
+
+  if (!res.ok) {
+    throw new Error(`Failed to fetch messages for locale "${locale}": ${res.status}`);
+  }
+
+  return res.json();
+}
+
 export default getRequestConfig(async (request) => {
   const fromRequest = getLocaleFromCookie(request);
   const locale = fromRequest || (await getLocaleFromCookiesAsync()) || "en";
 
   return {
     locale,
-    messages: (await import(`../../messages/${locale}.json`)).default,
+    messages: await fetchMessages(locale),
   };
 });
