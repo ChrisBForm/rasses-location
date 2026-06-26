@@ -16,7 +16,7 @@ export default function Sidebar() {
         <Link href="/admin/images">{t('images-up')}</Link>
         <Link href="/admin/manuals">{t('manuals-up')}</Link>
         <Link href="/admin/users">{t('users')}</Link>
-        <Link href="/admin/language">Languages</Link>
+        <Link href="/admin/language">{t('languages')}</Link>
       </nav>
     </aside>
   );

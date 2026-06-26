@@ -2,12 +2,16 @@ import { initializeApp, cert, getApps, getApp } from "firebase-admin/app";
 import { getStorage } from "firebase-admin/storage";
 import { getAuth } from "firebase-admin/auth";
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 
 const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY);
 
 const adminApp = getApps().length
   ? getApp("admin")
-  : initializeApp({ credential: cert(serviceAccount) }, "admin");
+  : initializeApp({
+      credential: cert(serviceAccount),
+      storageBucket: "sitelocationrasses.firebasestorage.app"
+    }, "admin");
 const auth = getAuth(adminApp);
 const storage = getStorage(adminApp);
 
@@ -112,8 +116,8 @@ export async function PUT(request) {
       return NextResponse.json({ error: "Locale and content are required" }, { status: 400 });
     }
 
-    const bucket = storage.bucket();
-    const file = bucket.file(`${locale}.json`);
+    const bucket = storage.bucket("sitelocationrasses.firebasestorage.app");
+    const file = bucket.file(`languages/${locale}.json`);
     
     await file.save(JSON.stringify(content, null, 2), {
       contentType: "application/json",
@@ -121,6 +125,8 @@ export async function PUT(request) {
         cacheControl: "public, max-age=0"
       }
     });
+
+    revalidatePath("/", "layout")
 
     return NextResponse.json({ 
       success: true, 

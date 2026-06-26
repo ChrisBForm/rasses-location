@@ -73,7 +73,7 @@ export default function AdminLanguagesPage() {
       JSON.parse(value);
       setJsonError("");
     } catch {
-      setJsonError("Invalid JSON — please fix before saving.");
+      setJsonError(t('invalid-json'));
     }
   };
 
