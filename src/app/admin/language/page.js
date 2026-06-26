@@ -17,6 +17,12 @@ export default function AdminLanguagesPage() {
   const [saving, setSaving] = useState(false);
   const [hasChanges, setHasChanges] = useState(false);
   const [jsonError, setJsonError] = useState("");
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [newLocale, setNewLocale] = useState("");
+  const [adding, setAdding] = useState(false);
+  const [addError, setAddError] = useState("");
+  const [newLocaleName, setNewLocaleName] = useState("");
+  const [currentLocaleNames, setCurrentLocaleNames] = useState({});
   const t = useTranslations("Admin");
 
   const fetchLanguages = async () => {
@@ -30,12 +36,12 @@ export default function AdminLanguagesPage() {
       });
       if (!response.ok) {
         const responseBody = await response.json().catch(() => ({}));
-        const errorMessage = responseBody?.details || responseBody?.error || response.statusText;
-        throw new Error(errorMessage);
+        throw new Error(responseBody?.details || responseBody?.error || response.statusText);
       }
       const data = await response.json();
       setLanguages(data.languages);
       setLocales(data.locales);
+      setCurrentLocaleNames(data.localeNames || {});
       if (data.locales.length > 0) {
         setSelectedLocale(data.locales[0]);
         setEditedContent(JSON.stringify(data.languages[data.locales[0]], null, 2));
@@ -94,8 +100,7 @@ export default function AdminLanguagesPage() {
         body: JSON.stringify({ locale: selectedLocale, content: parsed }),
       });
       if (!response.ok) {
-        const responseBody = await response.text();
-        throw new Error(responseBody || response.statusText);
+        throw new Error((await response.text()) || response.statusText);
       }
       setLanguages({ ...languages, [selectedLocale]: parsed });
       setHasChanges(false);
@@ -105,6 +110,64 @@ export default function AdminLanguagesPage() {
       setSaveError(error?.message || t("save-error") || "Unable to save language file.");
     } finally {
       setSaving(false);
+    }
+  };
+
+  const handleAddLanguage = async () => {
+    const code = newLocale.trim().toLowerCase();
+    if (!code) return;
+    if (locales.includes(code)) {
+      setAddError("This language already exists.");
+      return;
+    }
+
+    setAdding(true);
+    setAddError("");
+    try {
+      const token = await user.getIdToken();
+
+      // Create new language file based on en.json
+      const newContent = JSON.parse(JSON.stringify(languages["en"]));
+
+      // Save the new language file
+      const fileRes = await fetch("/api/admin/languages", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ locale: code, content: newContent }),
+      });
+      if (!fileRes.ok) throw new Error((await fileRes.text()) || fileRes.statusText);
+
+      // Update config.json with the new locale
+      const configRes = await fetch("/api/admin/languages/config", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ 
+            locales: [...locales, code],
+            localeNames: { ...currentLocaleNames, [code]: newLocaleName || code.toLocaleUpperCase() }, 
+        }),
+      });
+      if (!configRes.ok) throw new Error((await configRes.text()) || configRes.statusText);
+
+      // Update local state
+      const updatedLanguages = { ...languages, [code]: newContent };
+      const updatedLocales = [...locales, code];
+      setLanguages(updatedLanguages);
+      setLocales(updatedLocales);
+      setSelectedLocale(code);
+      setEditedContent(JSON.stringify(newContent, null, 2));
+      setHasChanges(false);
+      setShowAddModal(false);
+      setNewLocale("");
+    } catch (error) {
+      setAddError(`Failed to add language: ${error.message}`);
+    } finally {
+      setAdding(false);
     }
   };
 
@@ -157,6 +220,12 @@ export default function AdminLanguagesPage() {
                     {locale.toUpperCase()}
                   </button>
                 ))}
+                <button
+                  className={styles.addLocaleButton}
+                  onClick={() => { setShowAddModal(true); setAddError(""); setNewLocale(""); }}
+                >
+                  + Add Language
+                </button>
               </div>
             </div>
 
@@ -172,6 +241,51 @@ export default function AdminLanguagesPage() {
           </div>
         )}
       </main>
+
+      {/* Add Language Modal */}
+      {showAddModal && (
+        <div className={styles.modalOverlay} onClick={() => setShowAddModal(false)}>
+          <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+            <h2 className={styles.modalTitle}>Add New Language</h2>
+            <p className={styles.modalDesc}>
+              Enter a language code (e.g. <strong>de</strong>, <strong>es</strong>, <strong>it</strong>).
+              The file will be pre-filled with the English translations.
+            </p>
+            <input
+              className={styles.modalInput}
+              type="text"
+              placeholder="e.g. de"
+              value={newLocale}
+              onChange={(e) => setNewLocale(e.target.value.toLowerCase())}
+              maxLength={5}
+            />
+            <input
+              className={styles.modalInput}
+              type="text"
+              placeholder="Display name (e.g. Deutsch)"
+              value={newLocaleName}
+              onChange={(e) => setNewLocaleName(e.target.value)}
+            />
+            {addError && <div className={styles.jsonError}>{addError}</div>}
+            <div className={styles.modalActions}>
+              <button
+                className={styles.secondaryButton}
+                onClick={() => setShowAddModal(false)}
+                disabled={adding}
+              >
+                Cancel
+              </button>
+              <button
+                className={styles.primaryButton}
+                onClick={handleAddLanguage}
+                disabled={adding || !newLocale.trim()}
+              >
+                {adding ? "Adding..." : "Add Language"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
