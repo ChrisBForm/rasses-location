@@ -117,7 +117,7 @@ export default function AdminLanguagesPage() {
     const code = newLocale.trim().toLowerCase();
     if (!code) return;
     if (locales.includes(code)) {
-      setAddError("This language already exists.");
+      setAddError(t('language-exist'));
       return;
     }
 
@@ -179,10 +179,10 @@ export default function AdminLanguagesPage() {
       <main className={styles.main}>
         <div className={styles.topRow}>
           <div className={styles.pageIntro}>
-            <span className={styles.subtitle}>Languages</span>
-            <h1 className={styles.title}>Manage Translations</h1>
+            <span className={styles.subtitle}>{t('languages')}</span>
+            <h1 className={styles.title}>{t('language-title')}</h1>
             <p className={styles.description}>
-              Edit and manage language files for your website. Select a language and edit the JSON directly.
+              {t('language-desc')}
             </p>
           </div>
           {hasChanges && (
@@ -191,7 +191,7 @@ export default function AdminLanguagesPage() {
               onClick={handleSaveLanguage}
               disabled={saving || !!jsonError}
             >
-              {saving ? "Saving..." : "Save Changes"}
+              {saving ? t('saving') : t('save-bttn')}
             </button>
           )}
         </div>
@@ -204,12 +204,12 @@ export default function AdminLanguagesPage() {
           <div className={styles.loading}>{t("loading")}...</div>
         ) : locales.length === 0 ? (
           <div className={styles.errorMessage}>
-            No language files found. Please ensure language files are available in Firebase Storage.
+            {t('no-language')}
           </div>
         ) : (
           <div className={styles.contentContainer}>
             <div className={styles.languageSelector}>
-              <label className={styles.selectorLabel}>Select Language</label>
+              <label className={styles.selectorLabel}>{t('language-select')}</label>
               <div className={styles.localeButtons}>
                 {locales.map((locale) => (
                   <button
@@ -224,7 +224,7 @@ export default function AdminLanguagesPage() {
                   className={styles.addLocaleButton}
                   onClick={() => { setShowAddModal(true); setAddError(""); setNewLocale(""); }}
                 >
-                  + Add Language
+                  {t('language-add-bttn')}
                 </button>
               </div>
             </div>
@@ -246,15 +246,15 @@ export default function AdminLanguagesPage() {
       {showAddModal && (
         <div className={styles.modalOverlay} onClick={() => setShowAddModal(false)}>
           <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
-            <h2 className={styles.modalTitle}>Add New Language</h2>
+            <h2 className={styles.modalTitle}>{t('language-add-text')}</h2>
             <p className={styles.modalDesc}>
-              Enter a language code (e.g. <strong>de</strong>, <strong>es</strong>, <strong>it</strong>).
-              The file will be pre-filled with the English translations.
+              {t('language-code')} (e.g. <strong>de</strong>, <strong>es</strong>, <strong>it</strong>).
+              {t('language-prefill')}
             </p>
             <input
               className={styles.modalInput}
               type="text"
-              placeholder="e.g. de"
+              placeholder={t('language-code-ph')}
               value={newLocale}
               onChange={(e) => setNewLocale(e.target.value.toLowerCase())}
               maxLength={5}
@@ -262,7 +262,7 @@ export default function AdminLanguagesPage() {
             <input
               className={styles.modalInput}
               type="text"
-              placeholder="Display name (e.g. Deutsch)"
+              placeholder={t('language-name-ph')}
               value={newLocaleName}
               onChange={(e) => setNewLocaleName(e.target.value)}
             />
@@ -273,14 +273,14 @@ export default function AdminLanguagesPage() {
                 onClick={() => setShowAddModal(false)}
                 disabled={adding}
               >
-                Cancel
+                {t('cancel')}
               </button>
               <button
                 className={styles.primaryButton}
                 onClick={handleAddLanguage}
                 disabled={adding || !newLocale.trim()}
               >
-                {adding ? "Adding..." : "Add Language"}
+                {adding ? t('adding') : t('language-add')}
               </button>
             </div>
           </div>
