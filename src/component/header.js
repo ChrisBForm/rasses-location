@@ -9,10 +9,26 @@ export default function Header() {
   const pathname = usePathname();
   const isAdmin = pathname?.startsWith("/admin");
   const locale = useLocale();
-
   const [menuOpen, setMenuOpen] = useState(false);
-
+  const [supportedLocales, setSupportedLocales] = useState([]);
   const containerRef = useRef(null);
+  const [localeNames, setLocaleNames] = useState({});
+
+  useEffect(() => {
+    async function fetchLocales() {
+      try {
+        const res = await fetch("/api/locales");
+        if (!res.ok) throw new Error("Failed");
+        const data = await res.json();
+        setSupportedLocales(data.locales || ["en"]);
+        setLocaleNames(data.localeNames || {});
+      } catch {
+        setSupportedLocales(["en"]);
+        setLocaleNames({ en: "English" });
+      }
+    }
+    fetchLocales();
+  }, []);
 
   useEffect(() => {
     function handleOutside(e) {
@@ -51,7 +67,6 @@ export default function Header() {
         <Link href="/manuals">
           <img src="/manual.svg" alt="Manuals" />
         </Link>
-
         <div className={styles.language} ref={containerRef}>
           <button
             type="button"
@@ -63,15 +78,16 @@ export default function Header() {
             <img src="/globe.svg" alt="Language" />
             <span className={styles.langLabel}>{locale?.toUpperCase() ?? "EN"}</span>
           </button>
-
-          {menuOpen && (
+          {menuOpen && supportedLocales.length > 0 && (
             <div className={styles.langMenu} role="menu">
-              <button className={styles.langItem} role="menuitem" onClick={() => selectLang("en")}>English</button>
-              <button className={styles.langItem} role="menuitem" onClick={() => selectLang("fr")}>Français</button>
+              {supportedLocales.map((l) => (
+                <button key={l} className={styles.langItem} role="menuitem" onClick={() => selectLang(l)}>
+                  {localeNames[l] ?? l.toUpperCase()}
+                </button>
+              ))}
             </div>
           )}
         </div>
-
         <Link href="/activities">
           <img src="/activities.svg" alt="Activities" />
         </Link>
