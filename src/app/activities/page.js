@@ -4,6 +4,7 @@ import { APIProvider, Map, AdvancedMarker, InfoWindow, useMap } from "@vis.gl/re
 import useRequireAuth from "@/hooks/useRequireAuth";
 import { useState, useCallback, useEffect, useRef } from "react";
 import { useMapsLibrary } from "@vis.gl/react-google-maps";
+import { useTranslations } from "next-intl";
 
 function SearchBox({ onPlaceSelect }) {
   const inputRef = useRef(null);
@@ -29,7 +30,7 @@ function SearchBox({ onPlaceSelect }) {
     <input
       ref={inputRef}
       type="text"
-      placeholder="Search nearby..."
+      placeholder="Search..."
       className={styles.searchBox}
     />
   );
@@ -103,25 +104,26 @@ export default function ActivitiesPage() {
   const [selected, setSelected] = useState(null);
   const { user, loading } = useRequireAuth();
   const position = { lat: 46.82942442282928, lng: 6.540003507637307 };
+  const t = useTranslations("Activities");
 
   const handleMapClick = useCallback(() => {
     setSelected(null);
   }, []);
 
   if (loading) {
-    return <div className={styles.loading}>Loading...</div>;
+    return <div className={styles.loading}>{t('loading')}...</div>;
   } else if (!user) {
-    return <div className={styles.error}>You must be signed in to view this page.</div>;
+    return <div className={styles.error}>{t('error')}</div>;
   }
 
   return (
     <div className={styles.page}>
       <main className={styles.main}>
         <section className={styles.hero}>
-          <span className={styles.overline}>Activities</span>
-          <h1>Find Rasses Location on the map</h1>
+          <span className={styles.overline}>{t('title')}</span>
+          <h1>{t('subtitle')}</h1>
           <p className={styles.heroText}>
-            Explore the property location and nearby activities with an interactive map.
+            {t('desc')}
           </p>
         </section>
         <div className={styles.card}>
@@ -138,9 +140,9 @@ export default function ActivitiesPage() {
             </APIProvider>
           </div>
           <div className={styles.contentPanel}>
-            <h2>Explore nearby activities</h2>
+            <h2>{t('activities-title')}</h2>
             <p>
-              This panel is reserved for additional details, directions, or property information that complements the map and search experience.
+              {t('activities-info')}
             </p>
           </div>
         </div>

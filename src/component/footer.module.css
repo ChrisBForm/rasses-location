@@ -67,3 +67,8 @@
     align-items: center;
   }
 }
+
+/* Admin variant when on /admin routes */
+.admin {
+  background-color: #69A899;
+}

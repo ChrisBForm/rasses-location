@@ -1,22 +1,43 @@
 # Rasses Location Website
 
-A modern Next.js-based website for Rasses Location using the App Router architecture.
+A Next.js App Router website for Rasses Location with Firebase authentication, localized UI, a map-based activities page, and a protected manuals/admin area.
 
 ## Getting Started
+
+### Install dependencies
+
+```bash
+npm install
+```
+
+### Environment
+
+Copy the `.env.example` file, rename the copy to `.env.local`, and fill in your own Firebase and Google Maps values before starting the app.
+
+```bash
+cp .env.example .env.local
+```
 
 ### Development Server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-The page auto-updates as you edit files.
+### Build and Production
+
+```bash
+npm run build
+npm run start
+```
+
+### Linting
+
+```bash
+npm run lint
+```
 
 ## Project Structure
 
@@ -24,77 +45,52 @@ The page auto-updates as you edit files.
 rasses-location/
 ├── src/
 │   ├── app/
-│   │   ├── layout.js              # Root layout (Header + Footer wrapper)
-│   │   ├── page.js                # Home page
-│   │   ├── page.module.css        # Home page styles
-│   │   ├── globals.css            # Global styles
-│   │   ├── activities/
-│   │   │   ├── page.js            # Activities page with map search sidebar
-│   │   │   └── page.module.css    # Activities page styles
-│   │   └── auth/
-│   │       ├── page.js            # Auth page
-│   │       └── page.module.css    # Auth page styles
-│   ├── component/
-│   │   ├── header.js              # Header component
-│   │   ├── header.module.css      # Header styles
-│   │   ├── footer.js              # Footer component
-│   │   └── footer.module.css      # Footer styles
-│   └── lib/
-│       └── firebase/
-│           └── config.js          # Firebase configuration
-├── public/
-│   ├── marguerite/                # Decorative flower SVG assets
-│   ├── house/                     # House placeholder images
-│   └── [other static assets]
-├── eslint.config.mjs              # ESLint configuration
-├── jsconfig.json                  # JavaScript configuration
-├── next.config.mjs                # Next.js configuration
+│   │   ├── layout.js              # Root layout, locale loading, Header/Footer
+│   │   ├── page.js                # Home page with Firebase house gallery
+│   │   ├── auth/                  # Auth page for email/password sign-in
+│   │   ├── activities/            # Auth-protected Google Maps page
+│   │   ├── manuals/               # Auth-protected PDF manual browser
+│   │   ├── admin/                 # Protected admin dashboard area
+│   │   └── api/                   # Route handlers for flowers and pages
+│   ├── component/                 # Shared components and CSS modules
+│   ├── hooks/                     # Client hook for auth requirement
+│   └── lib/firebase/              # Firebase config + initialization
+├── messages/                      # Localization JSON files
+├── public/                        # Static assets and image library
 ├── package.json                   # Dependencies and scripts
 └── README.md                      # This file
 ```
 
 ## Key Features
 
-- **Header Component** - Displays site branding, language selector, and navigation
-- **Footer Component** - Shows company info, useful links, contact details, and admin login
-- **Home Page** - Dynamic gallery layout with house placeholder images
-- **Activities Page** - Interactive location map with a right-side search sidebar and content panel below
-- **Firebase Auth Page** - Email/password sign-in at `/auth`
-- **Decorative Elements** - Randomized marguerite flower overlays
-- **Responsive Design** - Mobile-optimized layouts with CSS Grid
-- **Static Assets** - SVG icons and image placeholders in public folder
+- Next.js App Router with `next-intl` localization and locale cookie support
+- Firebase Authentication for sign-in and protected routes
+- Home page loads house images from `Firebase Storage` and decorative flowers from `/api/flowers`
+- Activities page uses Google Maps with Places Autocomplete and an interactive marker search box
+- Manuals page filters PDF files by locale and allows search on manual titles
+- Admin dashboard at `/admin` and admin pages list at `/admin/pages`
+- Responsive layouts with component-scoped CSS Modules
 
-## Component Details
+## Routes
 
-### Header (`src/component/header.js`)
+- `/` - Home page with dynamic image grid and flower overlays
+- `/auth` - Email/password Firebase login page
+- `/activities` - Protected activities map page
+- `/manuals` - Protected manuals browser with locale-based filtering
+- `/admin` - Protected admin dashboard with Firebase storage stats
+- `/admin/pages` - Protected admin pages list fetched from `/api/pages`
+- `/api/flowers` - Returns local `public/marguerite` image URLs
+- `/api/pages` - Returns page metadata used by the admin pages list
 
-- Logo placeholder square (52px)
-- Site name/branding text
-- Language selector with globe icon
-- Activities navigation link
+## Authentication
 
-### Footer (`src/component/footer.js`)
-
-- Logo placeholder square (76px)
-- Company info, useful links, and address sections
-- Admin login button and `/auth` navigation
-
-### Home Page (`src/app/page.js`)
-
-- Dynamic gallery of house placeholder images
-- Randomized decorative flowers
-- Sticky action button for navigation
-- Responsive grid layout
-
-### Auth Page (`src/app/auth/page.js`)
-
-- Firebase email/password login form
-- Sign-in state display and sign-out support
-- Styled in the same visual style as the main page
+- `src/hooks/useRequireAuth.js` redirects unauthenticated users to `/auth`
+- `/activities`, `/manuals`, `/admin`, and `/admin/pages` require a signed-in Firebase user
+- `/auth` supports sign-in and sign-out with email/password
 
 ## Firebase
 
-The auth page uses Firebase Authentication, and the Firebase configuration lives in `src/lib/firebase/config.js`.
+Firebase is configured in `src/lib/firebase/config.js`.
 
 Required environment variables:
 
@@ -108,40 +104,51 @@ Required environment variables:
 
 ## Google Maps
 
-The activities page uses the Google Maps JavaScript API with Places Autocomplete.
+The activities page uses `@vis.gl/react-google-maps` with the Places library.
 
 Required environment variable:
 
 - `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY`
 
-## Styling
+## Localization
 
-The project uses **CSS Modules** for component-scoped styling:
+- The app supports English and French via `next-intl`
+- The current locale is stored in a cookie named `site_lang`
+- The header language selector reloads the page after selection
+- The manuals page filters PDF files by language suffixes like `_EN.pdf` or `-FR.pdf`
+- Manual titles are formatted by removing the extension and language suffix
 
-- `*.module.css` files are locally scoped to their components
-- Global styles in `globals.css`
-- Color scheme: Green header/footer (#98A869), light background (#EFF1EC)
+## How Manuals Work
 
-## Fonts
+- The manuals page loads files from Firebase Storage `manuals/`
+- It filters names by the active locale: `EN` or `FR`
+- It also supports client-side search by manual title
 
-Optimized with [next/font](https://nextjs.org/docs/app/building-your-application/optimizing/fonts):
+## Admin Area
 
-- Geist (sans-serif)
-- Geist Mono (monospace)
+- `/admin` shows statistics for manuals and house images
+- `/admin/pages` loads page metadata from `/api/pages`
+- Both pages require Firebase authentication
 
-## Learn More
+## Local Assets
 
-- [Next.js Documentation](https://nextjs.org/docs)
-- [Next.js Learn](https://nextjs.org/learn)
-- [Next.js GitHub](https://github.com/vercel/next.js)
+- Decorative marguerite assets are stored under `public/marguerite`
+- `/api/flowers` exposes those assets as JSON image URLs
 
-## Deployment
+## Dependencies
 
-Deploy on [Vercel](https://vercel.com) (recommended for Next.js):
+Key dependencies in `package.json`:
 
-```bash
-npm install -g vercel
-vercel
-```
+- `next` ^15.0.0
+- `react` 19.2.4
+- `react-dom` 19.2.4
+- `next-intl` ^4.13.0
+- `firebase` ^12.13.0
+- `@vis.gl/react-google-maps` ^1.8.3
 
-Or see the [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for other options.
+## Notes
+
+- The app uses CSS Modules for component styling
+- `src/app/layout.js` loads the locale from cookies and provides translations
+- Protected routes use client-side auth state and redirect if the user is not signed in
+- The home page asset library is loaded from Firebase storage at path `house`

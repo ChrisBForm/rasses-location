@@ -49,9 +49,68 @@
   cursor: pointer;
 }
 
+.language {
+  position: relative;
+}
+
+.langButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+  padding: 6px 8px;
+  border-radius: 6px;
+}
+
+.langButton:focus {
+  outline: 2px solid rgba(255,255,255,0.2);
+}
+
+.langLabel {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.langMenu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  background: #ffffff;
+  color: #222;
+  border-radius: 8px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+  padding: 6px;
+  min-width: 140px;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+}
+
+.langItem {
+  background: transparent;
+  border: none;
+  padding: 8px 10px;
+  text-align: left;
+  cursor: pointer;
+  border-radius: 6px;
+  color: black;
+}
+
+.langItem:hover {
+  background: rgba(0,0,0,0.04);
+}
+
 .nav img {
   width: 24px;
   height: 24px;
   object-fit: contain;
   filter: brightness(0) invert(1);
+}
+
+/* Admin variant when on /admin routes */
+.admin {
+  background-color: #69A899;
 }

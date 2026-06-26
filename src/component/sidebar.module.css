@@ -1,0 +1,42 @@
+.sidebar {
+  width: 220px;
+  padding: 0;
+  background-color: #98A869;
+  color: #ffffff;
+  min-height: 100vh;
+  border-radius: 0;
+  flex-shrink: 0;
+  box-shadow: none;
+  border: none;
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center; /* center items horizontally */
+  justify-content: flex-start; /* keep items at the top */
+  padding-top: 1rem;
+}
+
+.nav a {
+  color: inherit;
+  font-weight: 600;
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding: 8px 0;
+}
+
+/* Admin variant */
+.admin {
+  background-color: #69A899;
+}
+
+@media (max-width: 740px) {
+  .sidebar {
+    width: 100%;
+    border-radius: 0;
+    min-height: auto;
+  }
+}
