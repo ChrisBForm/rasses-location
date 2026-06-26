@@ -62,7 +62,7 @@ export default function AdminLanguagesPage() {
   const handleLocaleChange = (locale) => {
     if (hasChanges) {
       const confirmed = window.confirm(
-        t("unsaved-changes") || "You have unsaved changes. Are you sure?"
+        t("unsaved-change") || "You have unsaved changes. Are you sure?"
       );
       if (!confirmed) return;
     }
