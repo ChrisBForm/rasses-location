@@ -1,9 +1,26 @@
 import { getRequestConfig } from "next-intl/server";
 import { cookies } from "next/headers";
 
-const supportedLocales = ["en", "fr"];
+const BUCKET_BASE_URL = process.env.FIREBASE_MESSAGES_URL;
 
-function getLocaleFromCookie(request) {
+async function fetchSupportedLocales() {
+  const res = await fetch(`${BUCKET_BASE_URL}config.json?alt=media`, {
+    next: { revalidate: 3600 },
+  });
+  if (!res.ok) throw new Error("Failed to fetch supported locales");
+  const { supportedLocales } = await res.json();
+  return supportedLocales;
+}
+
+async function fetchMessages(locale) {
+  const res = await fetch(`${BUCKET_BASE_URL}${locale}.json?alt=media`, {
+    next: { revalidate: 3600 },
+  });
+  if (!res.ok) throw new Error(`Failed to fetch messages for locale "${locale}": ${res.status}`);
+  return res.json();
+}
+
+function getLocaleFromCookie(request, supportedLocales) {
   if (request?.headers?.get) {
     const cookieHeader = request.headers.get("cookie") || "";
     const match = cookieHeader.match(/(?:^|; )site_lang=([^;]+)/);
@@ -14,32 +31,17 @@ function getLocaleFromCookie(request) {
   return undefined;
 }
 
-async function getLocaleFromCookiesAsync() {
+async function getLocaleFromCookiesAsync(supportedLocales) {
   const cookieStore = await cookies();
   const cookie = cookieStore.get("site_lang");
   const locale = cookie?.value?.toLowerCase();
   return supportedLocales.includes(locale) ? locale : undefined;
 }
 
-async function fetchMessages(locale) {
-  const BUCKET_BASE_URL = process.env.FIREBASE_MESSAGES_URL;
-
-  const url = `${BUCKET_BASE_URL}${locale}.json?alt=media`;
-
-  const res = await fetch(url, {
-    next: { revalidate: 3600 }, // cache for 1 hour, or use { cache: "no-store" } to always fetch fresh
-  });
-
-  if (!res.ok) {
-    throw new Error(`Failed to fetch messages for locale "${locale}": ${res.status}`);
-  }
-
-  return res.json();
-}
-
 export default getRequestConfig(async (request) => {
-  const fromRequest = getLocaleFromCookie(request);
-  const locale = fromRequest || (await getLocaleFromCookiesAsync()) || "en";
+  const supportedLocales = await fetchSupportedLocales();
+  const fromRequest = getLocaleFromCookie(request, supportedLocales);
+  const locale = fromRequest || (await getLocaleFromCookiesAsync(supportedLocales)) || supportedLocales[0];
 
   return {
     locale,
