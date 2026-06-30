@@ -7,14 +7,20 @@ import { ref, listAll, getDownloadURL } from "firebase/storage";
 import { useLocale, useTranslations } from "next-intl";
 
 function formatManualName(filename) {
-  // remove extension and trailing language code like _EN or -FR
+  // remove extension and trailing language code like _EN, -FR, .DE, etc.
   const withoutExt = filename.replace(/\.pdf$/i, "");
-  const stripped = withoutExt.replace(/[_\-.](en|fr)$/i, "");
+  const stripped = withoutExt.replace(/[_\-.][a-z]{2}$/i, "");
   return stripped.replace(/[-_]/g, " ").replace(/\b\w/g, (char) => char.toUpperCase());
 }
 
 function matchesLanguage(filename, lang) {
   if (!lang) return false;
+  const withoutExt = filename.replace(/\.pdf$/i, "");
+  const hasLangSuffix = /[_\-.][a-z]{2}$/i.test(withoutExt);
+
+  // No language code present → show for every language
+  if (!hasLangSuffix) return true;
+
   const re = new RegExp(`[_\\-.]${lang}\\.pdf$`, "i");
   return re.test(filename);
 }
