@@ -119,4 +119,9 @@
     width: 100%;
     padding: 18px;
   }
+
+  .mapFrame {
+    min-height: 400px;
+    height: 400px;
+  }
 }
