@@ -99,6 +99,72 @@ const POINTS_OF_INTEREST = [
   { lat: 46.83078, lng: 6.54101, label: "Ski resort", icon: "⛷️" }
 ];
 
+// Sample data — shape matches what will later come from Firebase
+const ACTIVITIES = {
+  winter: [
+    { category: "Sports", icon: "⛷️", label: "Skiing & snowboarding", desc: "Nearby ski resort with rentals and lessons available." },
+    { category: "Sports", icon: "🛷", label: "Sledding", desc: "Family-friendly sledding trails a short walk away." },
+    { category: "Food", icon: "🍫", label: "Hot chocolate spots", desc: "Cozy cafés perfect for warming up after a day on the slopes." },
+  ],
+  summer: [
+    { category: "Nature", icon: "🥾", label: "Hiking trails", desc: "Scenic trails with varying difficulty levels nearby." },
+    { category: "Sports", icon: "🚴", label: "Mountain biking", desc: "Marked bike trails for all skill levels." },
+    { category: "Food", icon: "🍽️", label: "Local restaurants", desc: "Farm-to-table dining within walking distance." },
+  ],
+  all_year: [
+    { category: "Essentials", icon: "🛒", label: "Grocery store", desc: "Closest supermarket for everyday needs." },
+    { category: "Essentials", icon: "🚑", label: "Emergency contacts", desc: "Nearest pharmacy and medical center." },
+  ],
+};
+
+function ActivitiesList({ activities }) {
+  const [activeSeason, setActiveSeason] = useState("winter");
+
+  const seasons = [
+    { key: "winter", label: "❄️ Winter" },
+    { key: "summer", label: "☀️ Summer" },
+    { key: "all_year", label: "📍 All Year" },
+  ];
+
+  const items = activities[activeSeason] || [];
+  const categories = [...new Set(items.map((i) => i.category))];
+
+  return (
+    <div className={styles.activitiesList}>
+      <div className={styles.seasonTabs}>
+        {seasons.map((s) => (
+          <button
+            key={s.key}
+            className={`${styles.seasonTab} ${activeSeason === s.key ? styles.seasonTabActive : ""}`}
+            onClick={() => setActiveSeason(s.key)}
+          >
+            {s.label}
+          </button>
+        ))}
+      </div>
+
+      {categories.map((category) => (
+        <div key={category} className={styles.activityCategory}>
+          <h3 className={styles.categoryTitle}>{category}</h3>
+          <div className={styles.activityItems}>
+            {items
+              .filter((i) => i.category === category)
+              .map((item, idx) => (
+                <div key={idx} className={styles.activityItem}>
+                  <span className={styles.activityIcon}>{item.icon}</span>
+                  <div>
+                    <p className={styles.activityLabel}>{item.label}</p>
+                    <p className={styles.activityDesc}>{item.desc}</p>
+                  </div>
+                </div>
+              ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export default function ActivitiesPage() {
   const [searchMarker, setSearchMarker] = useState(null);
   const [selected, setSelected] = useState(null);
@@ -141,9 +207,7 @@ export default function ActivitiesPage() {
           </div>
           <div className={styles.contentPanel}>
             <h2>{t('activities-title')}</h2>
-            <p>
-              {t('activities-info')}
-            </p>
+            <ActivitiesList activities={ACTIVITIES} />
           </div>
         </div>
       </main>

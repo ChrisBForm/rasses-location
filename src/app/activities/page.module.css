@@ -109,6 +109,84 @@
   box-sizing: border-box;
 }
 
+.activitiesList {
+  margin-top: 16px;
+  display: grid;
+  gap: 24px;
+}
+
+.seasonTabs {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.seasonTab {
+  padding: 10px 18px;
+  border-radius: 20px;
+  border: 2px solid transparent;
+  background: #fff;
+  color: #3d3d3d;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.seasonTab:hover {
+  background: #f5f4f1;
+}
+
+.seasonTabActive {
+  background: #2f2f2f;
+  color: #fff;
+}
+
+.activityCategory {
+  display: grid;
+  gap: 12px;
+}
+
+.categoryTitle {
+  margin: 0;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #5f5e5a;
+}
+
+.activityItems {
+  display: grid;
+  gap: 12px;
+}
+
+.activityItem {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  padding: 14px 16px;
+  background: #fff;
+  border-radius: 16px;
+}
+
+.activityIcon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.activityLabel {
+  margin: 0 0 4px;
+  font-weight: 600;
+  color: #1c1c1c;
+}
+
+.activityDesc {
+  margin: 0;
+  color: #5f5e5a;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
 @media (max-width: 900px) {
   .mapContentWrapper {
     grid-template-columns: 1fr;
@@ -118,5 +196,10 @@
   .mapSidebar {
     width: 100%;
     padding: 18px;
+  }
+
+  .mapFrame {
+    min-height: 400px;
+    height: 400px;
   }
 }
