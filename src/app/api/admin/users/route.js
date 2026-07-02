@@ -2,7 +2,12 @@ import { initializeApp, cert, getApps, getApp } from "firebase-admin/app";
 import { getAuth } from "firebase-admin/auth";
 import { NextResponse } from "next/server";
 
-const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY);
+export const runtime = "nodejs";
+
+// The environnement variable must be encoded in base64
+const serviceAccount = JSON.parse(
+  Buffer.from(process.env.FIREBASE_SERVICE_ACCOUNT_KEY, "base64").toString("utf-8")
+);
 
 const adminApp = getApps().length
   ? getApp("admin")
