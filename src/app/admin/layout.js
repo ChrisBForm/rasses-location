@@ -1,5 +1,6 @@
 import Sidebar from "@/component/sidebar";
 import styles from "../layout.module.css";
+import AdminGuard from "./adminGuard";
 
 export const metadata = {
   title: "Admin - Rasses Location",
@@ -7,9 +8,11 @@ export const metadata = {
 
 export default function AdminLayout({ children }) {
   return (
-    <div className={styles.container}>
-      <Sidebar />
-      <main className={styles.main}>{children}</main>
-    </div>
+    <AdminGuard>
+      <div className={styles.container}>
+        <Sidebar />
+        <main className={styles.main}>{children}</main>
+      </div>
+    </AdminGuard>
   );
 }

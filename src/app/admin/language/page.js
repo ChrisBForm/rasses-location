@@ -1,11 +1,11 @@
 "use client";
 import { useEffect, useState } from "react";
 import styles from "./page.module.css";
-import useRequireAuth from "@/hooks/useRequireAuth";
+import useRequireAdmin from "@/hooks/useRequireAdmin";
 import { useTranslations } from "next-intl";
 
 export default function AdminLanguagesPage() {
-  const { user, loading } = useRequireAuth();
+  const { user, loading } = useRequireAdmin();
   const [languages, setLanguages] = useState({});
   const [locales, setLocales] = useState([]);
   const [selectedLocale, setSelectedLocale] = useState("");
