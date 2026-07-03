@@ -1,13 +1,13 @@
 "use client";
 import { useEffect, useState } from "react";
 import styles from "./page.module.css";
-import useRequireAuth from "@/hooks/useRequireAuth";
+import useRequireAdmin from "@/hooks/useRequireAdmin";
 import { storage } from "@/lib/firebase/config";
 import { ref, uploadBytes, listAll, deleteObject } from "firebase/storage";
 import { useTranslations } from "next-intl";
 
 export default function HouseImagesPage() {
-    const { user, loading } = useRequireAuth();
+    const { user, loading } = useRequireAdmin();
     const [images, setImages] = useState([]);
     const [uploadedCount, setUploadedCount] = useState(0);
     const [statsLoading, setStatsLoading] = useState(true);

@@ -1,11 +1,11 @@
 ﻿"use client";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import styles from "./page.module.css";
-import useRequireAuth from "@/hooks/useRequireAuth";
+import useRequireAdmin from "@/hooks/useRequireAdmin";
 import { useTranslations } from "next-intl";
 
 export default function AdminUsersPage() {
-  const { user, loading } = useRequireAuth();
+  const { user, loading } = useRequireAdmin();
   const [query, setQuery] = useState("");
   const [users, setUsers] = useState([]);
   const [fetchingUsers, setFetchingUsers] = useState(false);

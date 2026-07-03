@@ -1,13 +1,13 @@
 "use client";
 import { useCallback, useEffect, useState } from "react";
 import styles from "./page.module.css";
-import useRequireAuth from "@/hooks/useRequireAuth";
+import useRequireAdmin from "@/hooks/useRequireAdmin";
 import { storage } from "@/lib/firebase/config";
 import { ref, uploadBytes, listAll, deleteObject } from "firebase/storage";
 import { useTranslations } from "next-intl";
 
 export default function ManualsAdminPage() {
-    const { user, loading } = useRequireAuth();
+    const { user, loading } = useRequireAdmin();
     const [manuals, setManuals] = useState([]);
     const [manualCount, setManualCount] = useState(0);
     const [statsLoading, setStatsLoading] = useState(true);

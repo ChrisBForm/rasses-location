@@ -1,15 +1,15 @@
 "use client";
 import { useEffect, useState } from "react";
 import styles from "./page.module.css";
-import useRequireAuth from "@/hooks/useRequireAuth";
+import useRequireAdmin from "@/hooks/useRequireAdmin";
 import { storage } from "@/lib/firebase/config";
 import { ref, listAll } from "firebase/storage";
 import { useTranslations } from "next-intl";
 
 export default function AdminPage() {
-    const { user, loading } = useRequireAuth();
+    const { user, loading } = useRequireAdmin();
     const [manualCount, setManualCount] = useState(0);
-    const [flowerCount, setFlowerCount] = useState(0);
+    const [flowerCount] = useState(0);
     const [houseImageCount, setHouseImageCount] = useState(0);
     const [statsLoading, setStatsLoading] = useState(true);
     const [manuals, setManuals] = useState([]);
