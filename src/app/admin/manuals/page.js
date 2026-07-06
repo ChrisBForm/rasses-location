@@ -17,11 +17,25 @@ export default function ManualsAdminPage() {
     const [dragActive, setDragActive] = useState(false);
     const [deleteLoading, setDeleteLoading] = useState(false);
     const [deletingManual, setDeletingManual] = useState("");
+    const [availableLocales, setAvailableLocales] = useState([]);
     const t = useTranslations("Admin");
+
+    // Fetch supported locales from config
+    useEffect(() => {
+        async function fetchLocales() {
+            try {
+                const res = await fetch("/api/locales");
+                const data = await res.json();
+                setAvailableLocales(data.locales || []);
+            } catch {
+                setAvailableLocales([]);
+            }
+        }
+        fetchLocales();
+    }, []);
 
     const fetchManuals = useCallback(async () => {
         if (!user) return;
-
         try {
             setStatsLoading(true);
             const manualsRef = ref(storage, "manuals");
@@ -43,15 +57,14 @@ export default function ManualsAdminPage() {
 
     const queueManuals = (files) => {
         if (!files || files.length === 0) return;
-
         const newManuals = Array.from(files)
             .filter((file) => file.type === "application/pdf" || file.name.toLowerCase().endsWith(".pdf"))
             .map((file) => ({
                 id: `${file.name}-${Date.now()}-${Math.random().toString(36).slice(2)}`,
                 file,
                 name: file.name.replace(/\.pdf$/i, ""),
+                locale: "", // no language tag by default
             }));
-
         if (newManuals.length > 0) {
             setPendingManuals((current) => [...current, ...newManuals]);
         }
@@ -59,24 +72,22 @@ export default function ManualsAdminPage() {
 
     const handleUpload = async () => {
         if (pendingManuals.length === 0) return;
-
         setUploading(true);
         setUploadProgress(0);
-
         try {
             await user.getIdToken(true);
-
             let uploaded = 0;
             for (const manual of pendingManuals) {
                 const baseName = manual.name.trim() || manual.file.name.replace(/\.pdf$/i, "");
                 const safeName = baseName.replace(/[\\/:"*?<>|]+/g, "").trim() || "manual";
-                const fileName = `${Date.now()}_${safeName}.pdf`;
+                // Append locale suffix if one was selected
+                const localeSuffix = manual.locale ? `_${manual.locale.toUpperCase()}` : "";
+                const fileName = `${safeName}${localeSuffix}.pdf`;
                 const fileRef = ref(storage, `manuals/${fileName}`);
                 await uploadBytes(fileRef, manual.file);
                 uploaded++;
                 setUploadProgress(Math.round((uploaded / pendingManuals.length) * 100));
             }
-
             setPendingManuals([]);
             await fetchManuals();
             setUploadProgress(0);
@@ -89,9 +100,13 @@ export default function ManualsAdminPage() {
 
     const updatePendingManualName = (id, value) => {
         setPendingManuals((current) =>
-            current.map((manual) =>
-                manual.id === id ? { ...manual, name: value } : manual
-            )
+            current.map((manual) => manual.id === id ? { ...manual, name: value } : manual)
+        );
+    };
+
+    const updatePendingManualLocale = (id, value) => {
+        setPendingManuals((current) =>
+            current.map((manual) => manual.id === id ? { ...manual, locale: value } : manual)
         );
     };
 
@@ -102,11 +117,8 @@ export default function ManualsAdminPage() {
     const handleDrag = (e) => {
         e.preventDefault();
         e.stopPropagation();
-        if (e.type === "dragenter" || e.type === "dragover") {
-            setDragActive(true);
-        } else if (e.type === "dragleave") {
-            setDragActive(false);
-        }
+        if (e.type === "dragenter" || e.type === "dragover") setDragActive(true);
+        else if (e.type === "dragleave") setDragActive(false);
     };
 
     const handleDrop = (e) => {
@@ -122,14 +134,10 @@ export default function ManualsAdminPage() {
     };
 
     const deleteManual = async (manualName) => {
-        const confirmed = window.confirm(
-            t('confirm-delete-manual') || t('confirm-delete') || 'Delete this manual?'
-        );
+        const confirmed = window.confirm(t('confirm-delete-manual') || 'Delete this manual?');
         if (!confirmed) return;
-
         setDeleteLoading(true);
         setDeletingManual(manualName);
-
         try {
             const manualRef = ref(storage, `manuals/${manualName}`);
             await deleteObject(manualRef);
@@ -142,11 +150,8 @@ export default function ManualsAdminPage() {
         }
     };
 
-    if (loading) {
-        return <div className={styles.loading}>{t('loading')}...</div>;
-    } else if (!user) {
-        return <div className={styles.error}>{t('signed-in')}</div>;
-    }
+    if (loading) return <div className={styles.loading}>{t('loading')}...</div>;
+    if (!user) return <div className={styles.error}>{t('signed-in')}</div>;
 
     return (
         <div className={styles.page}>
@@ -187,40 +192,70 @@ export default function ManualsAdminPage() {
 
                 {pendingManuals.length > 0 && (
                     <div className={styles.pendingList}>
-
                         <div className={styles.pendingHeading}>
                             <span>{t('pending-manuals') || 'Pending manuals'}</span>
                         </div>
-
                         {pendingManuals.map((manual) => (
                             <div key={manual.id} className={styles.pendingItem}>
-                                <div>
-                                    <label className={styles.pendingLabel} htmlFor={`manual-name-${manual.id}`}>
-                                        {manual.file.name}
-                                    </label>
-                                    <input
-                                        id={`manual-name-${manual.id}`}
-                                        className={styles.pendingNameInput}
-                                        type="text"
-                                        value={manual.name}
-                                        onChange={(e) => updatePendingManualName(manual.id, e.target.value)}
-                                    />
+                                <div className={styles.pendingInputRow}>
+                                    <div className={styles.pendingNameWrapper}>
+                                        <label className={styles.pendingLabel} htmlFor={`manual-name-${manual.id}`}>
+                                            {manual.file.name}
+                                        </label>
+                                        <div className={styles.nameWithLocale}>
+                                            <input
+                                                id={`manual-name-${manual.id}`}
+                                                className={styles.pendingNameInput}
+                                                type="text"
+                                                value={manual.name}
+                                                onChange={(e) => updatePendingManualName(manual.id, e.target.value)}
+                                            />
+                                            {/* Language tag selector */}
+                                            <div className={styles.localeSelector}>
+                                                <button
+                                                    type="button"
+                                                    className={`${styles.localeNoneButton} ${manual.locale === "" ? styles.localeButtonActive : ""}`}
+                                                    onClick={() => updatePendingManualLocale(manual.id, "")}
+                                                >
+                                                    All
+                                                </button>
+                                                {availableLocales.map((locale) => (
+                                                    <button
+                                                        key={locale}
+                                                        type="button"
+                                                        className={`${styles.localeTagButton} ${manual.locale === locale ? styles.localeButtonActive : ""}`}
+                                                        onClick={() => updatePendingManualLocale(manual.id, locale)}
+                                                    >
+                                                        {locale.toUpperCase()}
+                                                    </button>
+                                                ))}
+                                            </div>
+                                        </div>
+                                        {/* Preview of final filename */}
+                                        <p className={styles.filenamePreview}>
+                                            {manual.name.trim() || "manual"}
+                                            {manual.locale ? `_${manual.locale.toUpperCase()}` : ""}
+                                            .pdf
+                                        </p>
+                                    </div>
                                 </div>
-                                <button
-                                    type="button"
-                                    className={styles.removeButton}
-                                    onClick={() => removePendingManual(manual.id)}
-                                >
-                                    {t('remove') || 'Remove'}
-                                </button>
-                                <button
-                                    type="button"
-                                    className={styles.uploadButton}
-                                    onClick={handleUpload}
-                                    disabled={uploading}
-                                >
-                                    {uploading ? `${t('uploading') || 'Uploading...'} (${uploadProgress}%)` : t('upload-selected') || 'Upload manual'}
-                                </button>
+                                <div className={styles.pendingActions}>
+                                    <button
+                                        type="button"
+                                        className={styles.removeButton}
+                                        onClick={() => removePendingManual(manual.id)}
+                                    >
+                                        {t('remove') || 'Remove'}
+                                    </button>
+                                    <button
+                                        type="button"
+                                        className={styles.uploadButton}
+                                        onClick={handleUpload}
+                                        disabled={uploading}
+                                    >
+                                        {uploading ? `${t('uploading') || 'Uploading...'} (${uploadProgress}%)` : t('upload-selected') || 'Upload manual'}
+                                    </button>
+                                </div>
                             </div>
                         ))}
                     </div>
