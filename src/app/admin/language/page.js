@@ -126,6 +126,11 @@ export default function AdminLanguagesPage() {
     try {
       const token = await user.getIdToken();
 
+      // Fetch the current config fresh to avoid stale state
+      const currentConfigRes = await fetch("/api/locales");
+      const currentConfig = await currentConfigRes.json();
+      const freshLocaleNames = currentConfig.localeNames || {};
+
       // Create new language file based on en.json
       const newContent = JSON.parse(JSON.stringify(languages["en"]));
 
@@ -140,16 +145,16 @@ export default function AdminLanguagesPage() {
       });
       if (!fileRes.ok) throw new Error((await fileRes.text()) || fileRes.statusText);
 
-      // Update config.json with the new locale
+      // Update config.json using fresh names from Firebase, not stale state
       const configRes = await fetch("/api/admin/languages/config", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ 
-            locales: [...locales, code],
-            localeNames: { ...currentLocaleNames, [code]: newLocaleName || code.toLocaleUpperCase() }, 
+        body: JSON.stringify({
+          locales: [...locales, code],
+          localeNames: { ...freshLocaleNames, [code]: newLocaleName || code.toUpperCase() },
         }),
       });
       if (!configRes.ok) throw new Error((await configRes.text()) || configRes.statusText);
@@ -159,11 +164,13 @@ export default function AdminLanguagesPage() {
       const updatedLocales = [...locales, code];
       setLanguages(updatedLanguages);
       setLocales(updatedLocales);
+      setCurrentLocaleNames({ ...freshLocaleNames, [code]: newLocaleName || code.toUpperCase() });
       setSelectedLocale(code);
       setEditedContent(JSON.stringify(newContent, null, 2));
       setHasChanges(false);
       setShowAddModal(false);
       setNewLocale("");
+      setNewLocaleName("");
     } catch (error) {
       setAddError(`Failed to add language: ${error.message}`);
     } finally {
