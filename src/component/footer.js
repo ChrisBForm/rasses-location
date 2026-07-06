@@ -25,37 +25,39 @@ export default function Footer() {
   const airbnbUrl = "https://www.airbnb.com/rooms/1651537185899331378";
 
   return (
-    <footer className={`${styles.footer} ${isAdmin ? styles.admin : ""}`}>
-      <div className={styles.footerSquare}>
-        <img src="/Logo.svg" alt="Rasses Location Logo" />
-      </div>
-
-      <div className={styles.footerInfo}>
-        <div className={styles.footerColumn}>
-          <span className={styles.footerColumnTitle}>{t("address-title")}</span>
-          <span className={styles.footerText}>{t("address-line1")}</span>
-          <span className={styles.footerText}>{t("address-line2")}</span>
-          <span className={styles.footerText}>{t("address-line3")}</span>
+    <div className={`${styles.footerWrapper} ${isAdmin ? styles.admin : ""}`}>
+      <footer className={styles.footer}>
+        <div className={styles.footerSquare}>
+          <img src="/Logo.svg" alt="Rasses Location Logo" />
         </div>
-
-        <div className={styles.footerColumn}>
-          <span className={styles.footerColumnTitle}>{t("links-title")}</span>
-          
-            <a href={airbnbUrl}
-            target="_blank"
-            rel="noreferrer"
-            className={styles.footerLink}
-            >
-              Airbnb
-            </a>
+        <div className={styles.footerInfo}>
+          <div className={styles.footerColumn}>
+            <span className={styles.footerColumnTitle}>{t("address-title")}</span>
+            <span className={styles.footerText}>{t("address-line1")}</span>
+            <span className={styles.footerText}>{t("address-line2")}</span>
+            <span className={styles.footerText}>{t("address-line3")}</span>
+          </div>
+          <div className={styles.footerColumn}>
+            <span className={styles.footerColumnTitle}>{t("links-title")}</span>
+            
+              <a href={airbnbUrl}
+              target="_blank"
+              rel="noreferrer"
+              className={styles.footerLink}
+              >
+                Airbnb
+              </a>
+          </div>
         </div>
+        {isAdminUser && (
+          <Link className={styles.adminLogin} href="/admin">
+            Admin
+          </Link>
+        )}
+      </footer>
+      <div className={styles.footerBottom}>
+        <span>{t("made-by")} <a href="https://github.com/ChrisBForm" target="_blank" rel="noreferrer" className={styles.madeByLink}>ChrisB</a></span>
       </div>
-
-      {isAdminUser && (
-        <Link className={styles.adminLogin} href="/admin">
-          Admin
-        </Link>
-      )}
-    </footer>
+    </div>
   );
 }
