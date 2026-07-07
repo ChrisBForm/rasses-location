@@ -1,10 +1,11 @@
 "use client";
 import styles from "./page.module.css";
-import { APIProvider, Map, AdvancedMarker, InfoWindow, useMap } from "@vis.gl/react-google-maps";
+import { APIProvider, Map, AdvancedMarker, InfoWindow, useMap, AdvancedMarkerElement } from "@vis.gl/react-google-maps";
 import useRequireAuth from "@/hooks/useRequireAuth";
 import { useState, useCallback, useEffect, useRef } from "react";
 import { useMapsLibrary } from "@vis.gl/react-google-maps";
 import { useTranslations } from "next-intl";
+import { MarkerClusterer } from "@googlemaps/markerclusterer";
 
 function SearchBox({ onPlaceSelect }) {
   const inputRef = useRef(null);
@@ -38,6 +39,8 @@ function SearchBox({ onPlaceSelect }) {
 
 function MapContent({ position, searchMarker, setSearchMarker, selected, setSelected, handleMapClick, focusedActivity, setFocusedActivity }) {
   const map = useMap();
+  const clustererRef = useRef(null);
+  const markersRef = useRef([]);
 
   // Pan to focused activity when it changes
   useEffect(() => {
@@ -46,6 +49,12 @@ function MapContent({ position, searchMarker, setSearchMarker, selected, setSele
       map.setZoom(15);
     }
   }, [focusedActivity, map]);
+
+  useEffect(() => {
+    if (!map) return;
+    clustererRef.current = new MarkerClusterer({ map });
+    return () => clustererRef.current?.clearMarkers();
+  }, [map]);
 
   return (
     <div className={styles.mapContentWrapper}>
@@ -79,6 +88,14 @@ function MapContent({ position, searchMarker, setSearchMarker, selected, setSele
               key={`activity-${idx}`}
               position={{ lat: activity.lat, lng: activity.lng }}
               title={activity.label}
+              ref={(marker) => {
+                if (marker && clustererRef.current) {
+                  if (!markersRef.current.includes(marker)) {
+                    markersRef.current.push(marker);
+                    clustererRef.current.addMarker(marker);
+                  }
+                }
+              }}
               onClick={(e) => {
                 e.stop();
                 setFocusedActivity(activity);
@@ -161,7 +178,7 @@ const ACTIVITIES = {
     { category: "Restaurant", icon: "🍽️", label: "El Latino", desc: "", website: "", lat: 46.8202, lng: 6.5020 },
     { category: "Restaurant", icon: "🍽️", label: "Cercle Espagnol", desc: "", website: "", lat: 46.8194, lng: 6.5019 },
     { category: "Restaurant", icon: "🍽️", label: "Buffet de la Gare", desc: "", website: "", lat: 46.8194, lng: 6.5018 },
-    { category: "Restaurant", icon: "🍽️", label: "Istanbul City Kebab", desc: "", website: "", lat: 46.8219, lng: 6.5022 },
+    { category: "Restaurant", icon: "🥙", label: "Istanbul City Kebab", desc: "", website: "", lat: 46.8219, lng: 6.5022 },
     { category: "Restaurant", icon: "🍽️", label: "La Crêpe Rit", desc: "", website: "", lat: 46.8194, lng: 6.5018 },
     { category: "Restaurant", icon: "🍽️", label: "Café 12", desc: "", website: "", lat: 46.8237, lng: 6.5012 },
     { category: "Restaurant", icon: "🍽️", label: "Grains de Sel", desc: "", website: "", lat: 46.8226, lng: 6.5023 },
