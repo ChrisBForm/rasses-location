@@ -72,7 +72,7 @@ function MapContent({ position, searchMarker, setSearchMarker, selected, setSele
   useEffect(() => {
     if (focusedActivity?.lat && focusedActivity?.lng && map) {
       map.panTo({ lat: focusedActivity.lat, lng: focusedActivity.lng });
-      map.setZoom(15);
+      map.setZoom(18);
     }
   }, [focusedActivity, map]);
 
@@ -285,6 +285,7 @@ export default function ActivitiesPage() {
   const { user, loading } = useRequireAuth();
   const position = { lat: 46.82942442282928, lng: 6.540003507637307 };
   const t = useTranslations("Activities");
+  const mapRef = useRef(null);
 
   const handleMapClick = useCallback(() => {
     setSelected(null);
@@ -293,6 +294,7 @@ export default function ActivitiesPage() {
   const handleActivityClick = (activity) => {
     setFocusedActivity(activity);
     setSelected(activity);
+    mapRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   if (loading) {
@@ -310,7 +312,7 @@ export default function ActivitiesPage() {
           <p className={styles.heroText}>{t('desc')}</p>
         </section>
         <div className={styles.card}>
-          <div className={styles.mapContainer}>
+          <div className={styles.mapContainer} ref={mapRef}>
             <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}>
               <MapContent
                 position={position}
