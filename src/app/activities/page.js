@@ -153,64 +153,54 @@ const POINTS_OF_INTEREST = [
 ];
 
 const ACTIVITIES = {
-  winter: [
-
-  ],
+  winter: [],
   summer: [
-
+    { category: "Alpine lodge", icon: "🫕", label: "La Grandsonnaz-Dessus", desc: "A classic mountain stop with a warm welcome. Great place to rest after a hike or set off from.", website: "https://yverdonlesbainsregion.ch/poi/chalet-de-la-grandsonnaz-dessus/", lat: 46.8597, lng: 6.5518 },
   ],
   all_year: [
-    
+    { category: "Alpine lodge", icon: "🫕", label: "Les Avattes", desc: "Stunning panoramic views and hearty homemade food — the perfect reward after a walk. Cash only.", website: "https://www.chaletrestaurantlesavattes.com/", lat: 46.8363, lng: 6.5239 },
+    { category: "Alpine lodge", icon: "🫕", label: "Le Chasseron", desc: "Perched at the summit, this mountain restaurant offers breathtaking views over the Alps and Jura.", website: "https://yverdonlesbainsregion.ch/poi/hotel-restaurant-du-chasseron/", lat: 46.8504, lng: 6.5389 },
+    { category: "Restaurant", icon: "🍽️", label: "Les Planets", desc: "The closest restaurant to the apartment. Cozy atmosphere serving traditional local cuisine.", website: "https://hotel-lesplanets.ch/restaurant/", lat: 46.8304, lng: 6.5425 },
+    { category: "Restaurant", icon: "🍽️", label: "Belle époque", desc: "Elegant dining at the Grand Hotel Rasses. A refined setting for a special evening out.", website: "https://www.grandhotelrasses.ch/restaurant", lat: 46.8277, lng: 6.5346 },
+    { category: "Restaurant", icon: "🍽️", label: "Le Central", desc: "A welcoming local spot with a relaxed vibe. Good for a casual meal with the family.", website: "https://fr.tripadvisor.ch/Restaurant_Review-g6276946-d10699930-Reviews-Le_Central-Bullet_Canton_of_Vaud.html", lat: 46.8306, lng: 6.5542 },
+    { category: "Asian", icon: "🍜", label: "Wok", desc: "Small family-run Chinese restaurant. Note: closing permanently on July 18th, 2026.", website: "https://www.wokasiatique.ch/", lat: 46.8217, lng: 6.5032 },
+    { category: "Asian", icon: "🍜", label: "Thaï Siri Take Away", desc: "Affordable and tasty Thai food, great for a quick and satisfying meal.", website: "https://thaisiri.ch/", lat: 46.8226, lng: 6.5012 },
+    { category: "Asian", icon: "🍜", label: "Nogi Kawa Sushi", desc: "Fresh and well-crafted sushi in the heart of Sainte-Croix.", website: "https://nogi-kawa-sushi.ch/", lat: 46.8244, lng: 6.5004 },
+    { category: "Pizzeria", icon: "🍕", label: "Restaurant du centre", desc: "Casual pizzeria in the town center, good for a straightforward and satisfying meal.", website: "https://cafe-restaurant-du-centre.digitalone.site/", lat: 46.8232, lng: 6.5011 },
+    { category: "Pizzeria", icon: "🍕", label: "Café du Pont", desc: "A local favourite for pizza, with a friendly atmosphere and generous portions.", website: "https://yverdonlesbainsregion.ch/poi/restaurant-pizzeria-cafe-du-pont/", lat: 46.8239, lng: 6.5010 },
+    { category: "Restaurant", icon: "🍽️", label: "El Latino", desc: "A taste of Latin America in Sainte-Croix, with warm flavours and a lively setting.", website: "https://www.local.ch/fr/d/ste-croix/1450/restaurant/el-latino-b1795oQ8X-JCJbubixTWpA", lat: 46.8202, lng: 6.5020 },
+    { category: "Restaurant", icon: "🍽️", label: "Cercle Espagnol", desc: "Spanish-inspired cuisine in a convivial club atmosphere.", website: "https://fr.restaurantguru.com/Cercle-espagnol-Sainte-Croix", lat: 46.8194, lng: 6.5019 },
+    { category: "Restaurant", icon: "🍽️", label: "Buffet de la Gare", desc: "Convenient spot by the train station, good for a quick bite before or after a journey.", website: "https://fr.restaurantguru.com/Kiosque-Gare-de-Sainte-Croix-Sainte-Croix", lat: 46.8194, lng: 6.5018 },
+    { category: "Restaurant", icon: "🥙", label: "Istanbul City Kebab", desc: "Generous kebabs and grilled meats at an affordable price.", website: "https://www.istanbulcitykebabsaintecroix.ch/", lat: 46.8219, lng: 6.5022 },
+    { category: "Restaurant", icon: "🍽️", label: "La Crêpe Rit", desc: "Charming crêperie serving both sweet and savoury crêpes.", website: "https://www.alacreperit.ch/", lat: 46.8194, lng: 6.5018 },
+    { category: "Restaurant", icon: "🍽️", label: "Café 12", desc: "A modern café-restaurant with a varied menu, popular with locals.", website: "https://www.cafe-12.ch/", lat: 46.8237, lng: 6.5012 },
+    { category: "Restaurant", icon: "🍽️", label: "Grains de Sel", desc: "Well-regarded local restaurant. Note: relocating to a new address at the end of July 2026.", website: "https://grainsdesel.ch/", lat: 46.8226, lng: 6.5023 },
+    { category: "Grocery", icon: "🛒", label: "Migros", desc: "Large supermarket chain, good for everyday essentials at reasonable prices.", website: "", lat: 46.8197, lng: 6.5022 },
+    { category: "Grocery", icon: "🛒", label: "Coop", desc: "Well-stocked supermarket with a wide selection including organic and local products.", website: "", lat: 46.8228, lng: 6.5015 },
+    { category: "Grocery", icon: "🛒", label: "Denner", desc: "Budget-friendly supermarket, ideal for stocking up on basics.", website: "", lat: 46.8201, lng: 6.5026 },
+    { category: "Grocery", icon: "🛒", label: "Prima", desc: "Small local grocery store in Bullet, handy for quick stops close to the apartment.", website: "https://www.epiceriebullet.ch/", lat: 46.8306, lng: 6.5543 },
+    { category: "Bakery", icon: "🥐", label: "Vuissoz", desc: "Popular local bakery known for fresh bread and pastries.", website: "https://vuissoz.com/sainte-croix/", lat: 46.8226, lng: 6.5022 },
+    { category: "Bakery", icon: "🥐", label: "La Gourmandine", desc: "Artisan bakery with a great selection of breads, cakes, and pastries.", website: "https://la-gourmandine.ch/", lat: 46.8233, lng: 6.5006 },
+    { category: "Bakery", icon: "🥐", label: "Chez Bigou", desc: "Charming village bakery a short drive away, worth the trip for their specialities.", website: "https://www.sumupbookings.com/chez-bigou-sarl", lat: 46.8179, lng: 6.4639 },
+    { category: "Bakery", icon: "🥐", label: "Chez Taggi, Tagini & Tagini", desc: "Traditional bakery in l'Auberson with homemade regional specialities.", website: "https://www.local.ch/fr/d/lauberson/1454/boulangerie-et-patisserie/chez-taggi-b1cXrlg7_GynY1tSyk9_kQ", lat: 46.8196, lng: 6.4699 },
+    { category: "Butcher", icon: "🥩", label: "Centrale Guenat", desc: "Reputable local butcher with quality cuts and charcuterie.", website: "https://www.boucheriecentrale.ch/", lat: 46.8231, lng: 6.5022 },
+    { category: "Butcher", icon: "🥩", label: "Naef Sàrl", desc: "Traditional butcher shop with locally sourced meats.", website: "https://www.suisseterroir.ch/adresse/boucherie-naef---successeur-sebastien-osti/2128/FR", lat: 46.8231, lng: 6.5014 },
+    { category: "Other", icon: "🧀", label: "Marché Sottas", desc: "Local dairy and cheese shop with regional specialities.", website: "https://www.local.ch/fr/d/ste-croix/1450/laiterie/laiterie-du-marche-HjTKQa4Ww-HjUA6lhq654w", lat: 46.8232, lng: 6.5014 },
+    { category: "Other", icon: "🧀", label: "Chalet neuf", desc: "Farmhouse cheese producer in Bullet, selling fresh local cheese directly.", website: "https://bullet.ch/locations/fromagerie-du-chalet-neuf/", lat: 46.8315, lng: 6.5546 },
+    { category: "Other", icon: "🧀", label: "Tyrode", desc: "Artisan cheese producer known for traditional Jura recipes.", website: "https://www.tyrode.ch/", lat: 46.8181, lng: 6.4634 },
+    { category: "Other", icon: "🍷", label: "Chez Natalie", desc: "Charming wine cellar with a curated selection of Swiss and regional wines.", website: "https://cavecheznathalie.ch/", lat: 46.8239, lng: 6.5016 },
+    { category: "Other", icon: "🍷", label: "Chez Bacchus", desc: "Well-stocked wine shop and vinotheque with a wide range of bottles to take home.", website: "https://chardonnens-boissons.ch/store/chez-bacchus-vinotheque-ste-croix", lat: 46.8196, lng: 6.5030 },
+    { category: "Venue", icon: "🏛️", label: "Ming Shan", desc: "A peaceful seminar and retreat center nestled in nature, offering meals to guests and seminar attendees.", website: "https://www.mingshan.ch/", lat: 46.8326, lng: 6.5589 },
   ],
-  food: [
-    { category: "Restaurant", icon: "🍽️", label: "Les Planets", desc: "Closest restaurant that serves local food", website: "https://hotel-lesplanets.ch/restaurant/", lat: 46.8304, lng: 6.5425 },
-    { category: "Restaurant", icon: "🍽️", label: "Belle époque", desc: "Grand Hotel restaurant, for a more 'premium' experience.", website: "https://www.grandhotelrasses.ch/restaurant", lat: 46.8277, lng: 6.5346 },
-    { category: "Restaurant", icon: "🍽️", label: "Le Central", desc: "Friendly establishment that serves local food", website: "https://fr.tripadvisor.ch/Restaurant_Review-g6276946-d10699930-Reviews-Le_Central-Bullet_Canton_of_Vaud.html", lat: 46.8306, lng: 6.5542 },
-    { category: "Restaurant", icon: "🍽️", label: "Ming Shan", desc: "", website: "", lat: 46.8326, lng: 6.5589 },
-    { category: "Alpine lodge", icon: "🫕", label: "Les Avattes", desc: "", website: "", lat: 46.8363, lng: 6.5239 },
-    { category: "Alpine lodge", icon: "🫕", label: "La Grandsonnaz-Dessus", desc: "", website: "https://yverdonlesbainsregion.ch/poi/chalet-de-la-grandsonnaz-dessus/", lat: 46.8597, lng: 6.5518 },
-    { category: "Alpine lodge", icon: "🫕", label: "Le Chasseron", desc: "", website: "", lat: 46.8504, lng: 6.5389 },
-    { category: "Asian", icon: "🍜", label: "Wok", desc: "", website: "", lat: 46.8217, lng: 6.5032 },
-    { category: "Asian", icon: "🍜", label: "Thaï Siri Take Away", desc: "", website: "", lat: 46.8226, lng: 6.5012 },
-    { category: "Asian", icon: "🍜", label: "Nogi Kawa Sushi", desc: "", website: "", lat: 46.8244, lng: 6.5004 },
-    { category: "Pizzeria", icon: "🍕", label: "Restaurant du centre", desc: "", website: "", lat: 46.8232, lng: 6.5011 },
-    { category: "Pizzeria", icon: "🍕", label: "Café du Pont", desc: "", website: "", lat: 46.8239, lng: 6.5010 },
-    { category: "Restaurant", icon: "🍽️", label: "El Latino", desc: "", website: "", lat: 46.8202, lng: 6.5020 },
-    { category: "Restaurant", icon: "🍽️", label: "Cercle Espagnol", desc: "", website: "", lat: 46.8194, lng: 6.5019 },
-    { category: "Restaurant", icon: "🍽️", label: "Buffet de la Gare", desc: "", website: "", lat: 46.8194, lng: 6.5018 },
-    { category: "Restaurant", icon: "🥙", label: "Istanbul City Kebab", desc: "", website: "", lat: 46.8219, lng: 6.5022 },
-    { category: "Restaurant", icon: "🍽️", label: "La Crêpe Rit", desc: "", website: "", lat: 46.8194, lng: 6.5018 },
-    { category: "Restaurant", icon: "🍽️", label: "Café 12", desc: "", website: "", lat: 46.8237, lng: 6.5012 },
-    { category: "Restaurant", icon: "🍽️", label: "Grains de Sel", desc: "", website: "", lat: 46.8226, lng: 6.5023 },
-  ],
-  shop: [
-    { category: "Grocery", icon: "🛒", label: "Migros", desc: "", website: "", lat: 46.8197, lng: 6.5022 },
-    { category: "Grocery", icon: "🛒", label: "Coop", desc: "", website: "", lat: 46.8228, lng: 6.5015 },
-    { category: "Grocery", icon: "🛒", label: "Denner", desc: "", website: "", lat: 46.8201, lng: 6.5026 },
-    { category: "Grocery", icon: "🛒", label: "Prima", desc: "", website: "", lat: 46.8306, lng: 6.5543 },
-    { category: "Bakery", icon: "🥐", label: "Vuissoz", desc: "", website: "", lat: 46.8226, lng: 6.5022 },
-    { category: "Bakery", icon: "🥐", label: "La Gourmandine", desc: "", website: "", lat: 46.8233, lng: 6.5006 },
-    { category: "Bakery", icon: "🥐", label: "Chez Bigou", desc: "", website: "", lat: 46.8179, lng: 6.4639 },
-    { category: "Bakery", icon: "🥐", label: "Chez Taggi, Tagini & Tagini", desc: "", website: "", lat: 46.8196, lng: 6.4699 },
-    { category: "Butcher", icon: "🥩", label: "Centrale Guenat", desc: "", website: "", lat: 46.8231, lng: 6.5022 },
-    { category: "Butcher", icon: "🥩", label: "Naef Sàrl", desc: "", website: "", lat: 46.8231, lng: 6.5014 },
-    { category: "Other", icon: "🧀", label: "Marché Sottas", desc: "", website: "", lat: 46.8232, lng: 6.5014 },
-    { category: "Other", icon: "🧀", label: "Chalet neuf", desc: "", website: "", lat: 46.8315, lng: 6.5546 },
-    { category: "Other", icon: "🧀", label: "Tyrode", desc: "", website: "", lat: 46.8181, lng: 6.4634 },
-    { category: "Other", icon: "🍷", label: "Chez Natalie", desc: "", website: "", lat: 46.8239, lng: 6.5016 },
-    { category: "Other", icon: "🍷", label: "Chez Bacchus", desc: "", website: "", lat: 46.8196, lng: 6.5030 },
-  ]
 };
 
 function ActivitiesList({ activities, onActivityClick }) {
-  const [activeSeason, setActiveSeason] = useState("winter");
+  const [activeSeason, setActiveSeason] = useState("all_year");
 
-  const seasons = [
+  const tabs = [
     { key: "winter", label: "❄️ Winter" },
     { key: "summer", label: "☀️ Summer" },
-    { key: "all_year", label: "📍 All Year" },
-    { key: "food", label: "🍽️ Restaurants"},
-    { key: "shop", label: "🛒 Shops"}
+    { key: "all_year", label: "📅 All Year" },
   ];
 
   const items = activities[activeSeason] || [];
@@ -219,7 +209,7 @@ function ActivitiesList({ activities, onActivityClick }) {
   return (
     <div className={styles.activitiesList}>
       <div className={styles.seasonTabs}>
-        {seasons.map((s) => (
+        {tabs.map((s) => (
           <button
             key={s.key}
             className={`${styles.seasonTab} ${activeSeason === s.key ? styles.seasonTabActive : ""}`}
