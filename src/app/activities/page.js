@@ -1,6 +1,6 @@
 "use client";
 import styles from "./page.module.css";
-import { APIProvider, Map, AdvancedMarker, InfoWindow, useMap, AdvancedMarkerElement } from "@vis.gl/react-google-maps";
+import { APIProvider, Map, AdvancedMarker, InfoWindow, useMap, useAdvancedMarkerRef } from "@vis.gl/react-google-maps";
 import useRequireAuth from "@/hooks/useRequireAuth";
 import { useState, useCallback, useEffect, useRef } from "react";
 import { useMapsLibrary } from "@vis.gl/react-google-maps";
@@ -37,10 +37,36 @@ function SearchBox({ onPlaceSelect }) {
   );
 }
 
+function ClusteredMarker ({ activity, clusterer, setFocusedActivity, setSelected }) {
+  const [markerRef, marker] = useAdvancedMarkerRef();
+
+  useEffect(() => {
+    if (!marker || !clusterer) return;
+    clusterer.addMarker(marker);
+    return () => clusterer.removeMarker(marker);
+  }, [marker, clusterer]);
+
+  return (
+    <AdvancedMarker
+      ref={markerRef}
+      position={{ lat: activity.lat, lng: activity.lng }}
+      title={activity.label}
+      onClick={(e) => {
+        e.stop();
+        setFocusedActivity(activity);
+        setSelected(activity);
+      }}
+    >
+      <span style={{ fontSize: "1.5rem", cursor: "pointer" }}>
+        {activity.icon}
+      </span>
+    </AdvancedMarker>
+  );
+}
+
 function MapContent({ position, searchMarker, setSearchMarker, selected, setSelected, handleMapClick, focusedActivity, setFocusedActivity }) {
   const map = useMap();
-  const clustererRef = useRef(null);
-  const markersRef = useRef([]);
+  const [clusterer, setClusterer] = useState(null);
 
   // Pan to focused activity when it changes
   useEffect(() => {
@@ -50,11 +76,15 @@ function MapContent({ position, searchMarker, setSearchMarker, selected, setSele
     }
   }, [focusedActivity, map]);
 
+  // Set up clusterer once map is ready
   useEffect(() => {
     if (!map) return;
-    clustererRef.current = new MarkerClusterer({ map });
-    return () => clustererRef.current?.clearMarkers();
+    const newClusterer = new MarkerClusterer({ map });
+    setClusterer(newClusterer);
+    return () => newClusterer.clearMarkers();
   }, [map]);
+
+  const activityMarkers = Object.values(ACTIVITIES).flat().filter((a) => a.lat && a.lng);
 
   return (
     <div className={styles.mapContentWrapper}>
@@ -82,30 +112,14 @@ function MapContent({ position, searchMarker, setSearchMarker, selected, setSele
             </AdvancedMarker>
           ))}
 
-          {/* Activity markers */}
-          {Object.values(ACTIVITIES).flat().filter((a) => a.lat && a.lng).map((activity, idx) => (
-            <AdvancedMarker
+          {clusterer && activityMarkers.map((activity, idx) => (
+            <ClusteredMarker
               key={`activity-${idx}`}
-              position={{ lat: activity.lat, lng: activity.lng }}
-              title={activity.label}
-              ref={(marker) => {
-                if (marker && clustererRef.current) {
-                  if (!markersRef.current.includes(marker)) {
-                    markersRef.current.push(marker);
-                    clustererRef.current.addMarker(marker);
-                  }
-                }
-              }}
-              onClick={(e) => {
-                e.stop();
-                setFocusedActivity(activity);
-                setSelected(activity);
-              }}
-            >
-              <span style={{ fontSize: "1.5rem", cursor: "pointer" }}>
-                {activity.icon}
-              </span>
-            </AdvancedMarker>
+              activity={activity}
+              clusterer={clusterer}
+              setFocusedActivity={setFocusedActivity}
+              setSelected={setSelected}
+            />
           ))}
 
           {searchMarker && (
