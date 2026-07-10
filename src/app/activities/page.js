@@ -1,9 +1,8 @@
 "use client";
 import styles from "./page.module.css";
-import { APIProvider, Map, AdvancedMarker, InfoWindow, useMap, useAdvancedMarkerRef } from "@vis.gl/react-google-maps";
+import { APIProvider, Map, AdvancedMarker, InfoWindow, useMap, useAdvancedMarkerRef, useMapsLibrary, Polyline } from "@vis.gl/react-google-maps";
 import useRequireAuth from "@/hooks/useRequireAuth";
 import { useState, useCallback, useEffect, useRef } from "react";
-import { useMapsLibrary } from "@vis.gl/react-google-maps";
 import { useTranslations } from "next-intl";
 import { MarkerClusterer } from "@googlemaps/markerclusterer";
 
@@ -122,6 +121,16 @@ function MapContent({ position, searchMarker, setSearchMarker, selected, setSele
             />
           ))}
 
+          {HIKE_PATHS.map((path, idx) => (
+            <Polyline
+              key={idx}
+              path={path.coordinates}
+              strokeColor={path.color}
+              strokeOpaciy={0.8}
+              strokeWeight={4}
+            />
+          ))}
+
           {searchMarker && (
             <AdvancedMarker
               position={{ lat: searchMarker.lat, lng: searchMarker.lng }}
@@ -164,6 +173,58 @@ function MapContent({ position, searchMarker, setSearchMarker, selected, setSele
 
 const POINTS_OF_INTEREST = [
   { lat: 46.82942442282928, lng: 6.540003507637307, label: "Appartment", icon: "🏠" }
+];
+
+const HIKE_PATHS = [
+  {
+    label: "Les Rasses - Wikiloc",
+    color: "#5e4a8a",
+    coordinates: [
+      { lat: 46.830106, lng: 6.544059 }, { lat: 46.830621, lng: 6.54506 }, { lat: 46.830875, lng: 6.54648 },
+      { lat: 46.831134, lng: 6.547159 }, { lat: 46.831205, lng: 6.548289 }, { lat: 46.831364, lng: 6.548876 },
+      { lat: 46.831807, lng: 6.549438 }, { lat: 46.831942, lng: 6.5499 }, { lat: 46.832297, lng: 6.550407 },
+      { lat: 46.832431, lng: 6.550478 }, { lat: 46.832435, lng: 6.550548 }, { lat: 46.832519, lng: 6.550514 },
+      { lat: 46.832749, lng: 6.550666 }, { lat: 46.833612, lng: 6.551588 }, { lat: 46.833789, lng: 6.552008 },
+      { lat: 46.833752, lng: 6.552707 }, { lat: 46.833827, lng: 6.553149 }, { lat: 46.834053, lng: 6.553554 },
+      { lat: 46.834355, lng: 6.554661 }, { lat: 46.834542, lng: 6.554702 }, { lat: 46.834789, lng: 6.554963 },
+      { lat: 46.835274, lng: 6.55523 }, { lat: 46.835842, lng: 6.555697 }, { lat: 46.836263, lng: 6.556328 },
+      { lat: 46.836315, lng: 6.557249 }, { lat: 46.835984, lng: 6.557472 }, { lat: 46.83612, lng: 6.557534 },
+      { lat: 46.83655, lng: 6.557488 }, { lat: 46.83744, lng: 6.557946 }, { lat: 46.838462, lng: 6.558303 },
+      { lat: 46.838963, lng: 6.558594 }, { lat: 46.839151, lng: 6.558604 }, { lat: 46.839488, lng: 6.558898 },
+      { lat: 46.839577, lng: 6.558867 }, { lat: 46.839613, lng: 6.558744 }, { lat: 46.839686, lng: 6.558838 },
+      { lat: 46.839827, lng: 6.558847 }, { lat: 46.840093, lng: 6.559031 }, { lat: 46.840558, lng: 6.55916 },
+      { lat: 46.840767, lng: 6.559152 }, { lat: 46.841387, lng: 6.5596 }, { lat: 46.841914, lng: 6.559642 },
+      { lat: 46.842104, lng: 6.559593 }, { lat: 46.842359, lng: 6.559685 }, { lat: 46.842589, lng: 6.559543 },
+      { lat: 46.842548, lng: 6.559672 }, { lat: 46.842496, lng: 6.559561 }, { lat: 46.84259, lng: 6.559567 },
+      { lat: 46.842526, lng: 6.559624 }, { lat: 46.84252, lng: 6.559837 }, { lat: 46.84262, lng: 6.559542 },
+      { lat: 46.842507, lng: 6.559639 }, { lat: 46.842506, lng: 6.55984 }, { lat: 46.842993, lng: 6.56035 },
+      { lat: 46.843139, lng: 6.560767 }, { lat: 46.843519, lng: 6.561131 }, { lat: 46.843857, lng: 6.561676 },
+      { lat: 46.844114, lng: 6.561699 }, { lat: 46.84441, lng: 6.561343 }, { lat: 46.844404, lng: 6.561473 },
+      { lat: 46.844106, lng: 6.561789 }, { lat: 46.844812, lng: 6.562254 }, { lat: 46.845479, lng: 6.562306 },
+      { lat: 46.845827, lng: 6.562153 }, { lat: 46.846039, lng: 6.561751 }, { lat: 46.846062, lng: 6.561407 },
+      { lat: 46.845888, lng: 6.561074 }, { lat: 46.845281, lng: 6.560424 }, { lat: 46.844538, lng: 6.558853 },
+      { lat: 46.843886, lng: 6.55804 }, { lat: 46.843665, lng: 6.557661 }, { lat: 46.843418, lng: 6.557574 },
+      { lat: 46.84307, lng: 6.556905 }, { lat: 46.84278, lng: 6.556704 }, { lat: 46.842654, lng: 6.556473 },
+      { lat: 46.842475, lng: 6.55641 }, { lat: 46.842459, lng: 6.556224 }, { lat: 46.842225, lng: 6.556192 },
+      { lat: 46.842052, lng: 6.556045 }, { lat: 46.841895, lng: 6.555519 }, { lat: 46.841526, lng: 6.555322 },
+      { lat: 46.841221, lng: 6.555041 }, { lat: 46.840874, lng: 6.554336 }, { lat: 46.84066, lng: 6.554144 },
+      { lat: 46.840416, lng: 6.55368 }, { lat: 46.839762, lng: 6.553075 }, { lat: 46.839555, lng: 6.55274 },
+      { lat: 46.839372, lng: 6.552673 }, { lat: 46.839321, lng: 6.552357 }, { lat: 46.83914, lng: 6.552007 },
+      { lat: 46.839115, lng: 6.551702 }, { lat: 46.83879, lng: 6.551095 }, { lat: 46.838715, lng: 6.550765 },
+      { lat: 46.838494, lng: 6.550323 }, { lat: 46.838205, lng: 6.550266 }, { lat: 46.838137, lng: 6.550051 },
+      { lat: 46.837853, lng: 6.549693 }, { lat: 46.83788, lng: 6.549634 }, { lat: 46.8377, lng: 6.549527 },
+      { lat: 46.837408, lng: 6.54905 }, { lat: 46.837396, lng: 6.548912 }, { lat: 46.837258, lng: 6.548761 },
+      { lat: 46.836749, lng: 6.547805 }, { lat: 46.836139, lng: 6.54713 }, { lat: 46.836039, lng: 6.546888 },
+      { lat: 46.83564, lng: 6.546505 }, { lat: 46.835452, lng: 6.546427 }, { lat: 46.835345, lng: 6.546148 },
+      { lat: 46.835063, lng: 6.545986 }, { lat: 46.834954, lng: 6.54584 }, { lat: 46.834227, lng: 6.545435 },
+      { lat: 46.834037, lng: 6.545193 }, { lat: 46.833793, lng: 6.545127 }, { lat: 46.833645, lng: 6.545163 },
+      { lat: 46.833228, lng: 6.544778 }, { lat: 46.832689, lng: 6.543966 }, { lat: 46.832313, lng: 6.54367 },
+      { lat: 46.831931, lng: 6.543495 }, { lat: 46.83149, lng: 6.543487 }, { lat: 46.831266, lng: 6.543318 },
+      { lat: 46.830641, lng: 6.542608 }, { lat: 46.830599, lng: 6.542798 }, { lat: 46.830502, lng: 6.542819 },
+      { lat: 46.830412, lng: 6.542767 }, { lat: 46.830388, lng: 6.542634 }, { lat: 46.830297, lng: 6.542994 },
+      { lat: 46.830285, lng: 6.542838 },
+    ]
+  }
 ];
 
 const ACTIVITIES = {
