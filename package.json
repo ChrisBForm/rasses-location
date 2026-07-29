@@ -20,8 +20,8 @@
     "uuid": "^14.0.1"
   },
   "devDependencies": {
-    "eslint": "^9",
-    "eslint-config-next": "^15.0.0"
+    "eslint": "^10",
+    "eslint-config-next": "^16.2.12"
   },
   "overrides": {
     "jose": "4.15.9"
