@@ -11,6 +11,7 @@ function SearchBox({ onPlaceSelect }) {
   const inputRef = useRef(null);
   const places = useMapsLibrary("places");
   const map = useMap();
+  const t = useTranslations("Activities");
 
   useEffect(() => {
     if (!places || !inputRef.current) return;
@@ -31,7 +32,7 @@ function SearchBox({ onPlaceSelect }) {
     <input
       ref={inputRef}
       type="text"
-      placeholder="Search..."
+      placeholder={t('searchPlaceholder')}
       className={styles.searchBox}
     />
   );
@@ -39,6 +40,7 @@ function SearchBox({ onPlaceSelect }) {
 
 function ClusteredMarker ({ activity, clusterer, setFocusedActivity, setSelected }) {
   const [markerRef, marker] = useAdvancedMarkerRef();
+  const t = useTranslations("Activities");
 
   useEffect(() => {
     if (!marker || !clusterer) return;
@@ -67,6 +69,7 @@ function ClusteredMarker ({ activity, clusterer, setFocusedActivity, setSelected
 function MapContent({ position, searchMarker, setSearchMarker, selected, setSelected, handleMapClick, focusedActivity, setFocusedActivity }) {
   const map = useMap();
   const [clusterer, setClusterer] = useState(null);
+  const t = useTranslations("Activities");
 
   // Pan to focused activity when it changes
   useEffect(() => {
@@ -138,10 +141,10 @@ function MapContent({ position, searchMarker, setSearchMarker, selected, setSele
               pixelOffset={[0, -40]}
             >
               <div>
-                <p style={{ margin: "0 0 4px", fontWeight: 600 }}>{selected.icon} {selected.label}</p>
+                <p style={{ margin: "0 0 4px", fontWeight: 600 }}>{selected.icon} {selected.labelKey ? t(selected.labelKey) : selected.label}</p>
                 {selected.website && (
-                  <a href={selected.website} target="_blank" rel="noreferrer" style={{ fontSize: "0.85rem", color: "#5e4a8a" }}>
-                    Visit website →
+                  <a href={selected.website} target="_blank" rel="noreferrer" style={{ fontSize: "0.85rem", color: "#5e4a8a" }} aria-label={t('visitWebsite')}>
+                    {t('visitWebsite')} →
                   </a>
                 )}
               </div>
@@ -163,58 +166,60 @@ function MapContent({ position, searchMarker, setSearchMarker, selected, setSele
 }
 
 const POINTS_OF_INTEREST = [
-  { lat: 46.82942442282928, lng: 6.540003507637307, label: "Appartment", icon: "🏠" }
+  { lat: 46.82942442282928, lng: 6.540003507637307, labelKey: "poi.appartment.label", icon: "🏠" }
 ];
 
 const ACTIVITIES = {
   winter: [],
   summer: [
-    { category: "Alpine lodge", icon: "🫕", label: "La Grandsonnaz-Dessus", desc: "A classic mountain stop with a warm welcome. Great place to rest after a hike or set off from.", website: "https://yverdonlesbainsregion.ch/poi/chalet-de-la-grandsonnaz-dessus/", lat: 46.8597, lng: 6.5518 },
+    { category: "Alpine lodge", icon: "🫕", label: "La Grandsonnaz-Dessus", descKey: "desc-grandsonnaz", website: "https://yverdonlesbainsregion.ch/poi/chalet-de-la-grandsonnaz-dessus/", lat: 46.8597, lng: 6.5518 },
   ],
   all_year: [
-    { category: "Alpine lodge", icon: "🫕", label: "Les Avattes", desc: "Stunning panoramic views and hearty homemade food — the perfect reward after a walk. Cash only.", website: "https://www.chaletrestaurantlesavattes.com/", lat: 46.8363, lng: 6.5239 },
-    { category: "Alpine lodge", icon: "🫕", label: "Le Chasseron", desc: "Perched at the summit, this mountain restaurant offers breathtaking views over the Alps and Jura.", website: "https://yverdonlesbainsregion.ch/poi/hotel-restaurant-du-chasseron/", lat: 46.8504, lng: 6.5389 },
-    { category: "Restaurant", icon: "🍽️", label: "Les Planets", desc: "The closest restaurant to the apartment. Cozy atmosphere serving traditional local cuisine.", website: "https://hotel-lesplanets.ch/restaurant/", lat: 46.8304, lng: 6.5425 },
-    { category: "Restaurant", icon: "🍽️", label: "Belle époque", desc: "Elegant dining at the Grand Hotel Rasses. A refined setting for a special evening out.", website: "https://www.grandhotelrasses.ch/restaurant", lat: 46.8277, lng: 6.5346 },
-    { category: "Restaurant", icon: "🍽️", label: "Le Central", desc: "A welcoming local spot with a relaxed vibe. Good for a casual meal with the family.", website: "https://fr.tripadvisor.ch/Restaurant_Review-g6276946-d10699930-Reviews-Le_Central-Bullet_Canton_of_Vaud.html", lat: 46.8306, lng: 6.5542 },
-    { category: "Asian", icon: "🍜", label: "Wok", desc: "Small family-run Chinese restaurant. Note: closing permanently on July 18th, 2026.", website: "https://www.wokasiatique.ch/", lat: 46.8217, lng: 6.5032 },
-    { category: "Asian", icon: "🍜", label: "Thaï Siri Take Away", desc: "Affordable and tasty Thai food, great for a quick and satisfying meal.", website: "https://thaisiri.ch/", lat: 46.8226, lng: 6.5012 },
-    { category: "Asian", icon: "🍜", label: "Nogi Kawa Sushi", desc: "Fresh and well-crafted sushi in the heart of Sainte-Croix.", website: "https://nogi-kawa-sushi.ch/", lat: 46.8244, lng: 6.5004 },
-    { category: "Pizzeria", icon: "🍕", label: "Restaurant du centre", desc: "Casual pizzeria in the town center, good for a straightforward and satisfying meal.", website: "https://cafe-restaurant-du-centre.digitalone.site/", lat: 46.8232, lng: 6.5011 },
-    { category: "Pizzeria", icon: "🍕", label: "Café du Pont", desc: "A local favourite for pizza, with a friendly atmosphere and generous portions.", website: "https://yverdonlesbainsregion.ch/poi/restaurant-pizzeria-cafe-du-pont/", lat: 46.8239, lng: 6.5010 },
-    { category: "Restaurant", icon: "🍽️", label: "El Latino", desc: "A taste of Latin America in Sainte-Croix, with warm flavours and a lively setting.", website: "https://www.local.ch/fr/d/ste-croix/1450/restaurant/el-latino-b1795oQ8X-JCJbubixTWpA", lat: 46.8202, lng: 6.5020 },
-    { category: "Restaurant", icon: "🍽️", label: "Cercle Espagnol", desc: "Spanish-inspired cuisine in a convivial club atmosphere.", website: "https://fr.restaurantguru.com/Cercle-espagnol-Sainte-Croix", lat: 46.8194, lng: 6.5019 },
-    { category: "Restaurant", icon: "🍽️", label: "Buffet de la Gare", desc: "Convenient spot by the train station, good for a quick bite before or after a journey.", website: "https://fr.restaurantguru.com/Kiosque-Gare-de-Sainte-Croix-Sainte-Croix", lat: 46.8194, lng: 6.5018 },
-    { category: "Restaurant", icon: "🥙", label: "Istanbul City Kebab", desc: "Generous kebabs and grilled meats at an affordable price.", website: "https://www.istanbulcitykebabsaintecroix.ch/", lat: 46.8219, lng: 6.5022 },
-    { category: "Restaurant", icon: "🍽️", label: "La Crêpe Rit", desc: "Charming crêperie serving both sweet and savoury crêpes.", website: "https://www.alacreperit.ch/", lat: 46.8194, lng: 6.5018 },
-    { category: "Restaurant", icon: "🍽️", label: "Café 12", desc: "A modern café-restaurant with a varied menu, popular with locals.", website: "https://www.cafe-12.ch/", lat: 46.8237, lng: 6.5012 },
-    { category: "Restaurant", icon: "🍽️", label: "Grains de Sel", desc: "Well-regarded local restaurant. Note: relocating to a new address at the end of July 2026.", website: "https://grainsdesel.ch/", lat: 46.8226, lng: 6.5023 },
-    { category: "Grocery", icon: "🛒", label: "Migros", desc: "Large supermarket chain, good for everyday essentials at reasonable prices.", website: "", lat: 46.8197, lng: 6.5022 },
-    { category: "Grocery", icon: "🛒", label: "Coop", desc: "Well-stocked supermarket with a wide selection including organic and local products.", website: "", lat: 46.8228, lng: 6.5015 },
-    { category: "Grocery", icon: "🛒", label: "Denner", desc: "Budget-friendly supermarket, ideal for stocking up on basics.", website: "", lat: 46.8201, lng: 6.5026 },
-    { category: "Grocery", icon: "🛒", label: "Prima", desc: "Small local grocery store in Bullet, handy for quick stops close to the apartment.", website: "https://www.epiceriebullet.ch/", lat: 46.8306, lng: 6.5543 },
-    { category: "Bakery", icon: "🥐", label: "Vuissoz", desc: "Popular local bakery known for fresh bread and pastries.", website: "https://vuissoz.com/sainte-croix/", lat: 46.8226, lng: 6.5022 },
-    { category: "Bakery", icon: "🥐", label: "La Gourmandine", desc: "Artisan bakery with a great selection of breads, cakes, and pastries.", website: "https://la-gourmandine.ch/", lat: 46.8233, lng: 6.5006 },
-    { category: "Bakery", icon: "🥐", label: "Chez Bigou", desc: "Charming village bakery a short drive away, worth the trip for their specialities.", website: "https://www.sumupbookings.com/chez-bigou-sarl", lat: 46.8179, lng: 6.4639 },
-    { category: "Bakery", icon: "🥐", label: "Chez Taggi, Tagini & Tagini", desc: "Traditional bakery in l'Auberson with homemade regional specialities.", website: "https://www.local.ch/fr/d/lauberson/1454/boulangerie-et-patisserie/chez-taggi-b1cXrlg7_GynY1tSyk9_kQ", lat: 46.8196, lng: 6.4699 },
-    { category: "Butcher", icon: "🥩", label: "Centrale Guenat", desc: "Reputable local butcher with quality cuts and charcuterie.", website: "https://www.boucheriecentrale.ch/", lat: 46.8231, lng: 6.5022 },
-    { category: "Butcher", icon: "🥩", label: "Naef Sàrl", desc: "Traditional butcher shop with locally sourced meats.", website: "https://www.suisseterroir.ch/adresse/boucherie-naef---successeur-sebastien-osti/2128/FR", lat: 46.8231, lng: 6.5014 },
-    { category: "Other", icon: "🧀", label: "Marché Sottas", desc: "Local dairy and cheese shop with regional specialities.", website: "https://www.local.ch/fr/d/ste-croix/1450/laiterie/laiterie-du-marche-HjTKQa4Ww-HjUA6lhq654w", lat: 46.8232, lng: 6.5014 },
-    { category: "Other", icon: "🧀", label: "Chalet neuf", desc: "Farmhouse cheese producer in Bullet, selling fresh local cheese directly.", website: "https://bullet.ch/locations/fromagerie-du-chalet-neuf/", lat: 46.8315, lng: 6.5546 },
-    { category: "Other", icon: "🧀", label: "Tyrode", desc: "Artisan cheese producer known for traditional Jura recipes.", website: "https://www.tyrode.ch/", lat: 46.8181, lng: 6.4634 },
-    { category: "Other", icon: "🍷", label: "Chez Natalie", desc: "Charming wine cellar with a curated selection of Swiss and regional wines.", website: "https://cavecheznathalie.ch/", lat: 46.8239, lng: 6.5016 },
-    { category: "Other", icon: "🍷", label: "Chez Bacchus", desc: "Well-stocked wine shop and vinotheque with a wide range of bottles to take home.", website: "https://chardonnens-boissons.ch/store/chez-bacchus-vinotheque-ste-croix", lat: 46.8196, lng: 6.5030 },
-    { category: "Venue", icon: "🏛️", label: "Ming Shan", desc: "A peaceful seminar and retreat center nestled in nature, offering meals to guests and seminar attendees.", website: "https://www.mingshan.ch/", lat: 46.8326, lng: 6.5589 },
+    { category: "Alpine lodge", icon: "🫕", label: "Les Avattes", descKey: "desc-avattes", website: "https://www.chaletrestaurantlesavattes.com/", lat: 46.8363, lng: 6.5239 },
+    { category: "Alpine lodge", icon: "🫕", label: "Le Chasseron", descKey: "desc-chasseron", website: "https://yverdonlesbainsregion.ch/poi/hotel-restaurant-du-chasseron/", lat: 46.8504, lng: 6.5389 },
+    { category: "Restaurant", icon: "🍽️", label: "Les Planets", descKey: "desc-planets", website: "https://hotel-lesplanets.ch/restaurant/", lat: 46.8304, lng: 6.5425 },
+    { category: "Restaurant", icon: "🍽️", label: "Belle époque", descKey: "desc-epoque", website: "https://www.grandhotelrasses.ch/restaurant", lat: 46.8277, lng: 6.5346 },
+    { category: "Restaurant", icon: "🍽️", label: "Le Central", descKey: "desc-central", website: "https://fr.tripadvisor.ch/Restaurant_Review-g6276946-d10699930-Reviews-Le_Central-Bullet_Canton_of_Vaud.html", lat: 46.8306, lng: 6.5542 },
+    { category: "Asian", icon: "🍜", label: "Wok", descKey: "desc-wok", website: "https://www.wokasiatique.ch/", lat: 46.8217, lng: 6.5032 },
+    { category: "Asian", icon: "🍜", label: "Thaï Siri Take Away", descKey: "desc-thai", website: "https://thaisiri.ch/", lat: 46.8226, lng: 6.5012 },
+    { category: "Asian", icon: "🍜", label: "Nogi Kawa Sushi", descKey: "desc-sushi", website: "https://nogi-kawa-sushi.ch/", lat: 46.8244, lng: 6.5004 },
+    { category: "Pizzeria", icon: "🍕", label: "Restaurant du centre", descKey: "desc-centre", website: "https://cafe-restaurant-du-centre.digitalone.site/", lat: 46.8232, lng: 6.5011 },
+    { category: "Pizzeria", icon: "🍕", label: "Café du Pont", descKey: "desc-pont", website: "https://yverdonlesbainsregion.ch/poi/restaurant-pizzeria-cafe-du-pont/", lat: 46.8239, lng: 6.5010 },
+    { category: "Restaurant", icon: "🍽️", label: "El Latino", descKey: "desc-latino", website: "https://www.local.ch/fr/d/ste-croix/1450/restaurant/el-latino-b1795oQ8X-JCJbubixTWpA", lat: 46.8202, lng: 6.5020 },
+    { category: "Restaurant", icon: "🍽️", label: "Cercle Espagnol", descKey: "desc-espagnol", website: "https://fr.restaurantguru.com/Cercle-espagnol-Sainte-Croix", lat: 46.8194, lng: 6.5019 },
+    { category: "Restaurant", icon: "🍽️", label: "Buffet de la Gare", descKey: "desc-buffet", website: "https://fr.restaurantguru.com/Kiosque-Gare-de-Sainte-Croix-Sainte-Croix", lat: 46.8194, lng: 6.5018 },
+    { category: "Restaurant", icon: "🥙", label: "Istanbul City Kebab", descKey: "desc-kebab", website: "https://www.istanbulcitykebabsaintecroix.ch/", lat: 46.8219, lng: 6.5022 },
+    { category: "Restaurant", icon: "🍽️", label: "La Crêpe Rit", descKey: "desc-crepe", website: "https://www.alacreperit.ch/", lat: 46.8194, lng: 6.5018 },
+    { category: "Restaurant", icon: "🍽️", label: "Café 12", descKey: "desc-cafe", website: "https://www.cafe-12.ch/", lat: 46.8237, lng: 6.5012 },
+    { category: "Restaurant", icon: "🍽️", label: "Grains de Sel", descKey: "desc-sel", website: "https://grainsdesel.ch/", lat: 46.8226, lng: 6.5023 },
+    { category: "Grocery", icon: "🛒", label: "Migros", descKey: "desc-migros", website: "", lat: 46.8197, lng: 6.5022 },
+    { category: "Grocery", icon: "🛒", label: "Coop", descKey: "desc-coop", website: "", lat: 46.8228, lng: 6.5015 },
+    { category: "Grocery", icon: "🛒", label: "Denner", descKey: "desc-denner", website: "", lat: 46.8201, lng: 6.5026 },
+    { category: "Grocery", icon: "🛒", label: "Prima", descKey: "desc-prima", website: "https://www.epiceriebullet.ch/", lat: 46.8306, lng: 6.5543 },
+    { category: "Bakery", icon: "🥐", label: "Vuissoz", descKey: "desc-vuissoz", website: "https://vuissoz.com/sainte-croix/", lat: 46.8226, lng: 6.5022 },
+    { category: "Bakery", icon: "🥐", label: "La Gourmandine", descKey: "desc-gourmandine", website: "https://la-gourmandine.ch/", lat: 46.8233, lng: 6.5006 },
+    { category: "Bakery", icon: "🥐", label: "Chez Bigou", descKey: "desc-bigou", website: "https://www.sumupbookings.com/chez-bigou-sarl", lat: 46.8179, lng: 6.4639 },
+    { category: "Bakery", icon: "🥐", label: "Chez Taggi, Tagini & Tagini", descKey: "desc-taggi", website: "https://www.local.ch/fr/d/lauberson/1454/boulangerie-et-patisserie/chez-taggi-b1cXrlg7_GynY1tSyk9_kQ", lat: 46.8196, lng: 6.4699 },
+    { category: "Butcher", icon: "🥩", label: "Centrale Guenat", descKey: "desc-guenat", website: "https://www.boucheriecentrale.ch/", lat: 46.8231, lng: 6.5022 },
+    { category: "Butcher", icon: "🥩", label: "Naef Sàrl", descKey: "desc-naef", website: "https://www.suisseterroir.ch/adresse/boucherie-naef---successeur-sebastien-osti/2128/FR", lat: 46.8231, lng: 6.5014 },
+    { category: "Other", icon: "🧀", label: "Marché Sottas", descKey: "desc-sottas", website: "https://www.local.ch/fr/d/ste-croix/1450/laiterie/laiterie-du-marche-HjTKQa4Ww-HjUA6lhq654w", lat: 46.8232, lng: 6.5014 },
+    { category: "Other", icon: "🧀", label: "Chalet neuf", descKey: "desc-neuf", website: "https://bullet.ch/locations/fromagerie-du-chalet-neuf/", lat: 46.8315, lng: 6.5546 },
+    { category: "Other", icon: "🧀", label: "Tyrode", descKey: "desc-tyrode", website: "https://www.tyrode.ch/", lat: 46.8181, lng: 6.4634 },
+    { category: "Other", icon: "🍷", label: "Chez Natalie", descKey: "desc-natalie", website: "https://cavecheznathalie.ch/", lat: 46.8239, lng: 6.5016 },
+    { category: "Other", icon: "🍷", label: "Chez Bacchus", descKey: "desc-bacchus", website: "https://chardonnens-boissons.ch/store/chez-bacchus-vinotheque-ste-croix", lat: 46.8196, lng: 6.5030 },
+    { category: "Venue", icon: "🏛️", label: "Ming Shan", descKey: "desc-ming", website: "https://www.mingshan.ch/", lat: 46.8326, lng: 6.5589 },
   ],
 };
 
 function ActivitiesList({ activities, onActivityClick }) {
   const [activeSeason, setActiveSeason] = useState("all_year");
 
+  const t = useTranslations("Activities");
+
   const tabs = [
-    { key: "winter", label: "❄️ Winter" },
-    { key: "summer", label: "☀️ Summer" },
-    { key: "all_year", label: "📅 All Year" },
+    { key: "winter", label: "winter" },
+    { key: "summer", label: "summer" },
+    { key: "all_year", label: "allYear" },
   ];
 
   const items = activities[activeSeason] || [];
@@ -224,12 +229,12 @@ function ActivitiesList({ activities, onActivityClick }) {
     <div className={styles.activitiesList}>
       <div className={styles.seasonTabs}>
         {tabs.map((s) => (
-          <button
+            <button
             key={s.key}
             className={`${styles.seasonTab} ${activeSeason === s.key ? styles.seasonTabActive : ""}`}
             onClick={() => setActiveSeason(s.key)}
           >
-            {s.label}
+            {t(s.label)}
           </button>
         ))}
       </div>
@@ -249,10 +254,10 @@ function ActivitiesList({ activities, onActivityClick }) {
                   <span className={styles.activityIcon}>{item.icon}</span>
                   <div className={styles.activityContent}>
                     <div className={styles.activityHeader}>
-                      <p className={styles.activityLabel}>{item.label}</p>
+                      <p className={styles.activityLabel}>{item.labelKey ? t(item.labelKey) : item.label}</p>
                       <div className={styles.activityActions}>
                         {item.lat && (
-                          <span className={styles.mapPin} title="Show on map">📍</span>
+                          <span className={styles.mapPin} title={t('showOnMap')}>📍</span>
                         )}
                         {item.website && (
                           
@@ -261,13 +266,14 @@ function ActivitiesList({ activities, onActivityClick }) {
                             rel="noreferrer"
                             className={styles.activityLink}
                             onClick={(e) => e.stopPropagation()}
+                            aria-label={t('visitWebsite')}
                           >
                             ↗
                           </a>
                         )}
                       </div>
                     </div>
-                    {item.desc && <p className={styles.activityDesc}>{item.desc}</p>}
+                    {(item.descKey || item.desc) && <p className={styles.activityDesc}>{item.descKey ? t(item.descKey) : item.desc}</p>}
                   </div>
                 </div>
               ))}
