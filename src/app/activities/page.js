@@ -9,50 +9,50 @@ import { MarkerClusterer } from "@googlemaps/markerclusterer";
 
 function SearchBox({ onPlaceSelect }) {
   const containerRef = useRef(null);
-  const places = useMapsLibrary("places");
   const map = useMap();
   const t = useTranslations("Activities");
 
   useEffect(() => {
-    if (!places || !containerRef.current) return;
+    if (!containerRef.current || !window.google?.maps?.places?.PlaceAutocompleteElement) return;
 
-    // Prefer PlaceAutocompleteElement when available
-    if (places.PlaceAutocompleteElement) {
-      const elem = new places.PlaceAutocompleteElement({
-        input: containerRef.current,
-        fields: ["name", "geometry"],
-        componentRestrictions: { country: "ch" },
+    const autocompleteElement = new window.google.maps.places.PlaceAutocompleteElement({
+      componentRestrictions: { country: "ch" },
+    });
+
+    // Style it to match your existing searchBox class
+    autocompleteElement.style.width = "100%";
+    autocompleteElement.style.fontSize = "1rem";
+    autocompleteElement.style.borderRadius = "8px";
+    autocompleteElement.style.boxSizing = "border-box";
+
+    containerRef.current.innerHTML = "";
+    containerRef.current.appendChild(autocompleteElement);
+
+    const listener = autocompleteElement.addEventListener("gmp-placeselect", async (event) => {
+      const place = event.place;
+      await place.fetchFields({ fields: ["displayName", "location"] });
+
+      const lat = place.location.lat();
+      const lng = place.location.lng();
+
+      onPlaceSelect({
+        geometry: { location: { lat: () => lat, lng: () => lng } },
+        name: place.displayName,
       });
 
-      const listener = elem.addListener("place_changed", () => {
-        const place = elem.getPlace();
-        if (place.geometry) {
-          onPlaceSelect(place);
-          if (map) {
-            map.panTo(place.geometry.location);
-            map.setZoom(15);
-          }
-        }
-      });
-      return () => listener.remove();
-    }
-
-    // Fallback to legacy Autocomplete
-    const autocomplete = new places.Autocomplete(containerRef.current);
-    const legacyListener = autocomplete.addListener("place_changed", () => {
-      const place = autocomplete.getPlace();
-      if (place.geometry) {
-        onPlaceSelect(place);
-        if (map) {
-          map.panTo(place.geometry.location);
-          map.setZoom(15);
-        }
+      if (map) {
+        map.panTo({ lat, lng });
+        map.setZoom(15);
       }
     });
-    return () => legacyListener.remove();
-  }, [places, map]);
 
-  return <div ref={containerRef} className="styles.searchBox" />
+    return () => {
+      autocompleteElement.removeEventListener("gmp-placeselect", listener);
+      if (containerRef.current) containerRef.current.innerHTML = "";
+    };
+  }, [map]);
+
+  return <div ref={containerRef} className={styles.searchBox} />;
 }
 
 function ClusteredMarker ({ activity, clusterer, setFocusedActivity, setSelected }) {
@@ -269,11 +269,9 @@ export default function ActivitiesPage() {
   const position = { lat: 46.82942442282928, lng: 6.540003507637307 };
   const t = useTranslations("Activities");
   const mapRef = useRef(null);
-
   const handleMapClick = useCallback(() => {
     setSelected(null);
   }, []);
-
   const handleActivityClick = (activity) => {
     setFocusedActivity(activity);
     setSelected(activity);
@@ -311,7 +309,10 @@ export default function ActivitiesPage() {
         </section>
         <div className={styles.card}>
           <div className={styles.mapContainer} ref={mapRef}>
-            <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}>
+            <APIProvider 
+              apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}
+              libraries={["places"]}
+            >
               <MapContent
                 activities={activities}
                 position={position}
