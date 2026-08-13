@@ -8,51 +8,35 @@ import { useTranslations } from "next-intl";
 import { MarkerClusterer } from "@googlemaps/markerclusterer";
 
 function SearchBox({ onPlaceSelect }) {
-  const containerRef = useRef(null);
+  const inputRef = useRef(null);
+  const places = useMapsLibrary("places");
   const map = useMap();
-  const t = useTranslations("Activities");
 
   useEffect(() => {
-    if (!containerRef.current || !window.google?.maps?.places?.PlaceAutocompleteElement) return;
-
-    const autocompleteElement = new window.google.maps.places.PlaceAutocompleteElement({
-      componentRestrictions: { country: "ch" },
-    });
-
-    // Style it to match your existing searchBox class
-    autocompleteElement.style.width = "100%";
-    autocompleteElement.style.fontSize = "1rem";
-    autocompleteElement.style.borderRadius = "8px";
-    autocompleteElement.style.boxSizing = "border-box";
-
-    containerRef.current.innerHTML = "";
-    containerRef.current.appendChild(autocompleteElement);
-
-    const listener = autocompleteElement.addEventListener("gmp-placeselect", async (event) => {
-      const place = event.place;
-      await place.fetchFields({ fields: ["displayName", "location"] });
-
-      const lat = place.location.lat();
-      const lng = place.location.lng();
-
-      onPlaceSelect({
-        geometry: { location: { lat: () => lat, lng: () => lng } },
-        name: place.displayName,
-      });
-
-      if (map) {
-        map.panTo({ lat, lng });
-        map.setZoom(15);
+    if (!places || !inputRef.current) return;
+    const autocomplete = new places.Autocomplete(inputRef.current);
+    const listener = autocomplete.addListener("place_changed", () => {
+      const place = autocomplete.getPlace();
+      if (place.geometry) {
+        const lat = place.geometry.location.lat();
+        const lng = place.geometry.location.lng();
+        onPlaceSelect({
+          geometry: { location: { lat: () => lat, lng: () => lng } },
+          name: place.name,
+        });
       }
     });
+    return () => listener.remove();
+  }, [places]);
 
-    return () => {
-      autocompleteElement.removeEventListener("gmp-placeselect", listener);
-      if (containerRef.current) containerRef.current.innerHTML = "";
-    };
-  }, [map]);
-
-  return <div ref={containerRef} className={styles.searchBox} />;
+  return (
+    <input
+      ref={inputRef}
+      type="text"
+      placeholder="Search..."
+      className={styles.searchBox}
+    />
+  );
 }
 
 function ClusteredMarker ({ activity, clusterer, setFocusedActivity, setSelected }) {
@@ -103,6 +87,14 @@ function MapContent({ activities, position, searchMarker, setSearchMarker, selec
     setClusterer(newClusterer);
     return () => newClusterer.clearMarkers();
   }, [map]);
+
+  useEffect(() => {
+    console.log("searchMarker useEffect:", searchMarker, map);
+    if (searchMarker?.lat && searchMarker?.lng && map) {
+      map.panTo({ lat: searchMarker.lat, lng: searchMarker.lng });
+      map.setZoom(15);
+    }
+  }, [searchMarker, map]);
 
   const activityMarkers = Object.values(activities).flat().filter((a) => a.lat && a.lng);
 
@@ -171,11 +163,18 @@ function MapContent({ activities, position, searchMarker, setSearchMarker, selec
       </div>
       <aside className={styles.mapSidebar}>
         <SearchBox onPlaceSelect={(place) => {
-          setSearchMarker({
-            lat: place.geometry.location.lat(),
-            lng: place.geometry.location.lng(),
-            label: place.name,
-          });
+          console.log("onPlaceSelect called:", place);
+
+          // Handle both function and plain value forms
+          const lat = typeof place.geometry.location.lat === "function" 
+            ? place.geometry.location.lat() 
+            : place.geometry.location.lat;
+          const lng = typeof place.geometry.location.lng === "function"
+            ? place.geometry.location.lng()
+            : place.geometry.location.lng;
+
+          console.log("setting search marker:", lat, lng);
+          setSearchMarker({ lat, lng, label: place.name });
         }} />
       </aside>
     </div>
