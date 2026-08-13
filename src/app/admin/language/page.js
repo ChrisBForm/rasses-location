@@ -178,6 +178,46 @@ export default function AdminLanguagesPage() {
     }
   };
 
+  // TODO: Translate text
+  const handleDeleteLanguage = async (locale) => {
+    if (!window.confirm(`Are you sure you want to delete the ${locale} language?`)) return;
+
+    try {
+      const token = await user.getIdToken();
+      const response = await fetch("/api/admin/languages", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ locale }),
+      });
+
+      if (!response.ok) {
+        throw new Error((await response.text()) || response.statusText);
+      }
+
+      const updatedLocales = locales.filter(l => l !== locale);
+      setLocales(updatedLocales);
+
+      if (selectedLocale == locale) {
+        setSelectedLocale(updatedLocales[0] || "");
+        if ( updatedLocales[0]) {
+          setEditedContent(JSON.stringify(languages[updatedLocales[0]], null, 2));
+        }
+      }
+
+      const updatedLanguages = { ...languages };
+      delete updatedLanguages[locale];
+      setLanguages(updatedLanguages);
+
+      setSaveSuccess(`Language ${locale} deletes successfully`);
+      setTimeout(() => setSaveSuccess(""), 3000);
+    } catch (err) {
+      setSaveError(`Failed to delete language: ${err.message}`);
+    }
+  };
+
   if (loading) return <div className={styles.loading}>{t("loading")}...</div>;
   if (!user) return <div className={styles.error}>{t("signed-in")}</div>;
 
@@ -219,13 +259,23 @@ export default function AdminLanguagesPage() {
               <label className={styles.selectorLabel}>{t('language-select')}</label>
               <div className={styles.localeButtons}>
                 {locales.map((locale) => (
-                  <button
-                    key={locale}
-                    className={`${styles.localeButton} ${selectedLocale === locale ? styles.localeButtonActive : ""}`}
-                    onClick={() => handleLocaleChange(locale)}
-                  >
-                    {locale.toUpperCase()}
-                  </button>
+                  <div key={locale} className={styles.localeButtonWrapper}>
+                    <button
+                      className={`${styles.localeButton} ${selectedLocale === locale ? styles.localeButtonActive : ""}`}
+                      onClick={() => handleLocaleChange(locale)}
+                    >
+                      {locale.toUpperCase()}
+                    </button>
+                    {locales.length > 1 && (
+                      <button
+                        className={styles.deleteButton}
+                        onClick={() => handleDeleteLanguage(locale)}
+                        title="Delete language"
+                      >
+                        ✕
+                      </button>
+                    )}
+                  </div>
                 ))}
                 <button
                   className={styles.addLocaleButton}
