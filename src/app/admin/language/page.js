@@ -207,7 +207,6 @@ export default function AdminLanguagesPage() {
         body: JSON.stringify({
           locale,
           remainingLocales,
-          localeNames: updatedLocaleNames,
         }),
       });
 
