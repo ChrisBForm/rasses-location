@@ -6,6 +6,8 @@ import { revalidatePath } from "next/cache";
 
 export const runtime = "nodejs";
 
+const STORAGE_BUCKET = process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET;
+
 // The environnement variable must be encoded in base64
 const serviceAccount = JSON.parse(
   Buffer.from(process.env.FIREBASE_SERVICE_ACCOUNT_KEY, "base64").toString("utf-8")
@@ -15,7 +17,7 @@ const adminApp = getApps().length
   ? getApp("admin")
   : initializeApp({
       credential: cert(serviceAccount),
-      storageBucket: "sitelocationrasses.firebasestorage.app",
+      storageBucket: STORAGE_BUCKET,
     }, "admin");
 
 const auth = getAuth(adminApp);
@@ -34,7 +36,7 @@ export async function PUT(request) {
 
   try {
     const { locales, localeNames } = await request.json();
-    const bucket = storage.bucket("sitelocationrasses.firebasestorage.app");
+    const bucket = storage.bucket(STORAGE_BUCKET);
     const file = bucket.file("languages/config.json");
 
     await file.save(JSON.stringify({ supportedLocales: locales, localeNames }, null, 2), {
