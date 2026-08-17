@@ -180,9 +180,23 @@ export default function AdminLanguagesPage() {
 
   // TODO: Translate text
   const handleDeleteLanguage = async (locale) => {
+    if (locale === "en") {
+      setSaveError("The English language cannot be deleted.");
+      return;
+    }
+
+    if (locales.length <= 1) {
+      setSaveError("At least one language must remain.");
+      return;
+    }
+
     if (!window.confirm(`Are you sure you want to delete the ${locale} language?`)) return;
 
     try {
+      const remainingLocales = locales.filter((item) => item !== locale);
+      const updatedLocaleNames = { ...currentLocaleNames };
+      delete updatedLocaleNames[locale];
+
       const token = await user.getIdToken();
       const response = await fetch("/api/admin/languages", {
         method: "DELETE",
@@ -190,28 +204,32 @@ export default function AdminLanguagesPage() {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ locale }),
+        body: JSON.stringify({
+          locale,
+          remainingLocales,
+          localeNames: updatedLocaleNames,
+        }),
       });
 
       if (!response.ok) {
         throw new Error((await response.text()) || response.statusText);
       }
 
-      const updatedLocales = locales.filter(l => l !== locale);
-      setLocales(updatedLocales);
+      setLocales(remainingLocales);
 
-      if (selectedLocale == locale) {
-        setSelectedLocale(updatedLocales[0] || "");
-        if ( updatedLocales[0]) {
-          setEditedContent(JSON.stringify(languages[updatedLocales[0]], null, 2));
+      if (selectedLocale === locale) {
+        setSelectedLocale(remainingLocales[0] || "");
+        if (remainingLocales[0]) {
+          setEditedContent(JSON.stringify(languages[remainingLocales[0]], null, 2));
         }
       }
 
       const updatedLanguages = { ...languages };
       delete updatedLanguages[locale];
       setLanguages(updatedLanguages);
+      setCurrentLocaleNames(updatedLocaleNames);
 
-      setSaveSuccess(`Language ${locale} deletes successfully`);
+      setSaveSuccess(`Language ${locale} deleted successfully`);
       setTimeout(() => setSaveSuccess(""), 3000);
     } catch (err) {
       setSaveError(`Failed to delete language: ${err.message}`);
@@ -266,7 +284,7 @@ export default function AdminLanguagesPage() {
                     >
                       {locale.toUpperCase()}
                     </button>
-                    {locales.length > 1 && (
+                    {locales.length > 1 && locale !== "en" && (
                       <button
                         className={styles.deleteButton}
                         onClick={() => handleDeleteLanguage(locale)}
