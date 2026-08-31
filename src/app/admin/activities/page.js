@@ -274,7 +274,8 @@ export default function AdminActivitiesPage() {
                   <label className={styles.formLabel}>{locale.toUpperCase()}</label>
                   <textarea
                     className={styles.formTextarea}
-                    value={descTranslation(locale, e.target.value)}
+                    value={descTranslation[locale] || ""}
+                    onChange={(e) => handleDescChange(locale, e.target.value)}
                     rows={3}
                   />
                 </div>
