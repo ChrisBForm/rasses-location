@@ -54,6 +54,30 @@
   color: #2f2f2f;
 }
 
+.primaryButton {
+  align-self: flex-start;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 6px;
+  background-color: #5e4a8a;
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(94, 74, 138, 0.18);
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.primaryButton:hover:not(:disabled) {
+  background-color: #4a3973;
+  transform: translateY(-1px);
+}
+
+.primaryButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 .listPanel {
   display: flex;
   flex-direction: column;

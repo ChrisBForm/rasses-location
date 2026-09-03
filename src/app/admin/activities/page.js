@@ -188,7 +188,7 @@ export default function AdminActivitiesPage() {
             <h1 className={styles.title}>Manage Activities</h1>
             <p className={styles.description}>Add, edit, or remove activities shown on the map.</p>
           </div>
-          <button className={styles.description} onClick={handleStartAdd}>
+          <button className={styles.primaryButton} onClick={handleStartAdd}>
             + Add Activity
           </button>
         </div>
