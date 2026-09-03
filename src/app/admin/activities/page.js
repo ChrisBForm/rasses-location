@@ -196,7 +196,7 @@ export default function AdminActivitiesPage() {
         {error && <div className={styles.errorMessage}>{error}</div>}
         {success && <div className={styles.successMessage}>{success}</div>}
 
-        <div className={styles.contentContainer}>
+        <div className={`${styles.contentContainer} ${selectedActivity || adding ? styles.hasEditor : ""}`}>
           {/* Left: activity list */}
           <div className={styles.listPanel}>
             <div className={styles.seasonTabs}>

@@ -1,5 +1,4 @@
 import { initializeApp, cert, getApps, getApp } from "firebase-admin/app";
-import { getStorage } from "firebase-admin/storage";
 import { getAuth } from "firebase-admin/auth";
 import { NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
@@ -18,7 +17,6 @@ const adminApp = getApps().length
       storageBucket: STORAGE_BUCKET,
     }, "admin");
 const auth = getAuth(adminApp);
-const storage = getStorage(adminApp);
 
 export async function GET(request) {
   const authHeader = request.headers.get("authorization") || "";
