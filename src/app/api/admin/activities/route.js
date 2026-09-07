@@ -2,6 +2,7 @@ import { initializeApp, cert, getApps, getApp } from "firebase-admin/app";
 import { getAuth } from "firebase-admin/auth";
 import { NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
+import {getStorage} from "firebase-admin/storage";
 
 const STORAGE_BUCKET = process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET;
 
@@ -17,6 +18,7 @@ const adminApp = getApps().length
       storageBucket: STORAGE_BUCKET,
     }, "admin");
 const auth = getAuth(adminApp);
+const storage = getStorage(adminApp);
 
 export async function GET(request) {
   const authHeader = request.headers.get("authorization") || "";
@@ -54,7 +56,7 @@ export async function PUT(request) {
 
   try {
     const { activities } = await request.json();
-    const file = STORAGE_BUCKET.file("activities.json");
+    const file = storage.bucket(STORAGE_BUCKET).file("activities.json");
 
     await file.save(JSON.stringify(activities, null, 2), {
       contentType: "application/json",

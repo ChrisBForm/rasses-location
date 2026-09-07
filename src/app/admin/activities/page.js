@@ -115,7 +115,7 @@ export default function AdminActivitiesPage() {
       // Save activities
       await fetch("/api/admin/activities", {
         method: "PUT",
-        headers: { "Content-Type": "application.json", Authorization: `Bearer ${token}` },
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify({ activities: updatedActivities }),
       });
 
@@ -128,7 +128,7 @@ export default function AdminActivitiesPage() {
 
         await fetch("/api/admin/languages", {
           method: "PUT",
-          headers: { "Content-Type": "application.json", Authorization: `Bearer ${token}` },
+          headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
           body: JSON.stringify({ locale, content: updatedLang }),
         });
 
@@ -156,11 +156,16 @@ export default function AdminActivitiesPage() {
       const updatedActivities = JSON.parse(JSON.stringify(activities));
       updatedActivities[selectedActivity.season].splice(selectedActivity.idx, 1);
 
-      await fetch("/api/admin/activities", {
+      const response = await fetch("/api/admin/activities", {
         method: "PUT",
-        headers: { "Content-Type": "application.json", Authorization: `Bearer ${token}` },
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify({ activities: updatedActivities }),
       });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to delete activity.");
+      }
 
       setActivities(updatedActivities);
       setSelectedActivity(null);
