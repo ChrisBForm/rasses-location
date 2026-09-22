@@ -113,11 +113,16 @@ export default function AdminActivitiesPage() {
       }
 
       // Save activities
-      await fetch("/api/admin/activities", {
+      const response = await fetch("/api/admin/activities", {
         method: "PUT",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify({ activities: updatedActivities }),
       });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to save activity.");
+      }
 
       // Save descriptions to each language file
       for (const locale of locales) {

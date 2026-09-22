@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import {getStorage} from "firebase-admin/storage";
 
 const STORAGE_BUCKET = process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET;
+const ACTIVITIES_FILE = "activities/activities.json";
 
 // The environnement variable must be encoded in base64
 const serviceAccount = JSON.parse(
@@ -33,8 +34,9 @@ export async function GET(request) {
   }
 
   try {
-    const res = await fetch(process.env.FIREBASE_ACTIVITIES_URL, { cache: "no-store" });
-    const data = await res.json();
+    const file = storage.bucket(STORAGE_BUCKET).file(ACTIVITIES_FILE);
+    const [contents] = await file.download();
+    const data = JSON.parse(contents.toString("utf-8"));
     return NextResponse.json(data);
   } catch (err) {
     return NextResponse.json({ error: err.message }, { status: 500 });
@@ -56,7 +58,7 @@ export async function PUT(request) {
 
   try {
     const { activities } = await request.json();
-    const file = storage.bucket(STORAGE_BUCKET).file("activities.json");
+    const file = storage.bucket(STORAGE_BUCKET).file(ACTIVITIES_FILE);
 
     await file.save(JSON.stringify(activities, null, 2), {
       contentType: "application/json",
