@@ -194,12 +194,12 @@ export default function AdminActivitiesPage() {
       <main className={styles.main}>
         <div className={styles.topRow}>
           <div className={styles.pageIntro}>
-            <span className={styles.subtitle}>Activities</span>
-            <h1 className={styles.title}>Manage Activities</h1>
-            <p className={styles.description}>Add, edit, or remove activities shown on the map.</p>
+            <span className={styles.subtitle}>{t('activities')}</span>
+            <h1 className={styles.title}>{t('activities-title')}</h1>
+            <p className={styles.description}>{t('activities-desc')}</p>
           </div>
           <button className={styles.primaryButton} onClick={handleStartAdd}>
-            + Add Activity
+            + {t('activities-add-bttn')}
           </button>
         </div>
 
@@ -222,7 +222,7 @@ export default function AdminActivitiesPage() {
             </div>
             <div className={styles.activityList}>
               {items.length === 0 && (
-                <p className={styles.emptyText}>No activities for this season.</p>
+                <p className={styles.emptyText}>{t('activities-empty')}</p>
               )}
               {items.map((item, idx) => (
                 <div
@@ -265,7 +265,7 @@ export default function AdminActivitiesPage() {
                 ))}
                 {adding && (
                   <div className={styles.formRow}>
-                    <label className={styles.formLabel}>Season</label>
+                    <label className={styles.formLabel}>{t('activities-season-row')}</label>
                     <select
                       className={styles.formInput}
                       value={activeSeason}
@@ -278,7 +278,7 @@ export default function AdminActivitiesPage() {
                   </div>
                 )}
               </div>
-              <h3 className={styles.descTitle}>Descriptions</h3>
+              <h3 className={styles.descTitle}>{t('activities-desc-row')}</h3>
               {locales.map((locale) => (
                 <div key={locale} className={styles.formRow}>
                   <label className={styles.formLabel}>{locale.toUpperCase()}</label>
@@ -304,7 +304,7 @@ export default function AdminActivitiesPage() {
                     onClick={handleDelete}
                     disabled={saving}
                   >
-                    Delete
+                    {t('activities-delete-bttn')}
                   </button>
                 )}
               </div>
