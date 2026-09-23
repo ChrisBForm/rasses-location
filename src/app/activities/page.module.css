@@ -187,6 +187,58 @@
   line-height: 1.5;
 }
 
+.activityItemClickable {
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.activityItemClickable:hover {
+  background: #f0eafa;
+}
+
+.activityContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.activityHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.activityActions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.mapPin {
+  font-size: 1rem;
+  opacity: 0.6;
+}
+
+.activityLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #ece6f0;
+  color: #5e4a8a;
+  font-size: 0.85rem;
+  text-decoration: none;
+  transition: background 0.2s ease;
+}
+
+.activityLink:hover {
+  background: #5e4a8a;
+  color: #fff;
+}
+
 @media (max-width: 900px) {
   .mapContentWrapper {
     grid-template-columns: 1fr;

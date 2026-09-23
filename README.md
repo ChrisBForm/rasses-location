@@ -51,16 +51,17 @@ rasses-location/
 │   │   ├── activities/                # Auth-protected Google Maps page
 │   │   ├── manuals/                   # Auth-protected PDF manual browser
 │   │   ├── admin/                     # Protected admin dashboard area
-│   │   │   └── language/             # Admin page to manage translation files
+│   │   │   └── language/              # Admin page to manage translation files
 │   │   └── api/
 │   │       ├── flowers/               # Returns decorative flower image URLs
-│   │       ├── pages/                 # Returns page metadata for admin list
 │   │       ├── locales/               # Returns supported locales from Firebase config
 │   │       └── admin/
-│   │           └── languages/         # GET/PUT language JSON files in Firebase
-│   │               └── config/        # PUT to update config.json (locales + names)
+│   │           ├── users/             # Admin user API routes
+│   │           └── languages/         # GET/PUT/DELETE language files in Firebase
+│   │               └── config/        # PUT to update config.json (locale list + names)
 │   ├── component/                     # Shared components and CSS modules
-│   ├── hooks/                         # Client hook for auth requirement
+│   ├── hooks/                         # Auth and admin guards
+│   ├── i18n/                          # Locale configuration for next-intl
 │   └── lib/firebase/                  # Firebase config + initialization
 ├── public/                            # Static assets and image library
 ├── package.json                       # Dependencies and scripts
@@ -75,7 +76,8 @@ rasses-location/
 - Activities page uses Google Maps with Places Autocomplete and an interactive marker search box
 - Manuals page filters PDF files by locale and allows search on manual titles
 - Admin dashboard at `/admin` with storage statistics
-- Admin language manager at `/admin/language` for editing and adding translation files
+- Admin language manager at `/admin/language` for editing, adding, and deleting translation files
+- The default English locale is protected and cannot be deleted
 - Supported locales and their display names are stored in Firebase, with no hardcoded language list
 - Responsive layouts with component-scoped CSS Modules
 
@@ -88,10 +90,9 @@ rasses-location/
 - `/admin` — Protected admin dashboard with Firebase storage stats
 - `/admin/language` — Protected admin page to manage translation JSON files
 - `/api/flowers` — Returns local `public/marguerite` image URLs
-- `/api/pages` — Returns page metadata used by the admin pages list
 - `/api/locales` — Returns supported locales and display names from Firebase config
-- `/api/admin/languages` — GET all language files, PUT to update a language file
-- `/api/admin/languages/config` — PUT to update `config.json` (locales list and display names)
+- `/api/admin/languages` — GET all language files, PUT to update a language file, DELETE a non-default locale
+- `/api/admin/languages/config` — PUT to update the locale configuration in Firebase Storage
 
 ## Authentication
 
@@ -155,8 +156,10 @@ house/                # House images shown on the home page
 ## Admin Area
 
 - `/admin` shows statistics for manuals and house images
-- `/admin/language` allows admins to edit translation JSON files directly and add new languages
-- Adding a new language copies the English file as a base and updates `config.json` automatically
+- `/admin/language` allows admins to edit translation JSON files directly, add new languages, and delete non-default languages
+- Adding a new language copies the English file as a base and updates the locale config automatically
+- Deleting a language removes its JSON file and updates the stored locale list and names
+- The default `en` locale is intentionally protected and cannot be removed
 - All admin API routes are protected and require a valid Firebase token with the `admin` claim
 
 ## Local Assets
