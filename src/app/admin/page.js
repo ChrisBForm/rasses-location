@@ -9,10 +9,8 @@ import { useTranslations } from "next-intl";
 export default function AdminPage() {
     const { user, loading } = useRequireAdmin();
     const [manualCount, setManualCount] = useState(0);
-    const [flowerCount] = useState(0);
     const [houseImageCount, setHouseImageCount] = useState(0);
     const [statsLoading, setStatsLoading] = useState(true);
-    const [manuals, setManuals] = useState([]);
     const t = useTranslations("Admin");
 
     useEffect(() => {
@@ -24,7 +22,6 @@ export default function AdminPage() {
                 const manualsRef = ref(storage, "manuals");
                 const manualsList = await listAll(manualsRef);
                 setManualCount(manualsList.items.length);
-                setManuals(manualsList.items.map(item => item.name));
 
                 // Fetch house images count
                 const houseRef = ref(storage, "house");
@@ -50,26 +47,56 @@ export default function AdminPage() {
     return (
         <div className={styles.page}>
             <main className={styles.main}>
-                <div className={styles.statsRow}>
-                    <div className={`${styles.statCard} ${styles.statCardPurple}`}>
-                        <span className={styles.statLabel}>{t('manuals-stat')}</span>
-                        <span className={styles.statValue}>{statsLoading ? "—" : manualCount}</span>
+                <section className={styles.analyticsSection} aria-labelledby="analytics-title">
+                    <div className={styles.analyticsHeader}>
+                        <div>
+                            <span className={styles.analyticsEyebrow}>{t('dashboard-subttl')}</span>
+                            <h1 id="analytics-title" className={styles.analyticsTitle}>{t('dashboard-ttl')}</h1>
+                            <p className={styles.analyticsDescription}>
+                                {t('dashboard-desc')}
+                            </p>
+                        </div>
                     </div>
-                    <div className={`${styles.statCard} ${styles.statCardPink}`}>
-                        <span className={styles.statLabel}>{t('house-stat')}</span>
-                        <span className={styles.statValue}>{statsLoading ? "—" : houseImageCount}</span>
+                    <div className={styles.analyticsGrid}>
+                        <div className={styles.analyticsCard}>
+                            <span className={styles.analyticsLabel}>{t('dashboard-status')}</span>
+                            <strong>Active</strong>
+                            <span>Vercel Web Analytics</span>
+                        </div>
+                        <div className={styles.analyticsCard}>
+                            <span className={styles.analyticsLabel}>{t('dashboard-signals')}</span>
+                            <strong>{t('dashboard-signals-type')}</strong>
+                            <span>{t('dashboard-signals-inf')}</span>
+                        </div>
+                        <div className={styles.analyticsCard}>
+                            <span className={styles.analyticsLabel}>{t('dashboard-inv')}</span>
+                            <strong>{statsLoading ? "—" : manualCount + houseImageCount}</strong>
+                            <span>{t('dashboard-inv-inf')}</span>
+                        </div>
                     </div>
-                    <div className={`${styles.statCard} ${styles.statCardDarkPurple}`}>
+                    <div className={styles.readableSummary}>
+                        <div className={styles.statusMessage}>
+                            <span className={styles.statusDot} />
+                            <div>
+                                <strong>{t('dashboard-tracking')}</strong>
+                                <p>{t('dashboard-tracking-desc')}</p>
+                            </div>
+                        </div>
+                        <div className={styles.contentBreakdown}>
+                            <div>
+                                <span>{t('dashboard-manuals')}</span>
+                                <strong>{statsLoading ? "—" : manualCount}</strong>
+                            </div>
+                            <div>
+                                <span>{t('dashboard-images')}</span>
+                                <strong>{statsLoading ? "—" : houseImageCount}</strong>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div className={styles.bottomRow}>
-                    <div className={`${styles.panel} ${styles.panelMuted}`}>
-                        <span className={styles.panelLabel}>{t('total-stat')}{statsLoading ? "—" : (manualCount + houseImageCount + flowerCount)}</span>
-                    </div>
-                    <div className={`${styles.panel} ${styles.panelTeal}`}>
-                        <span className={styles.panelLabel}>{t('recent')}{manuals.length > 0 ? manuals[0].replace(/\.pdf$/i, "") : "—"}</span>
-                    </div>
-                </div>
+                    <p className={styles.analyticsNote}>
+                        {t('dashboard-visitors')}
+                    </p>
+                </section>
             </main>
         </div>
     );

@@ -23,89 +23,153 @@
     color: #5f5e5a;
 }
 
-/* ── Stat cards row ── */
-.statsRow {
+/* ── Analytics overview ── */
+.analyticsSection {
+    padding: 32px;
+    border-radius: 8px;
+    background: #fff;
+    border: 1px solid #e5e3df;
+}
+
+.analyticsHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 24px;
+    flex-wrap: wrap;
+}
+
+.analyticsEyebrow {
+    display: inline-block;
+    color: #5e4a8a;
+    font-size: 0.75rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+}
+
+.analyticsTitle {
+    margin: 8px 0 8px;
+    color: #2f2f2f;
+    font-size: 1.7rem;
+}
+
+.analyticsDescription {
+    margin: 0;
+    color: #5f5e5a;
+    font-size: 0.9rem;
+}
+
+.analyticsGrid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 40px;
+    gap: 16px;
+    margin-top: 28px;
 }
 
-.statCard {
+.analyticsCard {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    min-height: 108px;
+    padding: 20px;
     border-radius: 6px;
-    padding: 32px 28px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    min-height: 120px;
-}
-
-.statCardPurple {
-    background-color: #9b8dc4;
-}
-
-.statCardPink {
-    background-color: #c49090;
-}
-
-.statCardDarkPurple {
-    background-color: #5e4a8a;
-}
-
-.statLabel {
+    background: #f0efeb;
+    color: #5f5e5a;
     font-size: 0.78rem;
-    color: rgba(255, 255, 255, 0.75);
-    text-transform: lowercase;
-    letter-spacing: 0.01em;
 }
 
-.statValue {
-    font-size: 1.75rem;
-    font-weight: 500;
-    color: #fff;
+.analyticsCard strong {
+    color: #2f2f2f;
+    font-size: 1.35rem;
 }
 
-/* ── Bottom panels row ── */
-.bottomRow {
+.analyticsLabel {
+    color: #5e4a8a;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.analyticsNote {
+    max-width: 760px;
+    margin: 24px 0 0;
+    color: #77756f;
+    font-size: 0.82rem;
+    line-height: 1.5;
+}
+
+.readableSummary {
     display: grid;
-    grid-template-columns: 3fr 1.5fr;
-    gap: 40px;
-    align-items: stretch;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 16px;
+    margin-top: 24px;
 }
 
-.panel {
-    border-radius: 4px;
-    padding: 28px;
+.statusMessage,
+.contentBreakdown {
+    padding: 20px;
+    border-radius: 6px;
+    background: #f0efeb;
+}
+
+.statusMessage {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+}
+
+.statusDot {
+    width: 10px;
+    height: 10px;
+    margin-top: 5px;
+    flex: 0 0 auto;
+    border-radius: 50%;
+    background: #4e9970;
+    box-shadow: 0 0 0 4px #e4f0e5;
+}
+
+.statusMessage strong {
+    color: #2f2f2f;
+    font-size: 1rem;
+}
+
+.statusMessage p {
+    margin: 7px 0 0;
+    color: #5f5e5a;
+    font-size: 0.82rem;
+    line-height: 1.45;
+}
+
+.contentBreakdown {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+.contentBreakdown div {
     display: flex;
     flex-direction: column;
-    min-height: 380px;
+    gap: 7px;
 }
 
-.panelMuted {
-    background-color: #c5c5bc;
+.contentBreakdown span {
+    color: #77756f;
+    font-size: 0.75rem;
 }
 
-.panelTeal {
-    background-color: #4e7d72;
-}
-
-.panelLabel {
-    font-size: 0.78rem;
-    color: rgba(255, 255, 255, 0.8);
-    text-transform: lowercase;
-    letter-spacing: 0.01em;
-}
-
-.panelMuted .panelLabel {
-    color: rgba(0, 0, 0, 0.55);
+.contentBreakdown strong {
+    color: #2f2f2f;
+    font-size: 1.35rem;
 }
 
 /* ── Responsive ── */
 @media (max-width: 900px) {
-    .statsRow {
+    .analyticsGrid {
         grid-template-columns: 1fr;
     }
 
-    .bottomRow {
+    .readableSummary {
         grid-template-columns: 1fr;
     }
 
