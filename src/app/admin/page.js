@@ -50,51 +50,51 @@ export default function AdminPage() {
                 <section className={styles.analyticsSection} aria-labelledby="analytics-title">
                     <div className={styles.analyticsHeader}>
                         <div>
-                            <span className={styles.analyticsEyebrow}>Site performance</span>
-                            <h1 id="analytics-title" className={styles.analyticsTitle}>Site analytics</h1>
+                            <span className={styles.analyticsEyebrow}>{t('dashboard-subttl')}</span>
+                            <h1 id="analytics-title" className={styles.analyticsTitle}>{t('dashboard-ttl')}</h1>
                             <p className={styles.analyticsDescription}>
-                                A simple overview of your website tracking and content.
+                                {t('dashboard-desc')}
                             </p>
                         </div>
                     </div>
                     <div className={styles.analyticsGrid}>
                         <div className={styles.analyticsCard}>
-                            <span className={styles.analyticsLabel}>Tracking status</span>
+                            <span className={styles.analyticsLabel}>{t('dashboard-status')}</span>
                             <strong>Active</strong>
                             <span>Vercel Web Analytics</span>
                         </div>
                         <div className={styles.analyticsCard}>
-                            <span className={styles.analyticsLabel}>Tracked signal</span>
-                            <strong>Page views</strong>
-                            <span>Collected automatically</span>
+                            <span className={styles.analyticsLabel}>{t('dashboard-signals')}</span>
+                            <strong>{t('dashboard-signals-type')}</strong>
+                            <span>{t('dashboard-signals-inf')}</span>
                         </div>
                         <div className={styles.analyticsCard}>
-                            <span className={styles.analyticsLabel}>Content inventory</span>
+                            <span className={styles.analyticsLabel}>{t('dashboard-inv')}</span>
                             <strong>{statsLoading ? "—" : manualCount + houseImageCount}</strong>
-                            <span>Manuals and house images</span>
+                            <span>{t('dashboard-inv-inf')}</span>
                         </div>
                     </div>
                     <div className={styles.readableSummary}>
                         <div className={styles.statusMessage}>
                             <span className={styles.statusDot} />
                             <div>
-                                <strong>Tracking is on</strong>
-                                <p>Visitor page views are being collected automatically across the website.</p>
+                                <strong>{t('dashboard-tracking')}</strong>
+                                <p>{t('dashboard-tracking-desc')}</p>
                             </div>
                         </div>
                         <div className={styles.contentBreakdown}>
                             <div>
-                                <span>Manuals available</span>
+                                <span>{t('dashboard-manuals')}</span>
                                 <strong>{statsLoading ? "—" : manualCount}</strong>
                             </div>
                             <div>
-                                <span>House images available</span>
+                                <span>{t('dashboard-images')}</span>
                                 <strong>{statsLoading ? "—" : houseImageCount}</strong>
                             </div>
                         </div>
                     </div>
                     <p className={styles.analyticsNote}>
-                        Visitor totals are stored by the analytics service and are not available inside this admin page yet.
+                        {t('dashboard-visitors')}
                     </p>
                 </section>
             </main>
